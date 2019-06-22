@@ -1,3 +1,3 @@
 {
-    "mongoURI": "mongodb://localhost:27017/mern?retryWrites=true"
+  "mongoURI": "mongodb://localhost:27017/mern?retryWrites=true"
 }
