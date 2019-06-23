@@ -5,7 +5,7 @@ const Register = () => {
     name: '',
     email: '',
     password: '',
-    password2: ','
+    password2: ''
   });
 
   const { name, email, password, password2 } = formData;
