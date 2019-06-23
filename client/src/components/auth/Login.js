@@ -15,8 +15,8 @@ const Login = () => {
 
   const onSubmit = async e => {
     e.preventDefault();
-    
-     console.log('SUCCESS');
+
+    console.log('SUCCESS');
   };
   return (
     <Fragment>
@@ -38,17 +38,18 @@ const Login = () => {
           <input
             type="password"
             placeholder="Password"
+            autoComplete="current-password"
             name="password"
             value={password}
             onChange={e => onChange(e)}
             minLength="6"
           />
         </div>
-        
+
         <input type="submit" className="btn btn-primary" value="Register" />
       </form>
       <p className="my-1">
-        Don't have an account? <Link to="login.html">Sign In</Link>
+        Don't have an account? <Link to="/register">Register</Link>
       </p>
     </Fragment>
   );
