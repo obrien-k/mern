@@ -20,7 +20,7 @@ const Register = () => {
     if (password !== password2) {
       console.log('passwords do not match');
     } else {
-     console.log('SUCCESS');
+      console.log('SUCCESS');
     }
   };
   return (
@@ -43,6 +43,7 @@ const Register = () => {
         <div className="form-group">
           <input
             type="email"
+            autoComplete="email"
             placeholder="Email Address"
             name="email"
             value={email}
@@ -56,6 +57,7 @@ const Register = () => {
         <div className="form-group">
           <input
             type="password"
+            autoComplete="new-password"
             placeholder="Password"
             name="password"
             value={password}
@@ -66,6 +68,7 @@ const Register = () => {
         <div className="form-group">
           <input
             type="password"
+            autoComplete="new-password"
             placeholder="Confirm Password"
             name="password2"
             value={password2}
