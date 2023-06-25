@@ -31,11 +31,7 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-  invitesSent: [{
-    email: String,
-    dateSent: Date,
-    redeemed: Boolean
-  }],
+  invitesSent: [InviteSchema],
   uploaded: {
     type: Number,
     default: 0
@@ -67,7 +63,6 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  invitesSent: [InviteSchema],
   settings: UserSettingsSchema
 });
 
