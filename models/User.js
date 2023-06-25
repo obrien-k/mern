@@ -22,7 +22,7 @@ const UserSchema = new mongoose.Schema({
   avatar: {
     type: String
   },
-  userClass: {
+  userRole: {
     type: String,
     enum: ['User', 'Member', 'Power User', 'VIP', 'Moderator', 'SysOp'],
     default: 'User'
@@ -58,7 +58,29 @@ const UserSchema = new mongoose.Schema({
   disabled: {
     type: Boolean,
     default: false
-  }
+  },
+  isArtist: {
+    type: Boolean,
+    default: false
+  },
+  isDonor: {
+    type: Boolean,
+    default: false
+  },
+  invitesSent: [InviteSchema],
+  settings: UserSettingsSchema
+});
+
+const InviteSchema = new mongoose.Schema({
+  email: String,
+  dateSent: Date,
+  redeemed: Boolean
+});
+
+const UserSettingsSchema = new mongoose.Schema({
+  siteOptions: Object,
+  paranoia: Object
+  // ... other settings
 });
 
 module.exports = User = mongoose.model('user', UserSchema);
