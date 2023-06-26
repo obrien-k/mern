@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+
 
 const UserMenu = ({ user, pageId }) => {
   const { username, bonusPoints, bytesUploaded, bytesDownloaded, requiredRatio, flTokens, hasUnlimitedInvites } = user;
@@ -9,12 +10,15 @@ const UserMenu = ({ user, pageId }) => {
    // Alerts and ModBar (simulating server-side array logic)
    const [alerts, setAlerts] = useState([]);
    const [modBar, setModBar] = useState([]);
+   const [useAdvancedSearch, setUseAdvancedSearch] = useState(false);
  
    // Simulate fetching data from the server and setting alerts and modBar.
    useEffect(() => {
      // Example, populate the arrays with data fetched from an API.
      setAlerts(['New staff blog post!']);
      setModBar(['Toolbox']);
+     const loggedUserSearchType = true; // fetch from server
+     setUseAdvancedSearch(loggedUserSearchType);
    }, []);
    
    const addClass = (pageId, pages, className) => pages.includes(pageId) ? className : '';
@@ -84,6 +88,105 @@ const UserMenu = ({ user, pageId }) => {
             )}
           </ul>
         </div>
+        <div id="searchbars">
+                <ul>
+                    <li id="searchbar_torrents">
+                        <form className="search_form" name="torrents" action="torrents.php" method="get">
+                            {useAdvancedSearch && (
+                                <input type="hidden" name="action" value="advanced" />
+                            )}
+                            <input
+                                id="torrentssearch"
+                                spellCheck="false"
+                                onFocus={(e) => e.target.value === 'Torrents' && (e.target.value = '')}
+                                onBlur={(e) => e.target.value === '' && (e.target.value = 'Torrents')}
+                                defaultValue="Torrents"
+                                placeholder="Torrents"
+                                type="text"
+                                name={useAdvancedSearch ? 'groupname' : 'searchstr'}
+                                size="17"
+                            />
+                        </form>
+                    </li>
+                    <li id="searchbar_artists">
+                        <form className="search_form" name="artists" action="artist.php" method="get">
+                            <input
+                                id="artistsearch"
+                                spellCheck="false"
+                                onFocus={(e) => e.target.value === 'Artists' && (e.target.value = '')}
+                                onBlur={(e) => e.target.value === '' && (e.target.value = 'Artists')}
+                                defaultValue="Artists"
+                                placeholder="Artists"
+                                type="text"
+                                name="artistname"
+                                size="17"
+                            />
+                        </form>
+                    </li>
+                    <li id="searchbar_requests">
+                        <form className="search_form" name="requests" action="requests.php" method="get">
+                            <input
+                                id="requestssearch"
+                                spellCheck="false"
+                                onFocus={(e) => e.target.value === 'Requests' && (e.target.value = '')}
+                                onBlur={(e) => e.target.value === '' && (e.target.value = 'Requests')}
+                                defaultValue="Requests"
+                                placeholder="Requests"
+                                type="text"
+                                name="search"
+                                size="17"
+                            />
+                        </form>
+                    </li>
+                    <li id="searchbar_forums">
+                        <form className="search_form" name="forums" action="forums.php" method="get">
+                            <input type="hidden" name="action" value="search" />
+                            <input
+                                id="forumssearch"
+                                spellCheck="false"
+                                onFocus={(e) => e.target.value === 'Forums' && (e.target.value = '')}
+                                onBlur={(e) => e.target.value === '' && (e.target.value = 'Forums')}
+                                defaultValue="Forums"
+                                placeholder="Forums"
+                                type="text"
+                                name="search"
+                                size="17"
+                            />
+                        </form>
+                    </li>
+                    <li id="searchbar_log">
+                        <form className="search_form" name="log" action="log.php" method="get">
+                            <input
+                                id="logsearch"
+                                spellCheck="false"
+                                onFocus={(e) => e.target.value === 'Log' && (e.target.value = '')}
+                                onBlur={(e) => e.target.value === '' && (e.target.value = 'Log')}
+                                defaultValue="Log"
+                                placeholder="Log"
+                                type="text"
+                                name="search"
+                                size="17"
+                            />
+                        </form>
+                    </li>
+                    <li id="searchbar_users">
+                        <form className="search_form" name="users" action="user.php" method="get">
+                            <input type="hidden" name="action" value="search" />
+                            <input
+                                id="userssearch"
+                                spellCheck="false"
+                                onFocus={(e) => e.target.value === 'Users' && (e.target.value = '')}
+                                onBlur={(e) => e.target.value === '' && (e.target.value = 'Users')}
+                                defaultValue="Users"
+                                placeholder="Users"
+                                type="text"
+                                name="search"
+                                size="20"
+                            />
+                        </form>
+                    </li>
+                    </ul>
+            </div>
       </div>
       <div>
         {alerts.map((alert, index) => (
