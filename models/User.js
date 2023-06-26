@@ -1,10 +1,18 @@
 const mongoose = require('mongoose');
 
+const InviteSchema = new mongoose.Schema({
+  email: String,
+  dateSent: Date,
+  redeemed: Boolean
+});
+
+const UserSettingsSchema = new mongoose.Schema({
+  siteOptions: Object,
+  paranoia: Object
+  // ... other settings
+});
+
 const UserSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true
-  },
   username: {
     type: String,
     required: true,
@@ -64,18 +72,6 @@ const UserSchema = new mongoose.Schema({
     default: false
   },
   settings: UserSettingsSchema
-});
-
-const InviteSchema = new mongoose.Schema({
-  email: String,
-  dateSent: Date,
-  redeemed: Boolean
-});
-
-const UserSettingsSchema = new mongoose.Schema({
-  siteOptions: Object,
-  paranoia: Object
-  // ... other settings
 });
 
 module.exports = User = mongoose.model('user', UserSchema);
