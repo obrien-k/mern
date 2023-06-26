@@ -13,7 +13,7 @@ const User = require('../../models/User');
 router.post(
   '/',
   [
-    check('name', 'Name is required')
+    check('username', 'Name is required')
       .not()
       .isEmpty(),
     check('email', 'Please include a valid email').isEmail(),
@@ -29,7 +29,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, email, password } = req.body;
+    const { username, email, password } = req.body;
     try {
       let user = await User.findOne({ email });
 
@@ -45,7 +45,7 @@ router.post(
       });
 
       user = new User({
-        name,
+        username,
         email,
         avatar,
         password
@@ -66,7 +66,7 @@ router.post(
       jwt.sign(
         payload,
         config.get('jwtSecret'),
-        { expiresIn: 360000 },
+        { expiresIn: 3600 },
         (err, token) => {
           if (err) throw err;
           res.json({ token });

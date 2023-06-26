@@ -3,16 +3,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { setAlert } from '../../actions/alert';
+import { registerUser } from '../../actions/register';
 
-const Register = ({ setAlert }) => {
+const Register = ({ setAlert, registerUser }) => {
   const [formData, setFormData] = useState({
-    name: '',
+    username: '',
     email: '',
     password: '',
     password2: ''
   });
 
-  const { name, email, password, password2 } = formData;
+  const { username, email, password, password2 } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -22,7 +23,7 @@ const Register = ({ setAlert }) => {
     if (password !== password2) {
       setAlert('Passwords do not match', 'danger');
     } else {
-      console.log('SUCCESS');
+      registerUser({ username, email, password });
     }
   };
   return (
@@ -35,9 +36,9 @@ const Register = ({ setAlert }) => {
         <div className="form-group">
           <input
             type="text"
-            placeholder="Name"
-            name="name"
-            value={name}
+            placeholder="Username"
+            name="username"
+            value={username}
             onChange={e => onChange(e)}
             required
           />
@@ -52,7 +53,7 @@ const Register = ({ setAlert }) => {
             onChange={e => onChange(e)}
           />
           <small className="form-text">
-            This site uses Gravatar so if you want a profile image, use a
+            This site uses Gravatar! If you want a profile image, use a
             Gravatar email
           </small>
         </div>
@@ -88,10 +89,11 @@ const Register = ({ setAlert }) => {
 };
 
 Register.propTypes = {
-  setAlert: PropTypes.func.isRequired
+  setAlert: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired
 };
 
 export default connect(
   null,
-  { setAlert }
+  { setAlert, registerUser }
 )(Register);

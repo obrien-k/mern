@@ -31,7 +31,6 @@ router.post(
     check('password', 'Password is required').exists()
   ],
   async (req, res) => {
-    console.log(req.body);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -39,7 +38,7 @@ router.post(
 
     const { email, password } = req.body;
     try {
-      let user = await User.findOne({ email });
+      let user = await User.findOne({ email: email.toLowerCase() });
 
       if (!user) {
         return res
@@ -51,7 +50,7 @@ router.post(
       if (!isMatch) {
         return res
           .status(400)
-          .json({ errors: [{ msg: 'Invalid Credentials' }] });
+          .json({ errors: [{ msg: 'Invalid credentials' }] });
       }
 
       const payload = {
@@ -63,7 +62,7 @@ router.post(
       jwt.sign(
         payload,
         config.get('jwtSecret'),
-        { expiresIn: 360000 },
+        { expiresIn: 3600 },
         (err, token) => {
           if (err) throw err;
           res.json({ token });
@@ -75,5 +74,6 @@ router.post(
     }
   }
 );
+
 
 module.exports = router;
