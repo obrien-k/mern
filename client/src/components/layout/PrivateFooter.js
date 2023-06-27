@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Subscriptions from '../toast/Subscriptions';
 
 const PrivateFooter = ({ options, userSessions, scriptStartTime, siteLaunchYear, siteName }) => {
 
@@ -59,7 +60,7 @@ const PrivateFooter = ({ options, userSessions, scriptStartTime, siteLaunchYear,
                 <strong>Load:</strong> <span>{4}</span>
                 <strong>Date:</strong> <span id="site_date">{currentTime.toLocaleDateString()}</span>, <span id="site_time">{currentTime.toLocaleTimeString()}</span>
             </p>
-
+            <Subscriptions />
             {/* Extra divs, for stylesheet developers to add imagery */}
             <div id="extra1"><span></span></div>
             <div id="extra2"><span></span></div>
