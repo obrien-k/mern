@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import AuthPage from './AuthPage';
 import Login from '../auth/Login';
 import PublicLanding from './PublicLanding';
-import '../../styles/layer_cake/style.css'; // Assuming you have this stylesheet file at the same directory level
+import '../../styles/kuro/style.css'; // Assuming you have this stylesheet file at the same directory level
 
 const PublicLayout= ({ pageTitle, children }) => {
     return (

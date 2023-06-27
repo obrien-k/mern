@@ -64,11 +64,11 @@ const UserMenu = ({ user, pageId }) => {
           </ul>
           <ul id="userinfo_stats">
             <li id="stats_seeding">
-              <a href={`/torrents/seeding/${username}`}>Up:</a>
+              <a href={`/communities/seeding/${username}`}>Up:</a>
               <span className="stat" title={formatSize(bytesUploaded)}>{formatSize(bytesUploaded)}</span>
             </li>
             <li id="stats_leeching">
-              <a href={`/torrents/leeching/${username}`}>Down:</a>
+              <a href={`/communities/leeching/${username}`}>Down:</a>
               <span className="stat" title={formatSize(bytesDownloaded)}>{formatSize(bytesDownloaded)}</span>
             </li>
             <li id="stats_ratio">
@@ -90,18 +90,18 @@ const UserMenu = ({ user, pageId }) => {
         </div>
         <div id="searchbars">
                 <ul>
-                    <li id="searchbar_torrents">
-                        <form className="search_form" name="torrents" action="torrents.php" method="get">
+                    <li id="searchbar_communities">
+                        <form className="search_form" name="communities" action="communities.php" method="get">
                             {useAdvancedSearch && (
                                 <input type="hidden" name="action" value="advanced" />
                             )}
                             <input
-                                id="torrentssearch"
+                                id="communitiessearch"
                                 spellCheck="false"
-                                onFocus={(e) => e.target.value === 'Torrents' && (e.target.value = '')}
-                                onBlur={(e) => e.target.value === '' && (e.target.value = 'Torrents')}
-                                defaultValue="Torrents"
-                                placeholder="Torrents"
+                                onFocus={(e) => e.target.value === 'communities' && (e.target.value = '')}
+                                onBlur={(e) => e.target.value === '' && (e.target.value = 'communities')}
+                                defaultValue="Communities"
+                                placeholder="Communities"
                                 type="text"
                                 name={useAdvancedSearch ? 'groupname' : 'searchstr'}
                                 size="17"

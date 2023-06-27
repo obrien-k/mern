@@ -52,7 +52,7 @@ const LoginPage = () => {
         <div className="main">
             <div id="logo">
                 <a href="/">
-                    <img src="/src/static/loginlogo.png" alt="stellar" title="stellar" />
+                    <img src="../../static/logo.png" alt="stellar" title="stellar" />
                 </a>
             </div>
             <div className="auth">
