@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import { Link } from 'react-router-dom';
 
 const UserMenu = ({ user, pageId }) => {
   const { username, bonusPoints, bytesUploaded, bytesDownloaded, requiredRatio, flTokens, hasUnlimitedInvites } = user;
@@ -56,19 +56,19 @@ const UserMenu = ({ user, pageId }) => {
               <a href="/donate">Donate</a>
             </li>
             <li id="nav_forums" className={addClass(pageId, ['forums'], 'active')}>
-              <a href="forums.php">Forums</a>
+              <a href="forums.js">Forums</a>
             </li>
             <li id="nav_irc" className={addClass(pageId, ['chat'], 'active')}>
-              <a href="wiki.php?action=article&name=irc">IRC</a>
+              <a href="wiki.js?action=article&name=irc">IRC</a>
             </li>
           </ul>
           <ul id="userinfo_stats">
             <li id="stats_seeding">
-              <a href={`/torrents/seeding/${username}`}>Up:</a>
+              <a href={`/communities/seeding/${username}`}>Up:</a>
               <span className="stat" title={formatSize(bytesUploaded)}>{formatSize(bytesUploaded)}</span>
             </li>
             <li id="stats_leeching">
-              <a href={`/torrents/leeching/${username}`}>Down:</a>
+              <a href={`/communities/leeching/${username}`}>Down:</a>
               <span className="stat" title={formatSize(bytesDownloaded)}>{formatSize(bytesDownloaded)}</span>
             </li>
             <li id="stats_ratio">
@@ -88,20 +88,55 @@ const UserMenu = ({ user, pageId }) => {
             )}
           </ul>
         </div>
+        <div id="menu">
+          <h4 className="hidden">Site Menu</h4>
+          <ul>
+            <li id="nav_index" className={addClass(pageId, ['index'], 'active')}>
+              <Link to="/index.js">Home</Link>
+            </li>
+            <li id="nav_communities" className={addClass(pageId, ['communities'], 'active')}>
+              <Link to="/communities.js">Communities</Link>
+            </li>
+            <li id="nav_collages" className={addClass(pageId, ['collages'], 'active')}>
+              <Link to="/collages.js">Collages</Link>
+            </li>
+            <li id="nav_requests" className={addClass(pageId, ['requests'], 'active')}>
+              <Link to="/requests.js">Requests</Link>
+            </li>
+            <li id="nav_forums" className={addClass(pageId, ['forums'], 'active')}>
+              <Link to="/forums.js">Forums</Link>
+            </li>
+            <li id="nav_irc" className={addClass(pageId, ['chat'], 'active')}>
+              <Link to="/wiki.js?action=article&name=irc">IRC</Link>
+            </li>
+            <li id="nav_top10" className={addClass(pageId, ['top10'], 'active')}>
+              <Link to="/top10.js">Top 10</Link>
+            </li>
+            <li id="nav_rules" className={addClass(pageId, ['rules'], 'active')}>
+              <Link to="/rules.js">Rules</Link>
+            </li>
+            <li id="nav_wiki" className={addClass(pageId, ['wiki'], 'active')}>
+              <Link to="/wiki.js">Wiki</Link>
+            </li>
+            <li id="nav_staff" className={addClass(pageId, ['staff'], 'active')}>
+              <Link to="/staff.js" title="Staff">Staff</Link>
+            </li>
+          </ul>
+        </div>
         <div id="searchbars">
                 <ul>
-                    <li id="searchbar_torrents">
-                        <form className="search_form" name="torrents" action="torrents.php" method="get">
+                    <li id="searchbar_communities">
+                        <form className="search_form" name="communities" action="communities.js" method="get">
                             {useAdvancedSearch && (
                                 <input type="hidden" name="action" value="advanced" />
                             )}
                             <input
-                                id="torrentssearch"
+                                id="communitiessearch"
                                 spellCheck="false"
-                                onFocus={(e) => e.target.value === 'Torrents' && (e.target.value = '')}
-                                onBlur={(e) => e.target.value === '' && (e.target.value = 'Torrents')}
-                                defaultValue="Torrents"
-                                placeholder="Torrents"
+                                onFocus={(e) => e.target.value === 'communities' && (e.target.value = '')}
+                                onBlur={(e) => e.target.value === '' && (e.target.value = 'communities')}
+                                defaultValue="Communities"
+                                placeholder="Communities"
                                 type="text"
                                 name={useAdvancedSearch ? 'groupname' : 'searchstr'}
                                 size="17"
@@ -109,7 +144,7 @@ const UserMenu = ({ user, pageId }) => {
                         </form>
                     </li>
                     <li id="searchbar_artists">
-                        <form className="search_form" name="artists" action="artist.php" method="get">
+                        <form className="search_form" name="artists" action="artist.js" method="get">
                             <input
                                 id="artistsearch"
                                 spellCheck="false"
@@ -124,7 +159,7 @@ const UserMenu = ({ user, pageId }) => {
                         </form>
                     </li>
                     <li id="searchbar_requests">
-                        <form className="search_form" name="requests" action="requests.php" method="get">
+                        <form className="search_form" name="requests" action="requests.js" method="get">
                             <input
                                 id="requestssearch"
                                 spellCheck="false"
@@ -139,7 +174,7 @@ const UserMenu = ({ user, pageId }) => {
                         </form>
                     </li>
                     <li id="searchbar_forums">
-                        <form className="search_form" name="forums" action="forums.php" method="get">
+                        <form className="search_form" name="forums" action="forums.js" method="get">
                             <input type="hidden" name="action" value="search" />
                             <input
                                 id="forumssearch"
@@ -155,7 +190,7 @@ const UserMenu = ({ user, pageId }) => {
                         </form>
                     </li>
                     <li id="searchbar_log">
-                        <form className="search_form" name="log" action="log.php" method="get">
+                        <form className="search_form" name="log" action="log.js" method="get">
                             <input
                                 id="logsearch"
                                 spellCheck="false"
@@ -170,7 +205,7 @@ const UserMenu = ({ user, pageId }) => {
                         </form>
                     </li>
                     <li id="searchbar_users">
-                        <form className="search_form" name="users" action="user.php" method="get">
+                        <form className="search_form" name="users" action="user.js" method="get">
                             <input type="hidden" name="action" value="search" />
                             <input
                                 id="userssearch"

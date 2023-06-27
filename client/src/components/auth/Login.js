@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../../actions/auth';
 
 const Login = ({ login, isAuthenticated }) => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -29,18 +31,22 @@ const Login = ({ login, isAuthenticated }) => {
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    if (isBanned) {
-      setError(`You are banned from logging in for another ${bannedUntil}.`);
-      return;
-    }
-    login(email, password);
-  };
+    const onSubmit = (e) => {
+      e.preventDefault();
+      if (isBanned) {
+        setError(`You are banned from logging in for another ${bannedUntil}.`);
+        return;
+      }
+      login(email, password);
+    };
+    
+    useEffect(() => {
+      if (isAuthenticated) {
+        navigate('/');
+      }
+    }, [isAuthenticated, navigate]);
 
-  if (isAuthenticated) {
-    return <Redirect to="/dashboard" />;
-  }
+  
 
   return (
     <div className="main">

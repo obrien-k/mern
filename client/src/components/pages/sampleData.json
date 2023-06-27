@@ -1,0 +1,52 @@
+{
+  "stats": {
+    "maximumUsers": 40000,
+    "enabledUsers": 2,
+    "usersActiveToday": 1,
+    "usersActiveTodayPercentage": 50.00,
+    "usersActiveThisWeek": 2,
+    "usersActiveThisWeekPercentage": 100.00,
+    "usersActiveThisMonth": 2,
+    "usersActiveThisMonthPercentage": 100.00,
+    "torrents": 1,
+    "releases": 0,
+    "artists": 0,
+    "perfectFlacs": 0,
+    "collages": 0,
+    "requests": {
+      "total": 0,
+      "filled": 0,
+      "filledPercentage": 0.00
+    },
+    "peers": {
+      "total": 0,
+      "seeders": 0,
+      "leechers": 0,
+      "ratio": "--"
+    }
+  },
+  "polls": {
+    "poll":"poll"
+  },
+  "recommendations": {
+    "recommendation":"thing"
+  },
+  "options": {
+    "disclaimer": "This is a sample disclaimer message."
+  },
+  "userSessions": [
+    {
+      "sessionID": "1",
+      "lastUpdate": "2023-06-26T15:00:00Z",
+      "ip": "192.168.1.1"
+    },
+    {
+      "sessionID": "2",
+      "lastUpdate": "2023-06-26T14:00:00Z",
+      "ip": "192.168.1.2"
+    }
+  ],
+  "scriptStartTime": "2023-06-26T12:00:00Z",
+  "siteLaunchYear": "2023",
+  "siteName": "Stellar"
+}

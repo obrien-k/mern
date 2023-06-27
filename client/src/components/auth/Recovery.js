@@ -65,6 +65,12 @@ const LoginWith2FA = ({ onRecoverySuccess }) => {
   return (
     <div>
       {key ? (
+        <div className="main">
+          <div id="logo">
+            <a href="/">
+              <img src="/src/static/loginlogo.png" alt="stellar" title="stellar" />
+            </a>
+          </div>
         <div>
           <input
             type="password"
@@ -80,7 +86,14 @@ const LoginWith2FA = ({ onRecoverySuccess }) => {
           />
           <button onClick={handleRecoveryStep2}>Submit</button>
         </div>
+        </div>
       ) : twoFARequired ? (
+        <div className="main">
+        <div id="logo">
+          <a href="/">
+            <img src="/src/static/loginlogo.png" alt="stellar" title="stellar" />
+          </a>
+        </div>
         <div>
           <input
             type="text"
@@ -89,6 +102,7 @@ const LoginWith2FA = ({ onRecoverySuccess }) => {
             placeholder="2FA Code"
           />
           <button onClick={handleSubmit}>Submit 2FA Code</button>
+        </div>
         </div>
       ) : (
         <div>
@@ -134,7 +148,7 @@ const TwoFactorRecovery = ({ onTwoFactorRecoverySuccess }) => {
   );
 };
 
-const AuthPage = () => {
+const RecoveryPage = () => {
   const [recoverySuccess, setRecoverySuccess] = useState(false);
   const [twoFactorRecoverySuccess, setTwoFactorRecoverySuccess] = useState(false);
 
@@ -154,4 +168,4 @@ const AuthPage = () => {
   );
 };
 
-export default AuthPage;
+export default RecoveryPage;

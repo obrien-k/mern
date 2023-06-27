@@ -1,18 +1,20 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
-import AuthPage from './AuthPage';
+import { Route, Routes } from 'react-router-dom';
+import RecoveryPage from '../auth/Recovery';
 import Login from '../auth/Login';
+import Register from '../auth/Register';
 import PublicLanding from './PublicLanding';
-import '../../styles/layer_cake/style.css'; // Assuming you have this stylesheet file at the same directory level
+import '../../styles/public/style.css'; 
 
 const PublicLayout= ({ pageTitle, children }) => {
     return (
         <div>
-        <Switch>
-          <Route exact path="/" component={PublicLanding} />
-          <Route path="/auth" component={AuthPage} />
-          <Route path="/login" component={Login} />
-        </Switch>
+        <Routes>
+          <Route exact path="/" element={<PublicLanding/>} />
+          <Route path="/recovery" element={<RecoveryPage/>} />
+          <Route path="/login" element={<Login/>} />
+          <Route path="/register" element={<Register/>} />
+        </Routes>
       </div>
     );
 };
