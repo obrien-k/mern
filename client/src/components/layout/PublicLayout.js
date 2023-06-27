@@ -1,9 +1,10 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import AuthPage from './AuthPage';
+import AuthPage from '../auth/AuthPage';
 import Login from '../auth/Login';
+import Register from '../auth/Register';
 import PublicLanding from './PublicLanding';
-import '../../styles/kuro/style.css'; // Assuming you have this stylesheet file at the same directory level
+import '../../styles/kuro/style.css'; 
 
 const PublicLayout= ({ pageTitle, children }) => {
     return (
@@ -12,6 +13,7 @@ const PublicLayout= ({ pageTitle, children }) => {
           <Route exact path="/" element={<PublicLanding/>} />
           <Route path="/auth" element={<AuthPage/>} />
           <Route path="/login" element={<Login/>} />
+          <Route path="/register" element={<Register/>} />
         </Routes>
       </div>
     );
