@@ -1,49 +1,56 @@
-import React, { Fragment } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import React from 'react';
+import { Provider, useSelector } from 'react-redux';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
 import Navbar from './components/layout/Navbar';
 import Landing from './components/layout/Landing';
-import Register from './components/auth/Register';
 import Login from './components/auth/Login';
+import Register from './components/auth/Register';
 import Alert from './components/layout/Alert';
 import UserMenu from './components/layout/UserMenu';
 import PublicLayout from './components/layout/PublicLayout';
-// Redux
-import { Provider } from 'react-redux';
+
 import store from './store';
 
+const AuthenticatedApp = () => (
+  <React.Fragment>
+    <Navbar />
+    <UserMenu user={'admin'} pageId={1} />
+    <section className="container">
+      <Alert />
+      <Routes>
+        <Route path="/" element={<Landing />} />
+      </Routes>
+    </section>
+  </React.Fragment>
+);
 
- import './styles/layer_cake/style.css';
-import './App.css';
+const PublicApp = () => (
+  <PublicLayout pageTitle="Welcome to My Site">
+    <section className="container">
+      <Alert />
+      <Routes>
+        <Route path="/" element={<PublicLayout />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </section>
+  </PublicLayout>
+);
+
+const AuthenticationCheck = () => {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  return isAuthenticated ? <AuthenticatedApp /> : <PublicApp />;
+};
+
 const App = () => {
-  const isAuthenticated = false; // You can dynamically set this flag based on user login status
-
-return(
-  <Provider store={store}>
-    <Router>
-      {isAuthenticated ? (
-      <Fragment>
-        <Navbar />
-        <UserMenu user={'admin'} pageId={1}/>
-        <Route exact path="/" component={Landing} />
-        <section className="container">
-          <Alert />
-          <Switch>
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
-          </Switch>
-        </section>
-      </Fragment>) : (<PublicLayout pageTitle="Welcome to My Site">
-            <Route exact path="/" component={PublicLayout} />
-            <section className="container">
-              <Alert />
-              <Switch>
-                <Route exact path="/register" component={Register} />
-                <Route exact path="/login" component={Login} />
-              </Switch>
-            </section>
-          </PublicLayout>)}
-    </Router>
-  </Provider>
-)};
+  return (
+    <Provider store={store}>
+      <Router>
+        <AuthenticationCheck />
+      </Router>
+    </Provider>
+  );
+};
 
 export default App;
