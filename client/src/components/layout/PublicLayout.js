@@ -1,17 +1,17 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import AuthPage from '../auth/AuthPage';
+import RecoveryPage from '../auth/Recovery';
 import Login from '../auth/Login';
 import Register from '../auth/Register';
 import PublicLanding from './PublicLanding';
-import '../../styles/kuro/style.css'; 
+import '../../styles/layer_cake/style.css'; 
 
 const PublicLayout= ({ pageTitle, children }) => {
     return (
         <div>
         <Routes>
           <Route exact path="/" element={<PublicLanding/>} />
-          <Route path="/auth" element={<AuthPage/>} />
+          <Route path="/recovery" element={<RecoveryPage/>} />
           <Route path="/login" element={<Login/>} />
           <Route path="/register" element={<Register/>} />
         </Routes>

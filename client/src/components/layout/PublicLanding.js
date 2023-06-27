@@ -1,5 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import Login from '../auth/Login';
+import Register from '../auth/Register';
+import RecoveryPage from '../auth/Recovery';
 
 const PublicLanding = () => {
   const SHOW_PUBLIC_INDEX = true; // Replace with your logic
@@ -7,8 +10,13 @@ const PublicLanding = () => {
   const OPEN_EXTERNAL_REFERRALS = true; // Replace with your logic
   const RECOVERY = true; // Replace with your logic
 
-  if (!SHOW_PUBLIC_INDEX) {
-    window.location.href = 'login.php';
+  const [showContent, setShowContent] = useState(SHOW_PUBLIC_INDEX);
+
+  // Get the current location
+  const location = useLocation();
+
+  if (!showContent) {
+    window.location.href = '/login'; // Redirect to the login page
     return null;
   }
 
@@ -57,6 +65,13 @@ const PublicLanding = () => {
           )}
         </span>
       </div>
+
+      {/* Render the login, register, and recovery components */}
+      <Routes location={location}>
+        <Route path="/login" component={<Login />} />
+        <Route path="/register" component={<Register />} />
+        <Route path="/recovery" component={<RecoveryPage />} />
+      </Routes>
     </>
   );
 };
