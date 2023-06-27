@@ -6,7 +6,8 @@ import PrivateHomepage from './components/pages/PrivateHomepage';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import Alert from './components/layout/Alert';
-import UserMenu from './components/layout/UserMenu';
+
+import PrivateLayout from './components/layout/PrivateLayout';
 import PublicLayout from './components/layout/PublicLayout';
 
 import store from './store';
@@ -15,7 +16,7 @@ import PublicLanding from './components/layout/PublicLanding';
 const AuthenticatedApp = () => (
   <Provider store={store}>
     <React.Fragment>
-      <UserMenu user={'admin'} pageId={1} />
+      <PrivateLayout pageTitle="Stellar">
       <section className="container">
         <Alert />
         <Routes>
@@ -24,6 +25,7 @@ const AuthenticatedApp = () => (
           <Route path="/logout" element={<PublicLanding />} />
         </Routes>
       </section>
+      </PrivateLayout>
     </React.Fragment>
   </Provider>
 );

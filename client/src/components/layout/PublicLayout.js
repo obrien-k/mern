@@ -4,7 +4,7 @@ import RecoveryPage from '../auth/Recovery';
 import Login from '../auth/Login';
 import Register from '../auth/Register';
 import PublicLanding from './PublicLanding';
-import '../../styles/layer_cake/style.css'; 
+import '../../styles/public/style.css'; 
 
 const PublicLayout= ({ pageTitle, children }) => {
     return (
