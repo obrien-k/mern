@@ -4,6 +4,9 @@ import { setAlert } from '../../actions/alert';
 import { register } from '../../actions/auth';
 import axios from 'axios';
 
+const openRegistration = process.env.REACT_APP_OPEN_REGISTRATION === 'true';
+const closeInvite = process.env.REACT_APP_CLOSE_INVITE === 'true';
+
 const RegistrationForm = ({ setAlert, register }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -38,7 +41,7 @@ const RegistrationForm = ({ setAlert, register }) => {
   };
 
   const renderForm = () => {
-    if (!invite || (invite && inviteExists)) {
+    if (openRegistration || (invite && inviteExists)) {
       return (
         <>
           <label>
@@ -66,10 +69,21 @@ const RegistrationForm = ({ setAlert, register }) => {
           <button type="submit">Register</button>
         </>
       );
-    } else {
+    } 
+    if(openRegistration===false && invite && !inviteExists) {
       return (
         <p>Invite does not exist.</p>
       );
+    }
+    if(openRegistration===false && closeInvite === true) {
+      return (
+        <p>Registration is closed.</p>
+      );
+    }
+    else {
+      return(
+        <p>Tell admin they forgot an edge case.</p>
+      )
     }
   };
 

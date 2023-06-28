@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 
-import ReferralForm from '../auth/ReferralForm'; // update to Inviteform
+import InviteForm from '../profile/invite/InviteForm'; // update to Inviteform
 import PrivateHomepage from '../pages/PrivateHomepage';
 
 const UserMenu = ({ user, pageId }) => {
@@ -236,7 +236,7 @@ const UserMenu = ({ user, pageId }) => {
       </div>
       <Routes location={window.location}>
         <Route path="/" element={<PrivateHomepage/>} />
-        <Route path="/invite" element={<ReferralForm/>} />
+        <Route path="/invite" element={<InviteForm/>} />
       </Routes>
     </div>
   );
