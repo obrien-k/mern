@@ -1,7 +1,15 @@
 const express = require('express');
 const connectDB = require('./config/db');
+//const session = require('express-session');
 const app = express();
 require('dotenv').config()
+
+/*app.use(session({
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // set secure to true if using HTTPS
+}));*/
 
 const cors = require('cors');
 

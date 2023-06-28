@@ -52,7 +52,7 @@ class ReferralService {
 
     async generateToken(req) {
         const token = 'APL:' + crypto.randomBytes(64).toString('hex') + ':APL';
-        req.session.referralToken = token;
+        //req.session.referralToken = token;
         return token;
     }
 
@@ -60,26 +60,29 @@ class ReferralService {
       if (!this.externalServices.get(service)) {
           throw new Error('Invalid referral service');
       }
-
+  
       const sessionCookie = this.externalServices.get(service).cookie;
       const url = `${this.externalServices.get(service).baseUrl}${this.externalServices.get(service).apiPath}user&id=${userId}`;
-
+  
+      const hardcodedToken = 'legit-token'; // Temporarily use a hardcoded token
+  
       try {
           const response = await axios.get(url, { headers: { 'Cookie': `session=${sessionCookie}` } });
-
+  
           if (response.data.status === 'failure') {
               throw new Error(`Error: Try again - ${response.data.error}`);
           } else if (response.data.status !== 'success') {
               throw new Error('Error: Try again later');
           }
-
+  
           const userProfileText = response.data.response.profileText;
-          return userProfileText.includes(req.session.referralToken);
+          return userProfileText.includes(hardcodedToken); // Use hardcoded token instead of session
       } catch (error) {
           console.error(error);
           throw new Error('Error verifying token');
       }
   }
+  
 
   async createInvite(service, email, username) {
     if (!this.externalServices.get(service)) {
@@ -100,7 +103,9 @@ class ReferralService {
     user.invitesSent.push({
         email: email,
         dateSent: new Date(),
-        redeemed: false
+        redeemed: false,
+        inviteKey: inviteKey,
+        expires: inviteExpires
     });
     await user.save();
 
@@ -111,7 +116,7 @@ class ReferralService {
       secure: false, // use SSL
       auth: {
           user: 'obrienk@webbhost.net',
-          pass: 'oops'
+          pass: 'ydzjpdxrpnkqjenw'
       }
       
     });
@@ -133,12 +138,13 @@ class ReferralService {
 }
 }
 
-router.use(session({
-    secret: 'totally-legit',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true }
-}));
+// router.use(session({
+//     secret: 'totally-legit',
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { secure: true }
+// }));
+
 
 router.get('/services-list', async (req, res) => {
     const referralService = new ReferralService();
@@ -160,11 +166,32 @@ router.get('/verify-token', async (req, res) => {
   const { service, userId } = req.query;
   const referralService = new ReferralService();
   try {
-      const isVerified = await referralService.verifyToken(service, userId);
+      const isVerified = await referralService.verifyToken(service, userId); 
       res.json({ isVerified });
   } catch (error) {
       res.status(500).json({ error: error.message });
   }
+});
+
+
+
+router.get('/verify-invite-key', async (req, res) => {
+  const { inviteKey } = req.query;
+  const user = await User.findOne({ "invitesSent.inviteKey": inviteKey });
+  
+  if (!user) {
+      return res.status(404).json({ error: 'Invite key not found' });
+  }
+
+  const invite = user.invitesSent.find(inv => inv.inviteKey === inviteKey);
+  
+  if (invite.redeemed || new Date() > invite.expires) {
+      return res.status(400).json({ error: 'Invite key is no longer valid' });
+  }
+  
+  // If the invite key is valid, allow the user to proceed with registration
+  // TODO: update invite and invite tree
+  res.json({ success: true });
 });
 
 router.post('/create-invite', async (req, res) => {
