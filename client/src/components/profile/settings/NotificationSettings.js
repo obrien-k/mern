@@ -29,20 +29,6 @@ const NotificationSettings = () => {
     toast.success("Test push notification");
   };
 
-  const renderPushSettings = () => {
-    return (
-      <tr>
-        <td className="label"><strong>Push notifications</strong></td>
-        <td>
-          <select name="pushservice" id="pushservice" onChange={handlePushServiceChange}>
-            {/* Map through push services */}
-          </select>
-          {/* Other settings */}
-        </td>
-      </tr>
-    );
-  };
-
   return (
     <div>
       <table>
@@ -70,14 +56,13 @@ const NotificationSettings = () => {
                   <label htmlFor="deviceId">Device ID</label>
                   <select value={deviceId} onChange={handleDeviceIdChange}>
                     <option value="">Select Device</option>
-                    {/* Populate this select with actual device IDs */}
+                    {/* TODO Populate actual device IDs */}
                   </select>
                   <button onClick={testPush}>Test push</button>
                 </div>
               )}
             </td>
           </tr>
-          {/* Add other settings (News, Blog, Inbox messages, etc) here */}
         </tbody>
       </table>
       <ToastContainer />

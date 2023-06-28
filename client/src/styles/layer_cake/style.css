@@ -55,7 +55,7 @@ html {
 }
 
 body {
-  background-color: #E2E2E2;
+  background-color: #ded7d1;
   color: #000;
   font-family: tahoma, helvetica, sans-serif;
   font-size: 8pt;
@@ -156,7 +156,7 @@ ul.thin li {
 /* Layout (Every page) */
 
 #header {
-  background: #CCC;
+  background: #DED7D1;
   padding: 0 0 0 0;
   width: 100%;
 }
@@ -209,7 +209,7 @@ ul.thin li {
 }
 
 #menu ul li a {
-  color: #ccc;
+  color: #DED7D1;
   padding: 0.6em 1.1%;
 }
 
