@@ -20,7 +20,7 @@ const AuthenticatedApp = () => (
       <section className="container">
         <Alert />
         <Routes>
-          <Route path="/" element={<PrivateHomepage />} />
+          <Route path="/*" element={<PrivateHomepage />} />
           <Route path="/login" element={<PrivateHomepage />} />
           <Route path="/logout" element={<PublicLanding />} />
         </Routes>
@@ -35,7 +35,7 @@ const PublicApp = () => (
       <section className="container">
         <Alert />
         <Routes>
-          <Route path="/" element={<PublicLayout />} />
+          <Route path="/*" element={<PublicLayout />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
         </Routes>

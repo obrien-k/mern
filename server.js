@@ -3,6 +3,10 @@ const connectDB = require('./config/db');
 const app = express();
 require('dotenv').config()
 
+const cors = require('cors');
+
+app.use(cors());
+
 // Connect Database
 connectDB();
 //
@@ -18,6 +22,7 @@ app.use('/api/profile', require('./routes/api/profile'));
 app.use('/api/posts', require('./routes/api/posts'));
 app.use('/api/announcements', require('./routes/api/announcements'));
 app.use('/api/subscriptions', require('./routes/api/subscriptions'));
+app.use('/api/services/referral', require('./routes/api/services/referral'));
 
 const PORT = process.env.PORT || 5000;
 

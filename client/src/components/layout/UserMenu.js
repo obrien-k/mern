@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Route, Routes, useLocation } from 'react-router-dom';
+
+import InviteForm from '../profile/invite/InviteForm';
+import PrivateHomepage from '../pages/PrivateHomepage';
 
 const UserMenu = ({ user, pageId }) => {
   const { username, bonusPoints, bytesUploaded, bytesDownloaded, requiredRatio, flTokens, hasUnlimitedInvites } = user;
@@ -50,7 +53,7 @@ const UserMenu = ({ user, pageId }) => {
               <a href="/bonus" title={`Bonus (${bonusPoints})`}>Bonus ({bonusPoints})</a>
             </li>
             <li id="nav_invite">
-              <a href="/invite">Invite</a>
+              <Link to="/invite">Invite</Link>
             </li>
             <li id="nav_donate">
               <a href="/donate">Donate</a>
@@ -231,6 +234,10 @@ const UserMenu = ({ user, pageId }) => {
           <div key={index} className="modbar-item">{item}</div>
         ))}
       </div>
+      <Routes location={window.location}>
+        <Route path="/" element={<PrivateHomepage/>} />
+        <Route path="/invite" element={<InviteForm/>} />
+      </Routes>
     </div>
   );
 };
