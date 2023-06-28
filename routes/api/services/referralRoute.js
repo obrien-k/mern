@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const ReferralService = require('./referralService');
 const User = require('../../../models/User');
+const Invite = require('../../../models/profile/invite'); // idk why it won't let me capitalize i in Invite
 require('dotenv').config('../../.env');
 
 // Create an instance of ReferralService
@@ -38,12 +39,11 @@ router.get('/verify-token', async (req, res) => {
 router.get('/verify-invite-key', async (req, res) => {
   const { inviteKey } = req.query;
   try {
-    const user = await User.findOne({ 'invitesSent.inviteKey': inviteKey });
-    if (!user) {
+    const invite = await Invite.findOne({ InviteKey: inviteKey });
+    if (!invite) {
       return res.status(404).json({ error: 'Invite key not found' });
     }
-    const invite = user.invitesSent.find((inv) => inv.inviteKey === inviteKey);
-    if (invite.redeemed || new Date() > invite.expires) {
+    if (new Date() > invite.Expires) {
       return res.status(400).json({ error: 'Invite key is no longer valid' });
     }
     res.json({ success: true });

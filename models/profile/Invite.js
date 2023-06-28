@@ -3,9 +3,9 @@ const { Schema } = mongoose;
 
 const inviteSchema = new Schema({
   InviterID: {
-    type: Number,
-    required: true,
-    default: 0
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
   },
   InviteKey: {
     type: String,
@@ -18,7 +18,7 @@ const inviteSchema = new Schema({
   Expires: {
     type: Date,
     required: true,
-    default: '0000-00-00 00:00:00'
+    default: () => new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days from now
   },
   Reason: {
     type: String,

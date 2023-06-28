@@ -22,7 +22,8 @@ class ReferralService {
   }
 
   async canInviteUser(userID) {
-    return true;
+
+ return true;
     /* force pass 
     const user = await User.findById(userID);
     if (!user) {
@@ -46,8 +47,11 @@ class ReferralService {
     if (typeof email !== 'string') {
       throw new Error('Invalid email parameter.');
     }
-    await this.canInviteUser(userID);
-
+    try {
+      await this.canInviteUser(userID);
+    } catch (error) {
+      throw new Error('Failed to verify user invitation privileges.');
+    }
     // MultiInvite
     const emails = email.includes('|') ? email.split('|') : [email];
 
@@ -66,43 +70,54 @@ class ReferralService {
         throw new Error('User not found');
       }
 */
-      const existingInvite = await Invite.findOne({
-        InviterID: userID,
-        Email: { $regex: `^${curEmail}$`, $options: 'i' },
-      });
-      if (existingInvite) {
-        throw new Error('You already have a pending invite to that address!');
+      try {
+        const existingInvite = await Invite.findOne({
+          InviterID: objectId,
+          Email: { $regex: `^${curEmail}$`, $options: 'i' },
+        });
+
+        if (existingInvite) {
+          throw new Error('You already have a pending invite to that address!');
+        }
+      } catch (error) {
+        throw new Error('Error querying for existing invites.');
       }
 
       const inviteKey = crypto.randomBytes(16).toString('hex');
       const inviteExpires = Date.now() + 3 * 24 * 60 * 60 * 1000; // 3 days
 
-      // Save invite to the database
-      const invite = await Invite.create({
-        InviterID: userID,
-        InviteKey: inviteKey,
-        Email: curEmail,
-        Expires: inviteExpires,
-        Reason: reason,
-      });
-      
+      let invite;
+      try {
+        // Save invite to the database
+        invite = await Invite.create({
+          InviterID: userID,
+          InviteKey: inviteKey,
+          Email: curEmail,
+          Expires: inviteExpires,
+          Reason: reason,
+        });
+      } catch (error) {
+        throw new Error('Failed to create invite in database.');
+      }
+  
       // Associate the invite with the user
-      const user = await User.findById(userID);
-      user.invitesSent.push(invite._id); // Associating the invite
-      if (!user.check_perms('site_send_unlimited_invites')) {
-          user.Invites -= 1;
-      }
-      await user.save();
-      
-
-      if (!user.check_perms('site_send_unlimited_invites')) {
-        user.Invites -= 1;
+      try {
+        const user = await User.findById(userID);
+        user.totalInvites -= 1;
+        user.invitesSent.push(invite._id);
         await user.save();
-        // Update cache if necessary
+        // Uncomment when check_perms method is implemented
+        // if (!user.check_perms('site_send_unlimited_invites')) {
+        //     user.Invites -= 1;
+        // }
+        await user.save();
+      } catch (error) {
+        throw new Error('Failed to associate invite with user.');
       }
 
-      const siteName = 'SITE_NAME'; // Replace with your actual site name
-      const siteURL = 'SITE_URL'; // Replace with your actual site URL
+
+      const siteName = 'Stellar'; // Replace with config
+      const siteURL = 'https://stellargra.ph'; // Replace with config
 
       const message = `
         The user ${username} has invited you to join ${siteName} and has specified this address (${curEmail}) as your email address. If you do not know this person, please ignore this email, and do not reply.
@@ -127,13 +142,13 @@ class ReferralService {
         port: 25,
         secure: false, // use SSL
         auth: {
-          user: 'obrienk@webbhost.net',
-          pass: 'ydzjpdxrpnkqjenw',
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASSWORD,
         },
       });
 
       const mailOptions = {
-        from: 'obrienk@webbhost.net',
+        from: process.env.EMAIL_USER,
         to: curEmail,
         subject: `You have been invited to ${siteName}`,
         text: message,
@@ -143,6 +158,7 @@ class ReferralService {
         await transporter.sendMail(mailOptions);
       } catch (error) {
         console.error('Error sending email: ', error);
+        throw new Error('Failed to send the invitation email.');
       }
     }
   }

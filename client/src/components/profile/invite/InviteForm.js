@@ -5,21 +5,27 @@ const InviteForm = () => {
   const [email, setEmail] = useState('');
   const [reason, setReason] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
   
+    // TODO dynamic load
     const username = 'admin';
     const service = 'WHATCD';
   
+    setErrorMessage(''); 
+    setSuccessMessage(''); 
+  
     try {
       await axios.post('/api/services/referral/create-invite', { service, email, username, reason });
-      // Invitation created successfully, TODO redirect  show a success message here
-      console.log('SUCCESS');
+      
+      setSuccessMessage('Invitation sent successfully.');
     } catch (error) {
-      setErrorMessage(error.response.data.Message || 'An error occurred while creating the invite.');
+      setErrorMessage(error.response?.data?.Message || 'An error occurred while creating the invite.');
     }
   };
+  
   
 
   return (
@@ -61,6 +67,7 @@ const InviteForm = () => {
               <input type="text" name="reason" value={reason} onChange={(e) => setReason(e.target.value)} size="60" maxLength="255" />
             </div>
           </div>
+          {successMessage && <div className="success">{successMessage}</div>}
           {errorMessage && <div className="error">{errorMessage}</div>}
         </form>
       </div>
