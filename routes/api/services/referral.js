@@ -6,7 +6,7 @@ const crypto = require('crypto');
 const NodeCache = require('node-cache');
 const nodemailer = require('nodemailer');
 const User = require('../../../models/User');
-require('dotenv').config()
+require('dotenv').config('../../.env')
 
 class ReferralService {
     constructor() {
@@ -111,7 +111,7 @@ class ReferralService {
       secure: false, // use SSL
       auth: {
           user: 'obrienk@webbhost.net',
-          pass: 'ydzjpdxrpnkqjenw'
+          pass: 'oops'
       }
       
     });
