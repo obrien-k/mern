@@ -143,6 +143,81 @@ router.put(
   }
 );
 
+// @route   POST api/thread/edit
+// @desc    Edit a thread
+// @access  Private (Moderators or auto-transitioning)
+router.post(
+  '/edit',
+  [
+    auth,
+    [
+      check('threadId', 'Thread ID is required')
+        .not()
+        .isEmpty(),
+      check('title', 'Title is required')
+        .not()
+        .isEmpty(),
+      check('forumId', 'Forum ID is required')
+        .not()
+        .isEmpty(),
+      check('ranking', 'Ranking must be a non-negative number')
+        .isInt({ min: 0 })
+    ]
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    try {
+      const { threadId, title, forumId, ranking, locked, sticky } = req.body;
+
+      // Check if the user has moderation permissions or is auto transitioning -- we can prob remove transition check
+      if (!checkPerms(req.user, 'site_moderate_forums') && !req.body.transition) {
+        return res.status(403).json({ msg: 'Not Authorized' });
+      }
+
+      // Find the thread
+      const thread = await Thread.findById(threadId);
+
+      if (!thread) {
+        return res.status(404).json({ msg: 'Thread not found' });
+      }
+
+      // Check the write permissions for the forum
+      const forum = await Forum.findById(forumId);
+      if (forum && forum.minClassWrite > req.user.class) {
+        return res.status(403).json({ msg: 'Not Authorized' });
+      }
+
+      // Edit the thread
+      thread.title = title;
+      thread.forum = forumId;
+      thread.ranking = ranking;
+
+      if (typeof locked !== 'undefined') {
+        thread.is_locked = locked;
+      }
+
+      if (typeof sticky !== 'undefined') {
+        thread.is_sticky = sticky;
+      }
+
+      // Save the edited thread
+      await thread.save();
+
+      res.json(thread);
+    } catch (err) {
+      console.error(err.message);
+      if (err.kind === 'ObjectId') {
+        return res.status(404).json({ msg: 'Thread not found' });
+      }
+      res.status(500).send('Server Error');
+    }
+  }
+);
+
 // @route   DELETE /threads/:id/notes/:noteId
 // @desc    Delete a note from a thread
 // @access  Private

@@ -1,37 +1,44 @@
 const express = require('express');
 const cors = require('cors');
 const router = express.Router();
+const User = require('../../../models/User');
 const UserRank = require('../../../models/UserRank');
 
 router.use(cors()); // Use the CORS middleware
 
-const modBar = [];
+// Utility function to check permissions
+async function hasPermission(userId, requiredPermission) {
+  try {
+    // Find the user in the database and populate the userRank field
+    const user = await User.findById(userId).populate('userRank');
+    
+    // Check if user is found and if user's rank has the required permissions
+    return !!(user && user.userRank && user.userRank.field3[requiredPermission]);
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}
 
 // Middleware to check permissions
-function checkPerms(requiredRank) {
+function checkPerms(requiredPermission) {
   return async (req, res, next) => {
-    try {
-      const user = await UserRank.findOne({ userId: req.userId });
-      if (user && user.rank >= requiredRank) {
-        next();
-      } else {
-        res.status(403).send('Permission Denied');
-      }
-    } catch (error) {
-      res.status(500).send('Internal Server Error');
+    const userId = req.headers.userId; // Assuming the userId is passed as a header
+    if (await hasPermission(userId, requiredPermission)) {
+      next();
+    } else {
+      res.status(403).send('Permission Denied');
     }
   };
 }
 
-
 // Toolbox endpoint
 router.get('/', async (req, res) => {
-  
-  const userId = req.userId; // Get userId from request
+  const userId = req.headers.userId; // Get userId from request header
   const modBar = [];
 
   // Check if user has permission for Staff PMs
-  if (await checkPerms(UserRank.FORUM_MOD, userId)) {
+  if (await hasPermission(userId, 'forums_polls_create')) {
     const numStaffPMs = 1; // Implement logic to retrieve the number of staff PMs
     if (numStaffPMs > 0) {
       const staffPMLink = `<a href="staffpm.js">${numStaffPMs} Staff PMs</a>`;
@@ -71,21 +78,21 @@ router.get('/', async (req, res) => {
 });
 
 // Payments endpoint
-router.get('/payments', checkPerms(UserRank.ADMIN), (req, res) => {
+router.get('/payments', checkPerms('admin_permission_key'), (req, res) => { // Change 'admin_permission_key' to the correct permission key
   // Implement the payments due functionality
   // ...
   res.send('Payments due for Admins');
 });
 
 // DB key endpoint
-router.get('/db_key', checkPerms(UserRank.ADMIN), (req, res) => {
+router.get('/db_key', checkPerms('admin_permission_key'), (req, res) => { // Change 'admin_permission_key' to the correct permission key
   // Implement the DB key status functionality
   // ...
   res.send('DB key status for Admins');
 });
 
 // Periodic tasks endpoint
-router.get('/periodic_tasks', checkPerms(UserRank.ADMIN), (req, res) => {
+router.get('/periodic_tasks', checkPerms('admin_permission_key'), (req, res) => { // Change 'admin_permission_key' to the correct permission key
   // Implement the periodic tasks functionality
   // ...
   res.send('Periodic tasks for Admins');

@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const CommentEditTmpSchema = new Schema({
     page: {
         type: String,
-        enum: ['forums', 'artist', 'collages', 'requests', 'torrents'],
+        enum: ['forums', 'artist', 'collages', 'requests', 'communities'],
         default: null
     },
     post_id: {

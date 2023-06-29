@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadUser, logout } from '../../actions/auth';
-
-import InviteForm from '../profile/invite/InviteForm'; 
-import PrivateHomepage from '../pages/PrivateHomepage';
 
 const UserMenu = ({ pageId }) => {
   const dispatch = useDispatch();

@@ -1,5 +1,3 @@
-
-
 db.permissions.insertMany([  {
   _id: 2,
   field1: 100,

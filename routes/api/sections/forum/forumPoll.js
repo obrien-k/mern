@@ -1,14 +1,13 @@
-// routes/forumPolls.js
-
 const express = require('express');
 const router = express.Router();
-const auth = require('../../middleware/auth');
-const ForumPoll = require('../../models/ForumPoll');
+const auth = require('../../../../middleware/auth');
+const checkPerms = require('../../../../middleware/permissions');
+const ForumPoll = require('../../../../models/forum/ForumPoll');
 
 // @route   POST api/forumPolls
 // @desc    Create a new poll
 // @access  Private
-router.post('/', auth, async (req, res) => {
+router.post('/', [auth, checkPerms('create_poll')], async (req, res) => {
   try {
     const { TopicID, Question, Answers, Featured } = req.body;
 

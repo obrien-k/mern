@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
-const auth = require('../../middleware/auth');
+const checkPerms = require('../../../../middleware/permissions'); // need to implement for this route
+const auth = require('../../../../middleware/auth');
 
-const ForumPost = require('../../models/ForumPost');
-const User = require('../../models/User');
+const ForumPost = require('../../../../models/forum/ForumPost');
+const User = require('../../../../models/User');
 
-// @route   POST api/forumpost
+// @route   POST api/forum/post
 // @desc    Create a forum post
 // @access  Private
 router.post(
@@ -47,7 +48,7 @@ router.post(
   }
 );
 
-// @route   GET api/forumpost
+// @route   GET api/forum/post
 // @desc    Get all forum posts
 // @access  Private
 router.get('/', auth, async (req, res) => {
@@ -60,7 +61,7 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-// @route   GET api/forumpost/:id
+// @route   GET api/forum/post/:id
 // @desc    Get forum post by ID
 // @access  Private
 router.get('/:id', auth, async (req, res) => {
@@ -80,10 +81,10 @@ router.get('/:id', auth, async (req, res) => {
   }
 });
 
-// @route   DELETE api/forumpost/:id
+// @route   DELETE api/forum/post/:id
 // @desc    Delete a forum post
 // @access  Private
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', [auth, checkPerms('delete_forum_post')], async (req, res) => {
   try {
     const forumPost = await ForumPost.findById(req.params.id);
 
