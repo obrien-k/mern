@@ -1,11 +1,12 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';import '../../styles/layer_cake/style.css'; 
-import UserMenu from './UserMenu';
+import { Route, Routes } from 'react-router-dom';
+import '../../styles/layer_cake/style.css'; 
+import PrivateHeader from './PrivateHeader';
 
 const PrivateLayout= ({ pageTitle, children }) => {
   return (
       <div>
-      <UserMenu pageId={1} />
+      <PrivateHeader pageId={1} />
       {children}
     </div>
   );

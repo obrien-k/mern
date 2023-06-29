@@ -528,7 +528,7 @@ ul.poll li.graph {
 	padding-left: 20px;
 }
 
-/* Layout (Torrents page) */
+/* Layout (Communities page) */
 /* We're going to opt for the category icon method for now, tags_* is also available */
 .cats_applications { width: 28px; height: 28px; background: url('images/apps.png') no-repeat center center; }
 .cats_audiobooks { width: 28px; height: 28px; background: url('images/audiobook.png') no-repeat center center; }

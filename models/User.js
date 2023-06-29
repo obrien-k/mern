@@ -25,10 +25,9 @@ const UserSchema = new mongoose.Schema({
   avatar: {
     type: String
   },
-  userRole: {
-    type: String,
-    enum: ['User', 'Member', 'Power User', 'VIP', 'Moderator', 'SysOp'],
-    default: 'User'
+  userRank: {
+    type: Schema.Types.ObjectId,
+    ref: 'UserRank',
   },
   inviteCount: {
     type: Number,
@@ -69,7 +68,15 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  settings: UserSettingsSchema
+  canLeech: { type: Boolean, default: true },
+  adminComment: String,
+  banDate: Date,
+  banReason: Number,
+  ratioWatchDownload: Number,
+  warned: Date,
+  warnedTimes: { type: Number, default: 0 },
+  communityPass: String,
+  settings: UserSettingsSchema,
 });
 
 module.exports = User = mongoose.model('user', UserSchema);

@@ -9,16 +9,11 @@ import PrivateHomepage from '../pages/PrivateHomepage';
 const UserMenu = ({ pageId }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-console.log(user);
-  // Simulating server-side array logic
-  const [alerts, setAlerts] = useState([]);
-  const [modBar, setModBar] = useState([]);
+
   const [useAdvancedSearch, setUseAdvancedSearch] = useState(false);
 
   useEffect(() => {
     // Populate the arrays with data fetched from an API.
-    setAlerts(['New staff blog post!']);
-    setModBar(['Toolbox']);
     const loggedUserSearchType = true; 
     setUseAdvancedSearch(loggedUserSearchType);
   }, []);
@@ -237,18 +232,6 @@ let userID =_id;
                     </ul>
             </div>
       </div>
-      <div>
-        {alerts.map((alert, index) => (
-          <div key={index} className="alert">{alert}</div>
-        ))}
-        {modBar.map((item, index) => (
-          <div key={index} className="modbar-item">{item}</div>
-        ))}
-      </div>
-      <Routes location={window.location}>
-        <Route path="/" element={<PrivateHomepage/>} />
-        <Route path="/invite" element={<InviteForm userID={userID} username={userName}/>} />
-      </Routes>
     </div>
   );
 };

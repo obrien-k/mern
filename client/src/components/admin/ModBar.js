@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../utils/api'
 
 const ModBar = () => {
   const [modBar, setModBar] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get('/api/tools')
+    api.get('/tools') // Note the full URL
       .then(response => {
         setModBar(response.data.modBar);
       })
       .catch(error => {
         console.error(error);
+        setError('Failed to load data.');
       });
   }, []);
 
   return (
     <div>
+      {error && <div>{error}</div>}
       {modBar.map((item, index) => (
-        <a key={index} href="#">{item}</a>
+        <div key={index} dangerouslySetInnerHTML={{ __html: item }} /> 
+        // Note: be cautious with dangerouslySetInnerHTML
       ))}
     </div>
   );

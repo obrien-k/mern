@@ -215,7 +215,7 @@ db.permissions.insertMany([  {
 {
   _id: 31,
   field1: 310,
-  field2: 'Torrent Celebrity',
+  field2: 'Community Celebrity',
   field3: {
     MaxCollages: '0'
   },
@@ -382,7 +382,7 @@ db.permissions.insertMany([  {
 {
   _id: 25,
   field1: 400,
-  field2: 'Torrent Master',
+  field2: 'Community Master',
   field3: {
     site_leech: 1,
     site_upload: 1,
@@ -576,7 +576,7 @@ db.permissions.insertMany([  {
 {
   _id: 22,
   field1: 850,
-  field2: 'Torrent Moderator',
+  field2: 'Community Moderator',
   field3: {
     site_leech: 1,
     site_upload: 1,
