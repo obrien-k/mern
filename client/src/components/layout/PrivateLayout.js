@@ -2,12 +2,13 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';import '../../styles/layer_cake/style.css'; 
 import UserMenu from './UserMenu';
 
-const PublicLayout= ({ pageTitle, children }) => {
+const PrivateLayout= ({ pageTitle, children }) => {
   return (
       <div>
-      <UserMenu user={'admin'} pageId={1} />
+      <UserMenu pageId={1} />
+      {children}
     </div>
   );
 };
 
-export default PublicLayout;
+export default PrivateLayout;

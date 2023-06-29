@@ -1,10 +1,5 @@
 const mongoose = require('mongoose');
-
-const InviteSchema = new mongoose.Schema({
-  email: String,
-  dateSent: Date,
-  redeemed: Boolean
-});
+const Schema = mongoose.Schema;
 
 const UserSettingsSchema = new mongoose.Schema({
   siteOptions: Object,
@@ -39,7 +34,10 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-  invitesSent: [InviteSchema],
+  invitesSent: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Invite'
+  }],
   uploaded: {
     type: Number,
     default: 0

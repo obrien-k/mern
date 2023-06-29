@@ -63,6 +63,12 @@ export const login = (email, password) => async (dispatch) => {
   try {
     const res = await api.post('/auth', body);
 
+    // Store token in local storage
+    localStorage.setItem('token', res.data.token);
+
+    // Set default authorization header for axios
+    api.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
+
     dispatch({
       type: LOGIN_SUCCESS,
       payload: res.data
@@ -83,4 +89,12 @@ export const login = (email, password) => async (dispatch) => {
 };
 
 // Logout
-export const logout = () => ({ type: LOGOUT });
+export const logout = () => {
+  // Remove token from local storage
+  localStorage.removeItem('token');
+
+  // Remove the authorization header from axios
+  delete api.defaults.headers.common['Authorization'];
+
+  return { type: LOGOUT };
+};

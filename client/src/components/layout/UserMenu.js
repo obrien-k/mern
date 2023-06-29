@@ -1,25 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadUser, logout } from '../../actions/auth';
 
-const UserMenu = ({ user, pageId }) => {
-  const { username, bonusPoints, bytesUploaded, bytesDownloaded, requiredRatio, flTokens, hasUnlimitedInvites } = user;
+import InviteForm from '../profile/invite/InviteForm'; 
+import PrivateHomepage from '../pages/PrivateHomepage';
 
+const UserMenu = ({ pageId }) => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+console.log(user);
+  // Simulating server-side array logic
+  const [alerts, setAlerts] = useState([]);
+  const [modBar, setModBar] = useState([]);
+  const [useAdvancedSearch, setUseAdvancedSearch] = useState(false);
+
+  useEffect(() => {
+    // Populate the arrays with data fetched from an API.
+    setAlerts(['New staff blog post!']);
+    setModBar(['Toolbox']);
+    const loggedUserSearchType = true; 
+    setUseAdvancedSearch(loggedUserSearchType);
+  }, []);
+
+  if (!user) {
+    return <div>Loading...</div>; 
+  }
+
+  const { _id, username, bonusPoints, bytesUploaded, bytesDownloaded, requiredRatio, flTokens, hasUnlimitedInvites } = user;
+
+let userID =_id;
   // Placeholder for formatSize function
   const formatSize = (bytes) => `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 
-   // Alerts and ModBar (simulating server-side array logic)
-   const [alerts, setAlerts] = useState([]);
-   const [modBar, setModBar] = useState([]);
-   const [useAdvancedSearch, setUseAdvancedSearch] = useState(false);
- 
-   // Simulate fetching data from the server and setting alerts and modBar.
-   useEffect(() => {
-     // Example, populate the arrays with data fetched from an API.
-     setAlerts(['New staff blog post!']);
-     setModBar(['Toolbox']);
-     const loggedUserSearchType = true; // fetch from server
-     setUseAdvancedSearch(loggedUserSearchType);
-   }, []);
+
    
    const addClass = (pageId, pages, className) => pages.includes(pageId) ? className : '';
  
@@ -50,7 +64,7 @@ const UserMenu = ({ user, pageId }) => {
               <a href="/bonus" title={`Bonus (${bonusPoints})`}>Bonus ({bonusPoints})</a>
             </li>
             <li id="nav_invite">
-              <a href="/invite">Invite</a>
+              <Link to="/invite">Invite</Link>
             </li>
             <li id="nav_donate">
               <a href="/donate">Donate</a>
@@ -231,6 +245,10 @@ const UserMenu = ({ user, pageId }) => {
           <div key={index} className="modbar-item">{item}</div>
         ))}
       </div>
+      <Routes location={window.location}>
+        <Route path="/" element={<PrivateHomepage/>} />
+        <Route path="/invite" element={<InviteForm userID={userID}/>} />
+      </Routes>
     </div>
   );
 };

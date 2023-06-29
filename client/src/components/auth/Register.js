@@ -1,99 +1,102 @@
-import React, { Fragment, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { setAlert } from '../../actions/alert';
 import { register } from '../../actions/auth';
+import axios from 'axios';
 
-const Register = ({ setAlert, register }) => {
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-    password2: ''
-  });
+const openRegistration = process.env.REACT_APP_OPEN_REGISTRATION === 'true';
+const closeInvite = process.env.REACT_APP_CLOSE_INVITE === 'true';
 
-  const { username, email, password, password2 } = formData;
+const RegistrationForm = ({ setAlert, register }) => {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [invite, setInvite] = useState('');
+  const [inviteExists, setInviteExists] = useState(false);
 
-  const onChange = e =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  useEffect(() => {
+    const checkInvite = async () => {
+      if (invite) {
+        try {
+          const response = await axios.get(`/api/services/referral/verify-token?invite=${invite}`);
+          setInviteExists(response.data.exists);
+        } catch (error) {
+          console.error(error.response.data);
+        }
+      }
+    };
 
-  const onSubmit = async e => {
+    checkInvite();
+  }, [invite]);
+
+  const handleRegistration = (e) => {
     e.preventDefault();
-    if (password !== password2) {
-      setAlert('Passwords do not match', 'danger');
+
+    if (password !== confirmPassword) {
+      setAlert("Passwords don't match", 'danger');
     } else {
-      register({ username, email, password });
+      register({ username, email, password, invite });
     }
   };
+
+  const renderForm = () => {
+    if (openRegistration || (invite && inviteExists)) {
+      return (
+        <>
+          <label>
+            Username:
+            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+          </label>
+          <br />
+          <label>
+            Email:
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          </label>
+          <br />
+          <label>
+            Password:
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          </label>
+          <br />
+          <label>
+            Confirm Password:
+            <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+          </label>
+          <br />
+          {invite && !inviteExists && <p>Invite does not exist.</p>}
+          <br />
+          <button type="submit">Register</button>
+        </>
+      );
+    } 
+    if(openRegistration===false && invite && !inviteExists) {
+      return (
+        <p>Invite does not exist.</p>
+      );
+    }
+    if(openRegistration===false && closeInvite === true) {
+      return (
+        <p>Registration is closed.</p>
+      );
+    }
+    else {
+      return(
+        <p>Tell admin they forgot an edge case.</p>
+      )
+    }
+  };
+
   return (
-    <Fragment>
-      <h1 className="large text-primary">Sign Up</h1>
-      <p className="lead">
-        <i className="fas fa-user" /> Create Your Account
-      </p>
-      <form className="form" onSubmit={e => onSubmit(e)}>
-        <div className="form-group">
-          <input
-            type="text"
-            placeholder="Username"
-            name="username"
-            value={username}
-            onChange={e => onChange(e)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="email"
-            autoComplete="email"
-            placeholder="Email Address"
-            name="email"
-            value={email}
-            onChange={e => onChange(e)}
-          />
-          <small className="form-text">
-            This site uses Gravatar! If you want a profile image, use a
-            Gravatar email
-          </small>
-        </div>
-        <div className="form-group">
-          <input
-            type="password"
-            autoComplete="new-password"
-            placeholder="Password"
-            name="password"
-            value={password}
-            onChange={e => onChange(e)}
-            minLength="6"
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="password"
-            autoComplete="new-password"
-            placeholder="Confirm Password"
-            name="password2"
-            value={password2}
-            onChange={e => onChange(e)}
-            minLength="6"
-          />
-        </div>
-        <input type="submit" className="btn btn-primary" value="Register" />
-      </form>
-      <p className="my-1">
-        Already have an account? <Link to="/login">Sign In</Link>
-      </p>
-    </Fragment>
+    <form onSubmit={handleRegistration}>
+      <h1>Registration Form</h1>
+      {renderForm()}
+      <label>
+        Invite Key:
+        <input type="text" value={invite} onChange={(e) => setInvite(e.target.value)} />
+      </label>
+    </form>
   );
 };
 
-Register.propTypes = {
-  setAlert: PropTypes.func.isRequired,
-  register: PropTypes.func.isRequired
-};
-
-export default connect(
-  null,
-  { setAlert, register }
-)(Register);
+export default connect(null, { setAlert, register })(RegistrationForm);

@@ -21,8 +21,6 @@ const Header = () => {
   return (
     <header>
       <title>{siteName}</title>
-      {/* Similar meta tags, links and scripts here */}
-      {/* Use fetched data for rendering logic similar to the PHP file */}
       {notifications.map((notification, index) => (
         <span key={index} className="noty-notification">{notification.message}</span>
       ))}

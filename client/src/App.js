@@ -1,6 +1,7 @@
 import React from 'react';
-import { Provider, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import api from './utils/api';
 
 import PrivateHomepage from './components/pages/PrivateHomepage';
 import Login from './components/auth/Login';
@@ -12,39 +13,41 @@ import PublicLayout from './components/layout/PublicLayout';
 
 import store from './store';
 import PublicLanding from './components/layout/PublicLanding';
+import { Provider } from 'react-redux';
+
+const token = localStorage.getItem('token');
+if (token) {
+  api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+}
 
 const AuthenticatedApp = () => (
-  <Provider store={store}>
-    <React.Fragment>
-      <PrivateLayout pageTitle="Stellar">
+  <React.Fragment>
+    <PrivateLayout pageTitle="Stellar">
       <section className="container">
         <Alert />
         <Routes>
-          <Route path="/" element={<PrivateHomepage />} />
+          <Route path="/*" element={<PrivateHomepage />} />
           <Route path="/login" element={<PrivateHomepage />} />
           <Route path="/logout" element={<PublicLanding />} />
         </Routes>
       </section>
-      </PrivateLayout>
-    </React.Fragment>
-  </Provider>
+    </PrivateLayout>
+  </React.Fragment>
 );
 
 const PublicApp = () => (
-  <Provider store={store}>
-    <React.Fragment>
-      <PublicLayout pageTitle="Stellar">
-        <section className="container">
-          <Alert />
-          <Routes>
-            <Route path="/" element={<PublicLayout />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-          </Routes>
-        </section>
-      </PublicLayout>
-    </React.Fragment>
-  </Provider>
+  <React.Fragment>
+    <PublicLayout pageTitle="Stellar">
+      <section className="container">
+        <Alert />
+        <Routes>
+          <Route path="/*" element={<PublicLayout />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </section>
+    </PublicLayout>
+  </React.Fragment>
 );
 
 const AuthenticationCheck = () => {
