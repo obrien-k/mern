@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const InviteForm = ({ userID }) => {
+const InviteForm = ({ userID, userName }) => {
   console.log('userID', userID);
+  console.log('userName', userName);
   const [email, setEmail] = useState('');
   const [reason, setReason] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -18,16 +19,14 @@ const InviteForm = ({ userID }) => {
     setSuccessMessage(''); 
   
     try {
-      await axios.post('/api/services/referral/create-invite', { service, email, userID, reason });
+      await axios.post('/api/services/referral/create-invite', { service, email, userID, userName, reason });
       
       setSuccessMessage('Invitation sent successfully.');
     } catch (error) {
-      setErrorMessage(error.response?.data?.Message || 'An error occurred while creating the invite.');
+      setErrorMessage(error.response?.data?.error || 'An error occurred while creating the invite.');
     }
   };
   
-  
-
   return (
     <div>
       <h2>

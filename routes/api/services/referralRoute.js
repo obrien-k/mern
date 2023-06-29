@@ -53,14 +53,15 @@ router.get('/verify-invite-key', async (req, res) => {
 });
 
 router.post('/create-invite', async (req, res) => {
-  const { email, service, reason, userID } = req.body;
+  const { email, service, reason, userID, userName } = req.body;
   try {
-    await referralService.createInvite(service, email, userID, reason);
+    await referralService.createInvite(service, email, userID, userName, reason);
     res.json({ success: true });
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ Message: 'An internal server error occurred while creating the invite.', error: error.message });
   }
 });
+
 
 module.exports = router;

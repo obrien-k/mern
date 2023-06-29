@@ -28,7 +28,7 @@ console.log(user);
   }
 
   const { _id, username, bonusPoints, bytesUploaded, bytesDownloaded, requiredRatio, flTokens, hasUnlimitedInvites } = user;
-
+let userName = username;
 let userID =_id;
   // Placeholder for formatSize function
   const formatSize = (bytes) => `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
@@ -247,7 +247,7 @@ let userID =_id;
       </div>
       <Routes location={window.location}>
         <Route path="/" element={<PrivateHomepage/>} />
-        <Route path="/invite" element={<InviteForm userID={userID}/>} />
+        <Route path="/invite" element={<InviteForm userID={userID} username={userName}/>} />
       </Routes>
     </div>
   );

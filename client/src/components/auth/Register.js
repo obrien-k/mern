@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setAlert } from '../../actions/alert';
 import { register } from '../../actions/auth';
@@ -14,13 +15,20 @@ const RegistrationForm = ({ setAlert, register }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [invite, setInvite] = useState('');
   const [inviteExists, setInviteExists] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
+    // Auto-populate the invite key from the URL
+    const params = new URLSearchParams(location.search);
+    const urlInviteKey = params.get('invite');
+    if (urlInviteKey) {
+      setInvite(urlInviteKey);
+    }
     const checkInvite = async () => {
       if (invite) {
         try {
-          const response = await axios.get(`/api/services/referral/verify-token?invite=${invite}`);
-          setInviteExists(response.data.exists);
+          const response = await axios.get(`/api/services/referral/verify-invite-key?inviteKey=${invite}`);
+          setInviteExists(response.data.success);
         } catch (error) {
           console.error(error.response.data);
         }
