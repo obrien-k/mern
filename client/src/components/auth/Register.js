@@ -18,25 +18,31 @@ const RegistrationForm = ({ setAlert, register }) => {
   const location = useLocation();
 
   useEffect(() => {
-    // Auto-populate the invite key from the URL
     const params = new URLSearchParams(location.search);
     const urlInviteKey = params.get('invite');
-    if (urlInviteKey) {
-      setInvite(urlInviteKey);
-    }
+    const inviteKeyToCheck = urlInviteKey || invite;
+
     const checkInvite = async () => {
-      if (invite) {
+      if (inviteKeyToCheck) {
         try {
-          const response = await axios.get(`/api/services/referral/verify-invite-key?inviteKey=${invite}`);
-          setInviteExists(response.data.success);
+          const response = await axios.get(`/api/services/referral/verify-invite-key?inviteKey=${inviteKeyToCheck}`);
+          if(response.data.success === true){
+            setInviteExists(true); // Setting inviteExists to true
+          } else {
+            setInviteExists(false); // Setting inviteExists to false when success is not true
+          }
         } catch (error) {
           console.error(error.response.data);
+          setInviteExists(false); // Optionally handle error cases by setting inviteExists to false
         }
       }
     };
 
+    if (urlInviteKey) {
+      setInvite(urlInviteKey);
+    }
     checkInvite();
-  }, [invite]);
+}, [invite]);
 
   const handleRegistration = (e) => {
     e.preventDefault();

@@ -46,7 +46,7 @@ router.get('/verify-invite-key', async (req, res) => {
     if (new Date() > invite.Expires) {
       return res.status(400).json({ error: 'Invite key is no longer valid' });
     }
-    res.json({ success: true });
+    res.json({ success: true, invite });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

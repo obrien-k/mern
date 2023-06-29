@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import InviteTree from './InviteTree';
+import PrivateHomepage from '../../pages/PrivateHomepage';
 
 const InviteForm = ({ userID, userName }) => {
   console.log('userID', userID);
@@ -33,9 +36,9 @@ const InviteForm = ({ userID, userName }) => {
         <a href="/user/1">admin</a> &gt; Invites
       </h2>
       <div className="linkbox">
-        <a href="/user/invite-tree" className="brackets">
+        <Link to="/user/invite-tree" className="brackets">
           Invite tree
-        </a>
+        </Link>
       </div>
       <div className="box pad">
         <p>
@@ -72,6 +75,7 @@ const InviteForm = ({ userID, userName }) => {
       </div>
       <h3>Invitee list</h3>
       <div className="box pad">
+        
         <table className="invite_table m_table" width="100%">
           <tbody>
             <tr className="colhead">
@@ -100,6 +104,10 @@ const InviteForm = ({ userID, userName }) => {
           </tbody>
         </table>
       </div>
+      <Routes location={window.location}>
+        <Route path="/" element={<PrivateHomepage/>} />
+        <Route path="/user/invite-tree" element={<InviteTree userID={userID} />} />
+      </Routes>
     </div>
   );
 };

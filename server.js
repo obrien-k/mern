@@ -35,6 +35,7 @@ app.use('/api/forum', require('./routes/api/forum/forum'));
 // finish forum routes
 //app.use('/api/artist', require('./routes/api/artist'));
 app.use('/api/taskRunner', require('./routes/api/tasks/taskRunner'));
+app.use('/api/services/invite-tree', require('./routes/api/services/inviteTree'));
 
 const PORT = process.env.PORT || 5000;
 
