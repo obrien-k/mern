@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const InviteForm = () => {
+const InviteForm = ({ userID }) => {
+  console.log('userID', userID);
   const [email, setEmail] = useState('');
   const [reason, setReason] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -9,16 +10,15 @@ const InviteForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    // TODO dynamic load
-    const username = 'admin';
+    
+    // todo dynamic
     const service = 'WHATCD';
   
     setErrorMessage(''); 
     setSuccessMessage(''); 
   
     try {
-      await axios.post('/api/services/referral/create-invite', { service, email, username, reason });
+      await axios.post('/api/services/referral/create-invite', { service, email, userID, reason });
       
       setSuccessMessage('Invitation sent successfully.');
     } catch (error) {

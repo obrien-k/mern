@@ -43,7 +43,8 @@ class ReferralService {
     */
   }
 
-  async createInvite(userID, email, username, reason = '') {
+  async createInvite(service, email, userID, reason) {
+    console.log(userID);
     if (typeof email !== 'string') {
       throw new Error('Invalid email parameter.');
     }
@@ -63,25 +64,31 @@ class ReferralService {
           throw new Error('Invalid email.');
         }
       }*/
-      /*SKIP FOR NOW
+
       const user = await User.findById(userID);
 
       if (!user) {
         throw new Error('User not found');
       }
-*/
+
       try {
         const existingInvite = await Invite.findOne({
-          InviterID: objectId,
+          InviterID: userID,
           Email: { $regex: `^${curEmail}$`, $options: 'i' },
         });
 
         if (existingInvite) {
-          throw new Error('You already have a pending invite to that address!');
-        }
-      } catch (error) {
-        throw new Error('Error querying for existing invites.');
+          return { success: false, message: 'You already have a pending invite to that address!' };
       }
+      
+      } catch (error) {
+        if (error.message === 'You already have a pending invite to that address!') {
+          throw error;
+        } else {
+          throw new Error('Error querying for existing invites.');
+        }
+      }
+
 
       const inviteKey = crypto.randomBytes(16).toString('hex');
       const inviteExpires = Date.now() + 3 * 24 * 60 * 60 * 1000; // 3 days
@@ -97,25 +104,28 @@ class ReferralService {
           Reason: reason,
         });
       } catch (error) {
+        console.error("Original error message:", error.message);
         throw new Error('Failed to create invite in database.');
       }
   
       // Associate the invite with the user
       try {
-        const user = await User.findById(userID);
-        user.totalInvites -= 1;
-        user.invitesSent.push(invite._id);
-        await user.save();
-        // Uncomment when check_perms method is implemented
-        // if (!user.check_perms('site_send_unlimited_invites')) {
-        //     user.Invites -= 1;
-        // }
-        await user.save();
+      const existingInvite = await Invite.findOne({
+        InviterID: userID,
+        Email: { $regex: `^${curEmail}$`, $options: 'i' },
+      });
+
+      if (existingInvite) {
+        throw new Error('You already have a pending invite to that address!');
+      }
       } catch (error) {
-        throw new Error('Failed to associate invite with user.');
+          console.error("Original error message:", error.message);
+          console.error("Original error stack:", error.stack);
+          
+          throw new Error('Error querying for existing invites.');
       }
 
-
+    
       const siteName = 'Stellar'; // Replace with config
       const siteURL = 'https://stellargra.ph'; // Replace with config
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import api from './utils/api';
 
 import PrivateHomepage from './components/pages/PrivateHomepage';
 import Login from './components/auth/Login';
@@ -13,6 +14,11 @@ import PublicLayout from './components/layout/PublicLayout';
 import store from './store';
 import PublicLanding from './components/layout/PublicLanding';
 import { Provider } from 'react-redux';
+
+const token = localStorage.getItem('token');
+if (token) {
+  api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+}
 
 const AuthenticatedApp = () => (
   <React.Fragment>

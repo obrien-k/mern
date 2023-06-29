@@ -5,7 +5,7 @@ import UserMenu from './UserMenu';
 const PrivateLayout= ({ pageTitle, children }) => {
   return (
       <div>
-      <UserMenu user={'admin'} pageId={1} />
+      <UserMenu pageId={1} />
       {children}
     </div>
   );
