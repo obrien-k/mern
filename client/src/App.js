@@ -52,7 +52,14 @@ const PublicApp = () => (
 
 const AuthenticationCheck = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  return isAuthenticated ? <AuthenticatedApp /> : <PublicApp />;
+  const userId = useSelector((state) => state.auth.userId);
+  const userName = useSelector((state) => state.auth.userName);
+
+  if (isAuthenticated) {
+    return <AuthenticatedApp userId={userId} userName={userName} />;
+  } else {
+    return <PublicApp />;
+  }
 };
 
 const App = () => {
@@ -64,5 +71,6 @@ const App = () => {
     </Provider>
   );
 };
+
 
 export default App;

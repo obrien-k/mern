@@ -8,7 +8,7 @@ const Forum = require('../../../../models/forum/Forum');
 // @route   GET api/forums/topics
 // @desc    Get all forum topics
 // @access  Private
-router.get('/', auth, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const forumTopics = await ForumTopic.find().populate('ForumID', 'Name');
     res.json(forumTopics);
@@ -21,7 +21,7 @@ router.get('/', auth, async (req, res) => {
 // @route   POST api/forums/topics
 // @desc    Create a new forum topic
 // @access  Private
-router.post('/', auth, async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { Title, ForumID, Body } = req.body;
 

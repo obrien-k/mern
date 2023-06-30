@@ -6,8 +6,7 @@ import ModBar from '../admin/ModBar';
 import PrivateHomepage from '../pages/PrivateHomepage';
 import InviteForm from '../profile/invite/InviteForm';
 
-const PrivateHeader = ({alerts, modBar, userID, userName, bonusPoints, bytesUploaded, bytesDownloaded, requiredRatio, flTokens}) => {
-
+const PrivateHeader = ({ alerts, modBar, userId, userName, bonusPoints, bytesUploaded, bytesDownloaded, requiredRatio, flTokens }) => {
   return (
     <div id="wrapper">
       <UserMenu
@@ -22,7 +21,7 @@ const PrivateHeader = ({alerts, modBar, userID, userName, bonusPoints, bytesUplo
       <ModBar modBarItems={modBar} />
       <Routes>
         <Route path="/" element={<PrivateHomepage />} />
-        <Route path="/invite" element={<InviteForm userID={userID} username={userName} />} />
+        <Route path="/invite" element={<InviteForm userId={userId} username={userName} />} />
       </Routes>
     </div>
   );

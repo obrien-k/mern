@@ -37,13 +37,13 @@ app.use('/api/services/referral', require('./routes/api/services/referralRoute')
 app.use('/api/services/invite-tree', require('./routes/api/services/inviteTree'));
 
 // forums Routes
-//app.use('/api/forums/category', require('./routes/api/sections/forum/forumCategory'));
-//app.use('/api/forums/last-read-topic', require('./routes/api/sections/forum/forumLastReadTopic'));
-//app.use('/api/forums/poll', require('./routes/api/sections/forum/forumPoll'));
-//app.use('/api/forums/poll-vote', require('./routes/api/sections/forum/forumPollVote'));
-//app.use('/api/forums/posts', require('./routes/api/sections/forum/forumPost'));
-//app.use('/api/forums/topics', require('./routes/api/sections/forum/forumTopic'));
-//app.use('/api/forums/topics/notes', require('./routes/api/sections/forum/forumTopicNote'));
+app.use('/api/forums/categories', require('./routes/api/sections/forum/forumCategory'));
+app.use('/api/forums/last-read-topic', require('./routes/api/sections/forum/forumLastReadTopic'));
+app.use('/api/forums/poll', require('./routes/api/sections/forum/forumPoll'));
+app.use('/api/forums/poll-vote', require('./routes/api/sections/forum/forumPollVote'));
+app.use('/api/forums/posts', require('./routes/api/sections/forum/forumPost'));
+app.use('/api/forums/topics', require('./routes/api/sections/forum/forumTopic'));
+app.use('/api/forums/topics/notes', require('./routes/api/sections/forum/forumTopicNote'));
 app.use('/api/forums', require('./routes/api/sections/forum/forumRoute'));
 
 //app.use('/api/artist', require('./routes/api/artist'));

@@ -1,22 +1,43 @@
 function checkPerms(requiredPermission) {
   return async (req, res, next) => {
     try {
-      // Assuming that the user's ID is passed in the request header as 'userId'
-      const userId = req.headers.userId;
+      console.log('Inside checkPerms');
+      
+      if (!req.user || !req.user.id) {
+        console.log('User not found in request');
+        return res.status(401).send('Unauthorized');
+      }
+
+      const userId = req.user.id;
+
+      console.log(`Checking permission ${requiredPermission} for user ${userId}`);
+
+      // Check if requiredPermission is not defined
+      if (!requiredPermission) {
+        console.log('No permission required');
+        return next();
+      }
       
       // Find the user in the database and populate the userRank field
       const user = await User.findById(userId).populate('userRank');
       
+      // Logging user and userRank for debugging
+      console.log('User:', user);
+      console.log('User Rank:', user.userRank);
+
       // Check if user is found and if user's rank has the required permissions
       if (user && user.userRank && user.userRank.field3[requiredPermission]) {
-        next(); // proceed to the endpoint
+        console.log('Permission granted');
+        next(); // Proceed to the endpoint
       } else {
+        console.log('Permission denied');
         res.status(403).send('Permission Denied');
       }
     } catch (error) {
-      console.error(error);
+      console.error('Error:', error);
       res.status(500).send('Internal Server Error');
     }
   };
 }
+
 module.exports = checkPerms;

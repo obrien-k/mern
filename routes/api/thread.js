@@ -13,7 +13,7 @@ const User = require('../../models/User');
 router.post(
   '/',
   [
-    auth,
+    auth(),
     [
       check('type', 'Type is required')
         .not()
@@ -43,7 +43,7 @@ router.post(
 // @route   GET /threads/:id
 // @desc    Get a thread by its ID
 // @access  Private
-router.get('/:id', auth, async (req, res) => {
+router.get('/:id', auth(), async (req, res) => {
   try {
     const thread = await Thread.findById(req.params.id);
     if (!thread) {
@@ -65,7 +65,7 @@ router.get('/:id', auth, async (req, res) => {
 router.post(
   '/:id/notes',
   [
-    auth,
+    auth(),
     [
       check('text', 'Text is required')
         .not()

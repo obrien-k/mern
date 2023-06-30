@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-const UserMenu = ({ pageId }) => {
+const UserMenu = ({ pageId, userId, userName }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
 
@@ -18,17 +18,14 @@ const UserMenu = ({ pageId }) => {
     return <div>Loading...</div>; 
   }
 
-  const { _id, username, bonusPoints, bytesUploaded, bytesDownloaded, requiredRatio, flTokens, hasUnlimitedInvites } = user;
-let userName = username;
-let userID =_id;
+  const { bonusPoints, bytesUploaded, bytesDownloaded, requiredRatio, flTokens, hasUnlimitedInvites } = user;
+
   // Placeholder for formatSize function
   const formatSize = (bytes) => `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 
+  const addClass = (pageId, pages, className) => pages.includes(pageId) ? className : '';
 
-   
-   const addClass = (pageId, pages, className) => pages.includes(pageId) ? className : '';
- 
-   return (
+  return (
      <div id="wrapper">
       <h1 className="hidden">SITE_NAME</h1>
       <div id="header">
@@ -38,10 +35,10 @@ let userID =_id;
         <div id="userinfo">
           <ul id="userinfo_username">
             <li id="nav_userinfo">
-              <a href={`/user/${username}`} className="username">{username}</a>
+              <a href={`/user/${userName}`} className="username">{userName}</a>
             </li>
             <li id="nav_useredit">
-              <a href={`/user/edit/${username}`}>Edit</a>
+              <a href={`/user/edit/${userName}`}>Edit</a>
             </li>
             <li id="nav_logout">
               <a href="/logout">Logout</a>
@@ -69,11 +66,11 @@ let userID =_id;
           </ul>
           <ul id="userinfo_stats">
             <li id="stats_seeding">
-              <a href={`/communities/seeding/${username}`}>Up:</a>
+              <a href={`/communities/seeding/${userName}`}>Up:</a>
               <span className="stat" title={formatSize(bytesUploaded)}>{formatSize(bytesUploaded)}</span>
             </li>
             <li id="stats_leeching">
-              <a href={`/communities/leeching/${username}`}>Down:</a>
+              <a href={`/communities/leeching/${userName}`}>Down:</a>
               <span className="stat" title={formatSize(bytesDownloaded)}>{formatSize(bytesDownloaded)}</span>
             </li>
             <li id="stats_ratio">

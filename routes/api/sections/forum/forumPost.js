@@ -12,8 +12,7 @@ const User = require('../../../../models/User');
 // @access  Private
 router.post(
   '/',
-  [
-    auth,
+  [ auth,
     [
       check('body', 'Body is required')
         .not()
@@ -51,7 +50,7 @@ router.post(
 // @route   GET api/forums/posts
 // @desc    Get all forum posts
 // @access  Private
-router.get('/', auth, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const forumPosts = await ForumPost.find().sort({ AddedTime: -1 });
     res.json(forumPosts);
@@ -61,25 +60,26 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-// @route   GET api/forums/post/:id
+// @route   GET api/forums/posts/:id
 // @desc    Get forum post by ID
 // @access  Private
-router.get('/:id', auth, async (req, res) => {
+router.get('/posts/:id', async (req, res) => {
   try {
-    const forumPost = await ForumPost.findById(req.params.id);
-    if (!forumPost) {
-      return res.status(404).json({ msg: 'Forum post not found' });
+    // We populate the AuthorID field to reference the ID for the last post author
+    // check here if getting other posts breaks!
+    const post = await ForumPost.findById(req.params.id).populate('AuthorID');
+    
+    if (!post) {
+      return res.status(404).json({ msg: 'Post not found' });
     }
-
-    res.json(forumPost);
-  } catch (err) {
-    console.error(err.message);
-    if (err.kind === 'ObjectId') {
-      return res.status(404).json({ msg: 'Forum post not found' });
-    }
+    
+    res.json(post);
+  } catch (error) {
+    console.error(error);
     res.status(500).send('Server Error');
   }
 });
+
 
 // @route   DELETE api/forums/posts/:id
 // @desc    Delete a forum post

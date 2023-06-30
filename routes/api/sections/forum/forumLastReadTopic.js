@@ -7,7 +7,7 @@ const ForumLastReadTopic = require('../../../../models/forum/ForumLastReadTopic'
 // @route   POST api/forums/last-read-topics
 // @desc    Mark a topic as read by a user
 // @access  Private
-router.post('/', auth, async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { TopicID, PostID } = req.body;
 

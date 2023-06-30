@@ -11,12 +11,24 @@ const User = require('../../models/User');
 // @route GET api/auth
 // @desc Test route
 // @access Public
-router.get('/', auth, async (req, res) => {
+router.get('/', auth(), async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
+    console.log('Inside GET /api/auth route');
+    
+    if (!req.user || !req.user.id) {
+      console.log('User not found in request');
+      return res.status(401).send('Unauthorized');
+    }
+    
+    const userId = req.user.id;
+    console.log(`Fetching user with ID: ${userId}`);
+    
+    const user = await User.findById(userId).select('-password');
+    
+    console.log('User fetched:', user);
     res.json(user);
   } catch (err) {
-    console.error(err.message);
+    console.error('Error in GET /api/auth:', err.message);
     res.status(500).send('Server error');
   }
 });

@@ -7,7 +7,7 @@ const ForumCategory = require('../../../../models/forum/ForumCategory');
 // @route   GET api/forums/categories
 // @desc    Get all forum categories
 // @access  Public
-router.get('/', auth, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const categories = await ForumCategory.find().sort({ Sort: 1 });
     res.json(categories);

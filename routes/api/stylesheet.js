@@ -11,7 +11,7 @@ const Stylesheet = require('../../models/profile/Stylesheet');
 router.post(
   '/',
   [
-    auth,
+    auth(),
     [
       check('name', 'Name is required').not().isEmpty(),
       check('content', 'Content is required').not().isEmpty()
@@ -44,7 +44,7 @@ router.post(
 // @route   GET api/stylesheet
 // @desc    Get all stylesheets
 // @access  Private
-router.get('/', auth, async (req, res) => {
+router.get('/', auth(), async (req, res) => {
   try {
     const stylesheets = await Stylesheet.find().sort({ created_at: -1 });
     res.json(stylesheets);
