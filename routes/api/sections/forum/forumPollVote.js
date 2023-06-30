@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../../../../middleware/auth');
-const checkPerms = require('../../../../middleware/permissions');
+//const checkPerms = require('../../../../middleware/permissions');
 const ForumPollVote = require('../../../../models/forum/ForumPollVote');
 
 // @route   POST api/forums/poll-votes

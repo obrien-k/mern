@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../../../../middleware/auth');
-const checkPerms = require('../../../../middleware/permissions');
+//const checkPerms = require('../../../../middleware/permissions');
 const ForumLastReadTopic = require('../../../../models/forum/ForumLastReadTopic');
 
 // @route   POST api/forums/last-read-topics

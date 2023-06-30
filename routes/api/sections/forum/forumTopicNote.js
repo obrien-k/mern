@@ -8,7 +8,7 @@ const ForumTopicNote = require('../../../../models/forum/ForumTopicNote');
 // @route   GET api/forums/topics/notes
 // @desc    Get all notes for a forum topic
 // @access  Private
-router.get('/', auth, async (req, res) => {
+router.get('/', auth(), async (req, res) => {
   try {
     const topicNotes = await ForumTopicNote.find({}).sort({ createdAt: -1 });
     res.json(topicNotes);
@@ -21,7 +21,7 @@ router.get('/', auth, async (req, res) => {
 // @route   POST api/forums/topics/notes
 // @desc    Add a note to a forum topic
 // @access  Private
-router.post('/', auth, async (req, res) => {
+router.post('/', auth(), async (req, res) => {
   try {
     const { Body } = req.body;
 
@@ -42,7 +42,7 @@ router.post('/', auth, async (req, res) => {
 // @route   DELETE api/forums/topics/notes/:noteId
 // @desc    Delete a note from a forum topic
 // @access  Private
-router.delete('/:noteId', auth, checkPerms, async (req, res) => {
+router.delete('/:noteId', auth(), checkPerms, async (req, res) => {
   try {
     const note = await ForumTopicNote.findById(req.params.noteId);
 

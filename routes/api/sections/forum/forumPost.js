@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
-const checkPerms = require('../../../../middleware/permissions'); // need to implement for this route
+//const checkPerms = require('../../../../middleware/permissions'); // need to implement for this route
 const auth = require('../../../../middleware/auth');
 
 const ForumPost = require('../../../../models/forum/ForumPost');
@@ -12,7 +12,7 @@ const User = require('../../../../models/User');
 // @access  Private
 router.post(
   '/',
-  [ auth,
+  [ auth(),
     [
       check('body', 'Body is required')
         .not()
@@ -84,7 +84,7 @@ router.get('/posts/:id', async (req, res) => {
 // @route   DELETE api/forums/posts/:id
 // @desc    Delete a forum post
 // @access  Private
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', auth(), async (req, res) => {
   try {
     const forumPost = await ForumPost.findById(req.params.id);
 

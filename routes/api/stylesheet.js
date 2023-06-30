@@ -57,7 +57,7 @@ router.get('/', auth(), async (req, res) => {
 // @route   GET api/stylesheet/:id
 // @desc    Get stylesheet by ID
 // @access  Private
-router.get('/:id', auth, async (req, res) => {
+router.get('/:id', auth(), async (req, res) => {
   try {
     const stylesheet = await Stylesheet.findById(req.params.id);
     if (!stylesheet) {
@@ -77,7 +77,7 @@ router.get('/:id', auth, async (req, res) => {
 // @route   DELETE api/stylesheet/:id
 // @desc    Delete a stylesheet
 // @access  Private
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', auth(), async (req, res) => {
   try {
     const stylesheet = await Stylesheet.findById(req.params.id);
     if (!stylesheet) {

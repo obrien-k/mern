@@ -105,7 +105,7 @@ router.post(
 router.put(
   '/:id/notes/:noteId',
   [
-    auth,
+    auth(),
     [
       check('text', 'Text is required')
         .not()
@@ -149,7 +149,7 @@ router.put(
 router.put(
   '/:id/edit',
   [
-    auth,
+    auth(),
     [
       check('title', 'Title is required')
         .not()
@@ -220,7 +220,7 @@ router.put(
 // @route   DELETE /threads/:id/notes/:noteId
 // @desc    Delete a note from a thread
 // @access  Private
-router.delete('/:id/notes/:noteId', auth, async (req, res) => {
+router.delete('/:id/notes/:noteId', auth(), async (req, res) => {
   try {
     const note = await Note.findById(req.params.noteId);
     if (!note) {
