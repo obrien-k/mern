@@ -4,16 +4,15 @@ const auth = require('../../../../middleware/auth');
 const checkPerms = require('../../../../middleware/permissions');
 const ForumTopicNote = require('../../../../models/forum/ForumTopicNote');
 
-// @route   POST api/forumTopicNote
+// @route   POST api/forums/topics/notes
 // @desc    Add a note to a forum topic
 // @access  Private
-router.post('/', [auth, checkPerms('add_note_to_topic')], async (req, res) => {
+router.post('/', auth, async (req, res) => {
   try {
-    const { TopicID, Body } = req.body;
+    const { Body } = req.body;
 
     // Creating new ForumTopicNote
     const newTopicNote = new ForumTopicNote({
-      TopicID,
       AuthorID: req.user.id,
       Body
     });

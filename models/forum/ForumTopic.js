@@ -1,4 +1,12 @@
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
+
 const forumTopicSchema = new Schema({
+  thread: {
+    type: Schema.Types.ObjectId,
+    ref: 'Thread',
+    default: null
+  },
   Title: {
     type: String,
     required: true
@@ -31,7 +39,6 @@ const forumTopicSchema = new Schema({
   LastPostID: {
     type: Schema.Types.ObjectId,
     ref: 'ForumPost',
-    required: true
   },
   LastPostTime: {
     type: Date,
@@ -40,7 +47,6 @@ const forumTopicSchema = new Schema({
   LastPostAuthorID: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true
   },
   StickyPostID: {
     type: Schema.Types.ObjectId,
@@ -56,4 +62,5 @@ const forumTopicSchema = new Schema({
     default: Date.now
   }
 });
-module.exports = ForumTopic = mongoose.model('ForumTopic', forumTopicSchema);
+
+module.exports = mongoose.model('ForumTopic', forumTopicSchema);

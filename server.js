@@ -24,12 +24,11 @@ app.use(express.json({ extended: false }));
 app.get('/', (req, res) => res.send('API Running'));
 
 // Use routes
-// TODO organize these cleanly
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/profile', require('./routes/api/profile'));
 app.use('/api/stylesheet', require('./routes/api/stylesheet'));
-app.use('/api/posts', require('./routes/api/posts'));
+//app.use('/api/posts', require('./routes/api/posts'));
 app.use('/api/announcements', require('./routes/api/announcements'));
 app.use('/api/subscriptions', require('./routes/api/subscriptions'));
 
@@ -37,15 +36,15 @@ app.use('/api/subscriptions', require('./routes/api/subscriptions'));
 app.use('/api/services/referral', require('./routes/api/services/referralRoute'));
 app.use('/api/services/invite-tree', require('./routes/api/services/inviteTree'));
 
-// Forum Routes
-app.use('/api/forum', require('./routes/api/sections/forum/forum'));
-app.use('/api/forum/category', require('./routes/api/sections/forum/forumCategory'));
-app.use('/api/forum/last-read-topic', require('./routes/api/sections/forum/lastReadTopic'));
-app.use('/api/forum/poll', require('./routes/api/sections/forum/forumPoll'));
-app.use('/api/forum/poll-vote', require('./routes/api/sections/forum/forumPollVote'));
-app.use('/api/forum/post', require('./routes/api/sections/forum/forumPost'));
-app.use('/api/forum/topic', require('./routes/api/sections/forum/forumTopic'));
-app.use('/api/forum/topicNote', require('./routes/api/sections/forum/forumTopicNote'));
+// forums Routes
+//app.use('/api/forums/category', require('./routes/api/sections/forum/forumCategory'));
+//app.use('/api/forums/last-read-topic', require('./routes/api/sections/forum/forumLastReadTopic'));
+//app.use('/api/forums/poll', require('./routes/api/sections/forum/forumPoll'));
+//app.use('/api/forums/poll-vote', require('./routes/api/sections/forum/forumPollVote'));
+//app.use('/api/forums/posts', require('./routes/api/sections/forum/forumPost'));
+//app.use('/api/forums/topics', require('./routes/api/sections/forum/forumTopic'));
+//app.use('/api/forums/topics/notes', require('./routes/api/sections/forum/forumTopicNote'));
+app.use('/api/forums', require('./routes/api/sections/forum/forumRoute'));
 
 //app.use('/api/artist', require('./routes/api/artist'));
 app.use('/api/taskRunner', require('./routes/api/tasks/taskRunner'));

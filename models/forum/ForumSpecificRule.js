@@ -1,3 +1,6 @@
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
+
 const forumSpecificRuleSchema = new Schema({
   ForumID: {
     type: Schema.Types.ObjectId,
@@ -7,6 +10,6 @@ const forumSpecificRuleSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'ForumTopic'
   }
-  // ... additional fields that describe the rule
 });
+
 module.exports = ForumSpecificRule = mongoose.model('ForumSpecificRule', forumSpecificRuleSchema);

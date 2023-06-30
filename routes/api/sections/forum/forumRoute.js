@@ -1,15 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../../auth');
+//const auth = require('../../auth');
 const checkPerms = require('../../../../middleware/permissions');
 const Forum = require('../../../../models/forum/Forum');
 
 // @route   GET api/forums
 // @desc    Get all forums
 // @access  Public
-router.get('/', checkPerms('read_forum'), async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const forums = await Forum.find().sort({ Sort: 1 }).populate('CategoryID');
+    console.log(forums);
     res.json(forums);
   } catch (err) {
     console.error(err.message);
@@ -20,7 +21,7 @@ router.get('/', checkPerms('read_forum'), async (req, res) => {
 // @route   POST api/forums
 // @desc    Create a new forum
 // @access  Private
-router.post('/', [auth, checkPerms('create_forum')], async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const {
       CategoryID,

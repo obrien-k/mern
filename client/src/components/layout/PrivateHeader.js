@@ -6,7 +6,6 @@ import ModBar from '../admin/ModBar';
 import PrivateHomepage from '../pages/PrivateHomepage';
 import InviteForm from '../profile/invite/InviteForm';
 
-
 const PrivateHeader = ({alerts, modBar, userID, userName, bonusPoints, bytesUploaded, bytesDownloaded, requiredRatio, flTokens}) => {
 
   return (

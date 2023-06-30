@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../../auth');
 const checkPerms = require('../../../../middleware/permissions');
-const ForumCategory = require('../../../../models/forum/ForumsCategory');
+const ForumCategory = require('../../../../models/forum/ForumCategory');
 
-// @route   GET api/forumCategories
+// @route   GET api/forums/categories
 // @desc    Get all forum categories
 // @access  Public
-router.get('/', checkPerms('read_forum_category'), async (req, res) => {
+router.get('/', auth, async (req, res) => {
   try {
     const categories = await ForumCategory.find().sort({ Sort: 1 });
     res.json(categories);

@@ -1,3 +1,6 @@
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
+
 const forumTopicNoteSchema = new Schema({
   TopicID: {
     type: Schema.Types.ObjectId,
@@ -17,4 +20,5 @@ const forumTopicNoteSchema = new Schema({
     type: String
   }
 });
+
 module.exports = ForumTopicNote = mongoose.model('ForumTopicNote', forumTopicNoteSchema);

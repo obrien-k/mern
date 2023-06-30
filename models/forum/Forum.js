@@ -48,21 +48,17 @@ const forumSchema = new Schema({
   LastPostID: {
     type: Schema.Types.ObjectId,
     ref: 'ForumPost',
-    required: true
   },
   LastPostAuthorID: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true
   },
   LastPostTopicID: {
     type: Schema.Types.ObjectId,
     ref: 'ForumTopic',
-    required: true
   },
   LastPostTime: {
     type: Date,
-    required: true,
     default: Date.now
   },
   AutoLock: {

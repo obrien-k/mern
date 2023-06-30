@@ -109,7 +109,7 @@ let userID =_id;
               <Link to="/requests.js">Requests</Link>
             </li>
             <li id="nav_forums" className={addClass(pageId, ['forums'], 'active')}>
-              <Link to="/forums.js">Forums</Link>
+              <Link to="/forums">Forums</Link>
             </li>
             <li id="nav_irc" className={addClass(pageId, ['chat'], 'active')}>
               <Link to="/wiki.js?action=article&name=irc">IRC</Link>

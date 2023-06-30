@@ -143,17 +143,14 @@ router.put(
   }
 );
 
-// @route   POST api/thread/edit
+// @route   PUT /threads/:id/edit
 // @desc    Edit a thread
 // @access  Private (Moderators or auto-transitioning)
-router.post(
-  '/edit',
+router.put(
+  '/:id/edit',
   [
     auth,
     [
-      check('threadId', 'Thread ID is required')
-        .not()
-        .isEmpty(),
       check('title', 'Title is required')
         .not()
         .isEmpty(),
@@ -171,21 +168,23 @@ router.post(
     }
 
     try {
-      const { threadId, title, forumId, ranking, locked, sticky } = req.body;
+      const { title, forumId, ranking, locked, sticky } = req.body;
 
-      // Check if the user has moderation permissions or is auto transitioning -- we can prob remove transition check
+      // Check if the user has moderation permissions or is auto transitioning
+      // Assuming checkPerms is a function that checks permissions
       if (!checkPerms(req.user, 'site_moderate_forums') && !req.body.transition) {
         return res.status(403).json({ msg: 'Not Authorized' });
       }
 
       // Find the thread
-      const thread = await Thread.findById(threadId);
+      const thread = await Thread.findById(req.params.id);
 
       if (!thread) {
         return res.status(404).json({ msg: 'Thread not found' });
       }
 
       // Check the write permissions for the forum
+      // Assuming Forum is a correct model or method to retrieve the forum details
       const forum = await Forum.findById(forumId);
       if (forum && forum.minClassWrite > req.user.class) {
         return res.status(403).json({ msg: 'Not Authorized' });
@@ -197,11 +196,11 @@ router.post(
       thread.ranking = ranking;
 
       if (typeof locked !== 'undefined') {
-        thread.is_locked = locked;
+        thread.Locked = locked; // Updated field name
       }
 
       if (typeof sticky !== 'undefined') {
-        thread.is_sticky = sticky;
+        thread.Sticky = sticky; // Updated field name
       }
 
       // Save the edited thread

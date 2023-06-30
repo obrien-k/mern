@@ -7,7 +7,7 @@ const auth = require('../../../../middleware/auth');
 const ForumPost = require('../../../../models/forum/ForumPost');
 const User = require('../../../../models/User');
 
-// @route   POST api/forum/post
+// @route   POST api/forums/posts
 // @desc    Create a forum post
 // @access  Private
 router.post(
@@ -48,7 +48,7 @@ router.post(
   }
 );
 
-// @route   GET api/forum/post
+// @route   GET api/forums/posts
 // @desc    Get all forum posts
 // @access  Private
 router.get('/', auth, async (req, res) => {
@@ -61,7 +61,7 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-// @route   GET api/forum/post/:id
+// @route   GET api/forums/post/:id
 // @desc    Get forum post by ID
 // @access  Private
 router.get('/:id', auth, async (req, res) => {
@@ -81,10 +81,10 @@ router.get('/:id', auth, async (req, res) => {
   }
 });
 
-// @route   DELETE api/forum/post/:id
+// @route   DELETE api/forums/posts/:id
 // @desc    Delete a forum post
 // @access  Private
-router.delete('/:id', [auth, checkPerms('delete_forum_post')], async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   try {
     const forumPost = await ForumPost.findById(req.params.id);
 

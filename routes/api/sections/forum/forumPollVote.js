@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../../../middleware/auth');
-const checkPerms = require('../../../middleware/checkPerms');
-const ForumPollVote = require('../../../models/ForumPollVote');
+const auth = require('../../../../middleware/auth');
+const checkPerms = require('../../../../middleware/permissions');
+const ForumPollVote = require('../../../../models/forum/ForumPollVote');
 
-// @route   POST api/forumPollVotes
+// @route   POST api/forums/poll-votes
 // @desc    Cast a vote in a poll
 // @access  Private
-router.post('/', [auth, checkPerms('cast_vote')], async (req, res) => {
+router.post('/', auth, async (req, res) => {
   try {
     const { TopicID, Vote } = req.body;
 

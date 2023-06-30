@@ -4,10 +4,10 @@ const auth = require('../../../../middleware/auth');
 const checkPerms = require('../../../../middleware/permissions');
 const ForumLastReadTopic = require('../../../../models/forum/ForumLastReadTopic');
 
-// @route   POST api/forumLastReadTopics
+// @route   POST api/forums/last-read-topics
 // @desc    Mark a topic as read by a user
 // @access  Private
-router.post('/', [auth, checkPerms('mark_topic_as_read')], async (req, res) => {
+router.post('/', auth, async (req, res) => {
   try {
     const { TopicID, PostID } = req.body;
 

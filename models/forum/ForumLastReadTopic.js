@@ -1,3 +1,6 @@
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
+
 const forumLastReadTopicSchema = new Schema({
   UserID: {
     type: Schema.Types.ObjectId,
@@ -15,4 +18,5 @@ const forumLastReadTopicSchema = new Schema({
     required: true
   }
 });
+
 module.exports = ForumLastReadTopic = mongoose.model('ForumLastReadTopic', forumLastReadTopicSchema);
