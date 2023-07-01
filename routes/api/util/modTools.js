@@ -2,6 +2,17 @@ const express = require('express');
 const router = express.Router();
 const User = require('../../../models/User');
 
+
+// mod
+router.post('/mod', async (req, res) => {
+    const { userIds, adminComment, banReason } = req.body;
+    try {  console.log(req.body)
+    }
+    catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
 router.post('/disable', async (req, res) => {
     const { userIds, adminComment, banReason } = req.body;
     try {

@@ -3,6 +3,9 @@ const cors = require('cors');
 const router = express.Router();
 const User = require('../../../models/User');
 const UserRank = require('../../../models/UserRank');
+const auth = require('../../../middleware/auth');
+
+// the auth/routing for this structure is bad, update this soon
 
 router.use(cors()); // Use the CORS middleware
 
@@ -78,21 +81,21 @@ router.get('/', async (req, res) => {
 });
 
 // Payments endpoint
-router.get('/payments', checkPerms('admin_permission_key'), (req, res) => { // Change 'admin_permission_key' to the correct permission key
+router.get('/payments', auth('admin_permission_key'), (req, res) => { // Change 'admin_permission_key' to the correct permission key
   // Implement the payments due functionality
   // ...
   res.send('Payments due for Admins');
 });
 
 // DB key endpoint
-router.get('/db_key', checkPerms('admin_permission_key'), (req, res) => { // Change 'admin_permission_key' to the correct permission key
+router.get('/db_key', auth('admin_permission_key'), (req, res) => { // Change 'admin_permission_key' to the correct permission key
   // Implement the DB key status functionality
   // ...
   res.send('DB key status for Admins');
 });
 
 // Periodic tasks endpoint
-router.get('/periodic_tasks', checkPerms('admin_permission_key'), (req, res) => { // Change 'admin_permission_key' to the correct permission key
+router.get('/periodic_tasks', auth('admin_permission_key'), (req, res) => { // Change 'admin_permission_key' to the correct permission key
   // Implement the periodic tasks functionality
   // ...
   res.send('Periodic tasks for Admins');

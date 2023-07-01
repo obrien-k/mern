@@ -1,8 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User');
+const User = require('../../../models/User');
+const auth = require('../../../middleware/auth');
 
-router.get('/permissions/:rank', async (req, res) => {
+router.get('/', auth(), async (req, res) => {
+  const permissions = await Permission.find();
+  res.json(permissions);
+});
+
+router.get('/:rank', auth(), async (req, res) => {
   try {
     const permissions = {
       ADMIN: '40',
@@ -11,7 +17,7 @@ router.get('/permissions/:rank', async (req, res) => {
       POWER: '4',
       ELITE: '5',
       VIP: '26',
-      TORRENT_MASTER: '25',
+      COMMUNITY_LEAD: '25',
       LEGEND: '27',
       CELEB: '31',
       MOD: '11',
@@ -21,10 +27,10 @@ router.get('/permissions/:rank', async (req, res) => {
       ARTIST: '19',
       DONOR: '20',
       FLS_TEAM: '23',
-      POWER_TM: '29',
-      ELITE_TM: '28',
+      POWER_CL: '29',
+      ELITE_CL: '28',
       FORUM_MOD: '21',
-      TORRENT_MOD: '22',
+      COMMUNITY_MOD: '22',
       INTERVIEWER: '30',
       DESIGNER: '32',
       SECURITY: '33',
@@ -35,7 +41,7 @@ router.get('/permissions/:rank', async (req, res) => {
       CHARLIE: '38',
       DELTA: '39',
       RECRUITER: '41',
-      ULTIMATE_TM: '48'
+      ULTIMATE_CL: '48'
     };
 
     const { rank } = req.params;
@@ -57,5 +63,24 @@ router.get('/permissions/:rank', async (req, res) => {
     res.status(500).json({ error: 'An error occurred while retrieving user permissions.' });
   }
 });
+
+router.post('/', auth(), async (req, res) => {
+  const permission = new Permission(req.body);
+  await permission.save();
+  res.json(permission);
+});
+
+router.put('/:id', auth('admin_manage_permissions'), async (req, res) => {
+  const permission = new Permission(req.body);
+  await permission.save();
+  res.json(permission);
+});
+
+
+router.delete('/:id', auth(), async (req, res) => {
+  await Permission.findByIdAndDelete(req.params.id);
+  res.json({message: 'Permission deleted'});
+});
+
 
 module.exports = router;

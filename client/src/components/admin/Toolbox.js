@@ -1,0 +1,72 @@
+import React from 'react';
+import { Link, Route, Routes } from 'react-router-dom';
+import PermissionManager from './PermissionManager';
+
+const Toolbox = ({userId}) => {
+    return (
+        <div id="content">
+            <div className="permissions">
+                {/* begin left column */}
+                <div className="permission_container">
+                    <div className="permission_subcontainer">
+                        <table className="layout">
+                            <thead>
+                                <tr className="colhead">
+                                    <td>Administration</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><Link to="/tools/permissions">Permissions manager</Link></td></tr>
+                                <tr><td><a href="/tools/staff_groups">Staff page group manager</a></td></tr>
+                                {/* ... other links */}
+                            </tbody>
+                        </table>
+                    </div>
+                    {/* ... other subcontainers */}
+                </div>
+                {/* begin middle column */}
+                <div className="permission_container">
+                    <div className="permission_subcontainer">
+                        <table className="layout">
+                            <thead>
+                                <tr className="colhead">
+                                    <td>User management</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><a href="/tools/create_user">Create user</a></td></tr>
+                                {/* ... other links */}
+                            </tbody>
+                        </table>
+                    </div>
+                    {/* ... other subcontainers */}
+                </div>
+                {/* begin right column */}
+                <div className="permission_container">
+                    <div className="permission_subcontainer">
+                        <table className="layout">
+                            <thead>
+                                <tr className="colhead">
+                                    <td>Site Information</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><a href="/tools/economic_stats">Economic stats</a></td></tr>
+                                {/* ... other links */}
+                            </tbody>
+                        </table>
+                    </div>
+                    {/* ... other subcontainers */}
+                </div>
+            </div>
+            <Routes>
+              <Route
+                  path="/tools/permissions"
+                  element={<PermissionManager userId={userId} />}
+                />
+            </Routes>
+        </div>
+    );
+};
+
+export default Toolbox;
