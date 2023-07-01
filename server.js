@@ -44,7 +44,7 @@ app.use('/api/forums/poll-vote', require('./routes/api/sections/forum/forumPollV
 app.use('/api/forums/posts', require('./routes/api/sections/forum/forumPost'));
 app.use('/api/forums/topics', require('./routes/api/sections/forum/forumTopic'));
 app.use('/api/forums/topics/notes', require('./routes/api/sections/forum/forumTopicNote'));
-//app.use('/api/forums', require('./routes/api/sections/forum/forumRoute'));
+app.use('/api/forums', require('./routes/api/sections/forum/forumRoute'));
 
 //app.use('/api/artist', require('./routes/api/artist'));
 app.use('/api/taskRunner', require('./routes/api/tasks/taskRunner'));

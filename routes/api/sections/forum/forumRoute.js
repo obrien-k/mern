@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../../auth');
-//const checkPerms = require('../../../../middleware/permissions');
+const auth = require('../../../../middleware/auth');
+const checkPerms = require('../../../../middleware/permissions');
 const Forum = require('../../../../models/forum/Forum');
 
 // @route   GET api/forums

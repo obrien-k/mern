@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
 import axios from 'axios';
 import InviteTree from './InviteTree';
 import PrivateHomepage from '../../pages/PrivateHomepage';
 
-const InviteForm = ({ userID, userName }) => {
-  console.log('userID', userID);
+const InviteForm = (props) => {
+  const { userId, userName } = props;
+  console.log('userId', userId);
   console.log('userName', userName);
+  console.log(props);
+  console.log(props.location);
   const [email, setEmail] = useState('');
   const [reason, setReason] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -22,7 +25,7 @@ const InviteForm = ({ userID, userName }) => {
     setSuccessMessage(''); 
   
     try {
-      await axios.post('/api/services/referral/create-invite', { service, email, userID, userName, reason });
+      await axios.post('/api/services/referral/create-invite', { service, email, userId, userName, reason });
       
       setSuccessMessage('Invitation sent successfully.');
     } catch (error) {
@@ -104,9 +107,9 @@ const InviteForm = ({ userID, userName }) => {
           </tbody>
         </table>
       </div>
-      <Routes location={window.location}>
+      <Routes path='/invite'>
         <Route path="/" element={<PrivateHomepage/>} />
-        <Route path="/user/invite-tree" element={<InviteTree userID={userID} />} />
+        <Route path="/user/invite-tree" element={<InviteTree userId={userId} />} />
       </Routes>
     </div>
   );

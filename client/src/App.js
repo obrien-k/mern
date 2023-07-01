@@ -20,9 +20,9 @@ if (token) {
   api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 }
 
-const AuthenticatedApp = () => (
+const AuthenticatedApp = ({userId, userName}) => (
   <React.Fragment>
-    <PrivateLayout pageTitle="Stellar">
+    <PrivateLayout pageTitle="Stellar" userId={userId} userName={userName}>
       <section className="container">
         <Alert />
         <Routes>
@@ -52,8 +52,9 @@ const PublicApp = () => (
 
 const AuthenticationCheck = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const userId = useSelector((state) => state.auth.userId);
-  const userName = useSelector((state) => state.auth.userName);
+  const userId = useSelector((state) => state.auth.user?._id);
+  const userName = useSelector((state) => state.auth.user?.username);
+console.log(userId);
 
   if (isAuthenticated) {
     return <AuthenticatedApp userId={userId} userName={userName} />;

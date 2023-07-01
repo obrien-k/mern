@@ -4,14 +4,15 @@ import '../../styles/layer_cake/style.css';
 import PrivateHeader from './PrivateHeader';
 import PrivateContent from './PrivateContent';
 
-const PrivateLayout= ({ pageTitle, children }) => {
+const PrivateLayout = ({ pageTitle, userId, userName, children }) => {
   return (
-      <div>
-      <PrivateHeader pageId={1} />
+    <div>
+      <PrivateHeader userId={userId} userName={userName} pageId={1} />
       <PrivateContent />
       {children}
     </div>
   );
 };
+
 
 export default PrivateLayout;
