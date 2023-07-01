@@ -24,7 +24,7 @@ Access the API via `http://localhost:3000/api/auth` (or the hostname:port set, i
 
 ## Database population
 
-The database isn't preloaded, but `./api/taskRunner` is a temporary solution that _should_ eventually lead to a "first run" task that pre-populates a new instance. Using the corresponding `./routes/api/tasks/*.*` files should generally be avoided unless certain it's necessary and should be considered "experimental" endpoints. An exception is the `./api/taskRunner/generate` endpoint, which generates some forum data and user ranks. The user rank data is good, but a lot of the forum data is fairly incompatible with our model so be wary of mis-placed references (e.g. ForumTopics missing related ForumPosts).
+The database isn't preloaded, but `api/taskRunner` is a temporary solution that _should_ eventually lead to a "first run" task that pre-populates a new instance. Using the corresponding `./routes/api/tasks/*.*` files should generally be avoided unless certain it's necessary and should be considered "experimental" endpoints. An exception is the `api/taskRunner/generate` endpoint, which generates some forum data and user ranks. The user rank data is good, but a lot of the forum data is fairly incompatible with our model so be wary of mis-placed references (e.g. ForumTopics missing related ForumPosts).
 
 ## Invitation system
 
