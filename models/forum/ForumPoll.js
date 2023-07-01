@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const forumPollSchema = new Schema({
   TopicID: {
     type: Schema.Types.ObjectId,
-    ref: 'ForumTopic',
+    ref: 'forumTopic',
     required: true
   },
   Question: {
@@ -27,4 +27,4 @@ const forumPollSchema = new Schema({
   }
 });
 
-module.exports = ForumPoll = mongoose.model('ForumPoll', forumPollSchema);
+module.exports = ForumPoll = mongoose.model('forumPoll', forumPollSchema);

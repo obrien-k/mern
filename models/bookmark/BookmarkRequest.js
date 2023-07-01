@@ -16,4 +16,4 @@ const BookmarkRequestSchema = new Schema({
     }
 });
 
-module.exports = BookmarkRequest = mongoose.model('BookmarkRequest', BookmarkRequestSchema);
+module.exports = BookmarkRequest = mongoose.model('bookmarkRequest', BookmarkRequestSchema);

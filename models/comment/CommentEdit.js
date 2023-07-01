@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const CommentEditSchema = new Schema({
     page: {
         type: String,
-        enum: ['forums', 'artist', 'collages', 'requests', 'torrents'],
+        enum: ['forums', 'artist', 'collages', 'requests', 'communities'],
         default: null
     },
     post_id: {
@@ -26,4 +26,4 @@ const CommentEditSchema = new Schema({
 
 CommentEditSchema.index({ page: 1, post_id: 1, edit_time: 1 });
 
-module.exports = CommentEdit = mongoose.model('CommentEdit', CommentEditSchema);
+module.exports = CommentEdit = mongoose.model('commentEdit', CommentEditSchema);

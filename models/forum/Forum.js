@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const forumSchema = new Schema({
   CategoryID: {
     type: Schema.Types.ObjectId,
-    ref: 'ForumCategory',
+    ref: 'forumCategory',
     required: true
   },
   Sort: {
@@ -37,15 +37,15 @@ const forumSchema = new Schema({
   },
   LastPostID: {
     type: Schema.Types.ObjectId,
-    ref: 'ForumPost',
+    ref: 'forumPost',
   },
   LastPostAuthorID: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'user',
   },
   LastPostTopicID: {
     type: Schema.Types.ObjectId,
-    ref: 'ForumTopic',
+    ref: 'forumTopic',
   },
   LastPostTime: {
     type: Date,
@@ -62,4 +62,4 @@ const forumSchema = new Schema({
   }
 });
 
-module.exports = Forum = mongoose.model('Forum', forumSchema);
+module.exports = Forum = mongoose.model('forum', forumSchema);

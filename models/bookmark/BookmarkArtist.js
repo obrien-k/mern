@@ -16,4 +16,4 @@ const BookmarkArtistSchema = new Schema({
     }
 });
 
-module.exports = BookmarkArtist = mongoose.model('BookmarkArtist', BookmarkArtistSchema);
+module.exports = BookmarkArtist = mongoose.model('bookmarkArtist', BookmarkArtistSchema);

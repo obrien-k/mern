@@ -12,7 +12,7 @@ const ThreadSchema = new Schema({
   }
 });
 
-const Thread = mongoose.model('Thread', ThreadSchema);
+const Thread = mongoose.model('thread', ThreadSchema);
 
 const ForumThreadSchema = new Schema(
   {
@@ -22,7 +22,7 @@ const ForumThreadSchema = new Schema(
     },
     forum_topic: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'ForumTopic',
+      ref: 'forumTopic',
       required: true
     },
     is_locked: {
@@ -59,10 +59,10 @@ const ForumThreadSchema = new Schema(
   { discriminatorKey: 'type' }
 );
 
-const ForumThread = Thread.discriminator('ForumThread', ForumThreadSchema);
+const ForumThread = Thread.discriminator('forumThread', ForumThreadSchema);
 
 const ApplicationThreadSchema = new Schema({}, { discriminatorKey: 'type' });
 
-const ApplicationThread = Thread.discriminator('ApplicationThread', ApplicationThreadSchema);
+const ApplicationThread = Thread.discriminator('applicationThread', ApplicationThreadSchema);
 
 module.exports = { Thread, ForumThread, ApplicationThread };

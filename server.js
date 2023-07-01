@@ -48,6 +48,7 @@ app.use('/api/forums', require('./routes/api/sections/forum/forumRoute'));
 
 //app.use('/api/artist', require('./routes/api/artist'));
 app.use('/api/taskRunner', require('./routes/api/tasks/taskRunner'));
+app.use('/api/taskRunner/fix-posts', require('./routes/api/tasks/fixForumPosts'));
 
 app.use('/api/tools', require('./routes/api/util/tools'));
 app.use('/api/check-ip-ban', require('./routes/api/util/checkIpBan'));

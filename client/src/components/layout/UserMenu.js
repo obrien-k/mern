@@ -35,10 +35,10 @@ const UserMenu = ({ pageId, userId, userName }) => {
         <div id="userinfo">
           <ul id="userinfo_username">
             <li id="nav_userinfo">
-              <a href={`/user/${userName}`} className="username">{userName}</a>
+              <a href={`/user/${user}`} className="username">{userName}</a>
             </li>
             <li id="nav_useredit">
-              <a href={`/user/edit/${userName}`}>Edit</a>
+              <a href={`/user/edit/${userId}`}>Edit</a>
             </li>
             <li id="nav_logout">
               <a href="/logout">Logout</a>

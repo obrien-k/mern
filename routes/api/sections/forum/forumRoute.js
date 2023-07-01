@@ -21,7 +21,6 @@ router.get('/', auth(), async (req, res, next) => {
   }
 });
 
-
 // @route   POST api/forums
 // @desc    Create a new forum
 // @access  Private

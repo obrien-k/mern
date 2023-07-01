@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Subscriptions from '../toast/Subscriptions';
 
-const PrivateFooter = ({ options, userSessions, scriptStartTime, siteLaunchYear, siteName }) => {
+const PrivateFooter = ({ userId, options, userSessions, scriptStartTime, siteLaunchYear, siteName }) => {
 
     const [load, setLoad] = useState([]);
     const [lastActive, setLastActive] = useState(null);

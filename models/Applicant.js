@@ -29,6 +29,6 @@ const applicantSchema = new mongoose.Schema({
   body: String
 });
 
-const Applicant = mongoose.model('Applicant', applicantSchema);
+const Applicant = mongoose.model('applicant', applicantSchema);
 
 module.exports = Applicant;

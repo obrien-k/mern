@@ -77,6 +77,10 @@ const UserSchema = new mongoose.Schema({
   warnedTimes: { type: Number, default: 0 },
   communityPass: String,
   settings: UserSettingsSchema,
+  forumPosts: [{
+    type: Schema.Types.ObjectId,
+    ref: 'ForumPost'
+  }],
 });
 
 module.exports = User = mongoose.model('user', UserSchema);

@@ -31,27 +31,30 @@ router.post('/', async (req, res) => {
       return res.status(404).json({ msg: 'Forum not found' });
     }
 
-    // Creating the original post
+    // Creating new ForumTopic
+    const newTopic = new ForumTopic({
+      Title,
+      AuthorID: req.user.id,
+      ForumID: forum._id,
+    });
+
+    // Save the new topic
+    const topic = await newTopic.save();
+
+    // Creating the original post with the associated TopicID
     const newPost = new ForumPost({
       AuthorID: req.user.id,
       ForumID: forum._id,
+      TopicID: topic._id,
       Body
     });
 
     // Save the original post
     const originalPost = await newPost.save();
 
-    // Creating new ForumTopic
-    const newTopic = new ForumTopic({
-      Title,
-      AuthorID: req.user.id,
-      ForumID: forum._id,
-      LastPostID: originalPost._id, 
-      LastPostAuthorID: req.user.id
-    });
-
-    // Save the new topic
-    const topic = await newTopic.save();
+    // Update the LastPostID of the topic
+    topic.LastPostID = originalPost._id;
+    await topic.save();
 
     res.json(topic);
 
@@ -60,5 +63,6 @@ router.post('/', async (req, res) => {
     res.status(500).send('Server Error');
   }
 });
+
 
 module.exports = router;

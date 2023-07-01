@@ -21,11 +21,11 @@ const PrivateHeader = ({ alerts, modBar, userId, userName, bonusPoints, bytesUpl
       <Alert alerts={alerts} />
       <ModBar modBarItems={modBar} />
       <Routes>
-      <Route path="/" element={<PrivateHomepage />} />
+      {/*removing this hasn't broken anything yet <Route path="/" element={<PrivateHomepage userId={userId} />} />*/}
         <Route
           path="/invite"
           element={<InviteForm userId={userId} userName={userName} />}
-        />
+  />
       </Routes>
     </div>
   );

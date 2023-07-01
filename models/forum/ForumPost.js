@@ -4,13 +4,13 @@ const { Schema } = mongoose;
 const forumPostSchema = new Schema({
   TopicID: {
     type: Schema.Types.ObjectId,
-    ref: 'ForumTopic',
+    ref: 'forumTopic',
     required: true,
     index: true
   },
   AuthorID: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'user',
     required: true
   },
   AddedTime: {
@@ -25,11 +25,11 @@ const forumPostSchema = new Schema({
   },
   EditedUserID: [{
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'user'
   }],
   EditedTime: [{
     type: Date
   }]
 });
 
-module.exports = ForumPost = mongoose.model('ForumPost', forumPostSchema);
+module.exports = ForumPost = mongoose.model('forumPost', forumPostSchema);

@@ -8,7 +8,7 @@ const PrivateLayout = ({ pageTitle, userId, userName, children }) => {
   return (
     <div>
       <PrivateHeader userId={userId} userName={userName} pageId={1} />
-      <PrivateContent />
+      <PrivateContent userId={userId}/>
       {children}
     </div>
   );

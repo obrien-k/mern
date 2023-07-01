@@ -24,4 +24,4 @@ const ArtistTagSchema = new Schema({
     }
 });
 
-module.exports = ArtistTag = mongoose.model('ArtistTag', ArtistTagSchema);
+module.exports = ArtistTag = mongoose.model('artistTag', ArtistTagSchema);

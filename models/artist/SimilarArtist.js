@@ -39,4 +39,4 @@ const SimilarArtistSchema = new Schema({
     }
 });
 
-module.exports = SimilarArtist = mongoose.model('SimilarArtist', SimilarArtistSchema);
+module.exports = SimilarArtist = mongoose.model('similarArtist', SimilarArtistSchema);

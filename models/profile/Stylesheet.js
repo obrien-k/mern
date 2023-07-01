@@ -15,4 +15,4 @@ const stylesheetSchema = new mongoose.Schema({
   }
 });
 
-module.exports = Stylesheet = mongoose.model('Stylesheet', stylesheetSchema);
+module.exports = Stylesheet = mongoose.model('stylesheet', stylesheetSchema);
