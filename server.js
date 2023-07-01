@@ -44,13 +44,19 @@ app.use('/api/forums/poll-vote', require('./routes/api/sections/forum/forumPollV
 app.use('/api/forums/posts', require('./routes/api/sections/forum/forumPost'));
 app.use('/api/forums/topics', require('./routes/api/sections/forum/forumTopic'));
 app.use('/api/forums/topics/notes', require('./routes/api/sections/forum/forumTopicNote'));
-app.use('/api/forums', require('./routes/api/sections/forum/forumRoute'));
+//app.use('/api/forums', require('./routes/api/sections/forum/forumRoute'));
 
 //app.use('/api/artist', require('./routes/api/artist'));
 app.use('/api/taskRunner', require('./routes/api/tasks/taskRunner'));
 
 app.use('/api/tools', require('./routes/api/util/tools'));
 app.use('/api/check-ip-ban', require('./routes/api/util/checkIpBan'));
+
+// handle any downstream errors
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Server Error');
+});
 
 const PORT = process.env.PORT || 5000;
 

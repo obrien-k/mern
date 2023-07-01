@@ -9,6 +9,10 @@ const api = axios.create({
     'Content-Type': 'application/json'
   }
 });
+
+api.CancelToken = axios.CancelToken;
+api.isCancel = axios.isCancel;
+
 /*
   NOTE: intercept any error responses from the api
  and check if the token is no longer valid.
