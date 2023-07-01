@@ -1,38 +1,30 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { Link,useParams } from 'react-router-dom';
+import { useForumData } from '../../../hooks/useForumData';
 import './ForumList.css';
+import NewTopicForm from './NewTopicForm';
 
 const ForumPage = () => {
   const { forumId } = useParams();
 
-  // Fetch forum data and topics based on the forumId
+  const { data: forumData, isLoading, errorMessage } = useForumData(forumId);
 
-  // Mock data for demonstration
-  const forumData = {
-    id: forumId,
-    name: 'Announcements',
-  };
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-  const topics = [
-    {
-      id: '1',
-      title: 'tst',
-      author: 'admin',
-      lastPostTime: '2 days ago',
-      numReplies: 0,
-    },
-    // Add more topics as needed
-  ];
-
+  if (errorMessage) {
+    return <div>Error: {errorMessage}</div>;
+  }
   return (
     <div className="thin">
       <h2>
         <a href="forums.php">Forums</a> &gt; {forumData.name}
       </h2>
       <div className="linkbox">
-        <a href={`forums.php?action=new&amp;forumid=${forumData.id}`} className="brackets">
+        <Link to={`forums/topics/${forumData.id}/new-topic`} className="brackets">
           New thread
-        </a>
+        </Link>
         {/* Add more links as needed */}
       </div>
       <table className="forum_index m_table" width="100%">
@@ -45,7 +37,7 @@ const ForumPage = () => {
             </td>
             <td style={{ width: '14%' }}>Author</td>
           </tr>
-          {topics.map((topic) => (
+          {forumData && forumData.topics && forumData.topics.map((topic) => (
             <tr key={topic.id} className="rowb">
               <td className="td_read read tooltip"></td>
               <td className="td_latest">
@@ -78,12 +70,12 @@ const ForumPage = () => {
       </table>
       <div className="linkbox pager">{/* Add pager links here */}</div>
       <div className="linkbox">
-        <a
-          href={`forums.php?action=catchup&amp;forumid=${forumData.id}&amp;auth=49bfca1e8f1be12d93dde136ec364d0f`}
+        <Link
+          to={`forums/catchup/forum/${forumData.id}`}
           className="brackets"
         >
           Catch up
-        </a>
+        </Link>
       </div>
     </div>
   );

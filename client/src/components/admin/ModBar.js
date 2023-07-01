@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import api from '../../utils/api';
-import Toolbox from './Toolbox';
 
 const ModBar = ({userId}) => {
   const [modBar, setModBar] = useState([]);
@@ -36,12 +35,6 @@ const ModBar = ({userId}) => {
         {/* Link to navigate to Toolbox component */}
         <Link to="/tools">Go to Toolbox</Link>
       </div>
-      <Routes>
-      <Route
-          path="/tools"
-          element={<Toolbox userId={userId} />}
-        />
-      </Routes>
     </div>
   );
 };

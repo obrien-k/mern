@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
-import InviteTree from './InviteTree';
-import PrivateHomepage from '../../pages/PrivateHomepage';
 
 const InviteForm = (props) => {
   const { userId, userName } = props;
@@ -104,10 +102,6 @@ const InviteForm = (props) => {
           </tbody>
         </table>
       </div>
-      <Routes>
-        <Route path="/" element={<PrivateHomepage/>} />
-        <Route path="/user/invite-tree" element={<InviteTree userId={userId} />} />
-      </Routes>
     </div>
   );
 };

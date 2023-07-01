@@ -35,6 +35,10 @@ const forumSchema = new Schema({
     required: true,
     default: 0
   },
+  ForumTopics: [{
+    type: Schema.Types.ObjectId,
+    ref: 'forumTopic'
+  }],
   LastPostID: {
     type: Schema.Types.ObjectId,
     ref: 'forumPost',

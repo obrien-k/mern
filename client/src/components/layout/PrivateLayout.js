@@ -14,5 +14,4 @@ const PrivateLayout = ({ pageTitle, userId, userName, children }) => {
   );
 };
 
-
 export default PrivateLayout;

@@ -1,6 +1,5 @@
 import React from 'react';
-import { Link, Route, Routes } from 'react-router-dom';
-import PermissionManager from './PermissionManager';
+import { Link } from 'react-router-dom';
 
 const Toolbox = ({userId}) => {
     return (
@@ -59,12 +58,6 @@ const Toolbox = ({userId}) => {
                     {/* ... other subcontainers */}
                 </div>
             </div>
-            <Routes>
-              <Route
-                  path="/tools/permissions"
-                  element={<PermissionManager userId={userId} />}
-                />
-            </Routes>
         </div>
     );
 };

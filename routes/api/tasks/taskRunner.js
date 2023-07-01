@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const grantInvites = require('./grantInvites');
 const expireInvites = require('./expireInvites');
-const generateTestData = require('./generateRanks');
+const generateTestData = require('./generateTestData');
 const fixMissingTopicID = require('./fixMissingTopicId');
 
 router.get('/grant-invites', async (req, res) => {

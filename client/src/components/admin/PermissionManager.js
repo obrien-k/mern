@@ -9,20 +9,20 @@ const PermissionManager = () => {
     }, []);
 
     const fetchPermissions = async () => {
-        const response = await axios.get('/api/permissions');
+        const response = await axios.get('/api/tools/permissions/');
         setPermissions(response.data);
     };
 
     const handleEdit = async (id) => {
       if (window.confirm('Are you sure you want to edit this permission class?')) {
-          await axios.put(`/api/permissions/${id}`);
+          await axios.put(`/api/tools/permissions/${id}`);
           fetchPermissions();
       }
   };
 
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to remove this permission class?')) {
-            await axios.delete(`/api/permissions/${id}`);
+            await axios.delete(`/api/tools/permissions/${id}`);
             fetchPermissions();
         }
     };
