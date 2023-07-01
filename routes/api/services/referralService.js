@@ -3,6 +3,8 @@ const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const User = require('../../../models/User');
 const Invite = require('../../../models/profile/invite');
+const convertToObjectId = require('../util/objectId');
+
 require('dotenv').config()
 
 class ReferralService {
@@ -44,14 +46,20 @@ class ReferralService {
     */
   }
 
-  async createInvite(service, email, userID, userName, reason) {
-    console.log(userID);
+  async createInvite(service, email, userId, userName, reason) {
+    console.log(userId);
     console.log(reason);
+    const userObjectId = convertToObjectId(userId);
+
+    const user = await User.findById(userObjectId);
+    if (!user) {
+      throw new Error('User not found');
+    }
     if (typeof email !== 'string') {
       throw new Error('Invalid email parameter.');
     }
     try {
-      await this.canInviteUser(userID);
+      await this.canInviteUser(user);
     } catch (error) {
       throw new Error('Failed to verify user invitation privileges.');
     }
@@ -67,16 +75,12 @@ class ReferralService {
         }
       }*/
 
-      const user = await User.findById(userID);
-
-      if (!user) {
-        throw new Error('User not found');
-      }
+      
 
       // Associate the invite with the user
       try {
         const existingInvite = await Invite.findOne({
-          InviterID: userID,
+          InviterID: user._id,
           Email: { $regex: `^${curEmail}$`, $options: 'i' },
         });
   
@@ -97,7 +101,7 @@ class ReferralService {
       try {
         // Save invite to the database
         invite = await Invite.create({
-          InviterID: userID,
+          InviterID: user._id,
           InviteKey: inviteKey,
           Email: curEmail,
           Expires: inviteExpires,

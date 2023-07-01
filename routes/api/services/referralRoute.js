@@ -53,9 +53,9 @@ router.get('/verify-invite-key', async (req, res) => {
 });
 
 router.post('/create-invite', async (req, res) => {
-  const { email, service, reason, userID, userName } = req.body;
+  const { email, service, reason, userId, userName } = req.body;
   try {
-    await referralService.createInvite(service, email, userID, userName, reason);
+    await referralService.createInvite(service, email, userId, userName, reason);
     res.json({ success: true });
   } catch (error) {
     console.error('Error:', error);

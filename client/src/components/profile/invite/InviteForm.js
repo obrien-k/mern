@@ -6,10 +6,6 @@ import PrivateHomepage from '../../pages/PrivateHomepage';
 
 const InviteForm = (props) => {
   const { userId, userName } = props;
-  console.log('userId', userId);
-  console.log('userName', userName);
-  console.log(props);
-  console.log(props.location);
   const [email, setEmail] = useState('');
   const [reason, setReason] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -25,6 +21,7 @@ const InviteForm = (props) => {
     setSuccessMessage(''); 
   
     try {
+      console.log(userId + 'userId before axios post');
       await axios.post('/api/services/referral/create-invite', { service, email, userId, userName, reason });
       
       setSuccessMessage('Invitation sent successfully.');
@@ -107,7 +104,7 @@ const InviteForm = (props) => {
           </tbody>
         </table>
       </div>
-      <Routes path='/invite'>
+      <Routes>
         <Route path="/" element={<PrivateHomepage/>} />
         <Route path="/user/invite-tree" element={<InviteTree userId={userId} />} />
       </Routes>

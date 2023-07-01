@@ -6,10 +6,11 @@ import ModBar from '../admin/ModBar';
 import PrivateHomepage from '../pages/PrivateHomepage';
 import InviteForm from '../profile/invite/InviteForm';
 
-const PrivateHeader = ({ alerts, modBar, userId, userName,bonusPoints, bytesUploaded, bytesDownloaded, requiredRatio, flTokens }) => {
+const PrivateHeader = ({ alerts, modBar, userId, userName, bonusPoints, bytesUploaded, bytesDownloaded, requiredRatio, flTokens }) => {
   return (
     <div id="wrapper">
       <UserMenu
+        userId={userId}
         username={userName}
         bonusPoints={bonusPoints}
         bytesUploaded={bytesUploaded}

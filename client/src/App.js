@@ -54,7 +54,6 @@ const AuthenticationCheck = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const userId = useSelector((state) => state.auth.user?._id);
   const userName = useSelector((state) => state.auth.user?.username);
-console.log(userId);
 
   if (isAuthenticated) {
     return <AuthenticatedApp userId={userId} userName={userName} />;
