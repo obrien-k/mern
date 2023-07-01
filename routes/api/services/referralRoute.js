@@ -46,21 +46,22 @@ router.get('/verify-invite-key', async (req, res) => {
     if (new Date() > invite.Expires) {
       return res.status(400).json({ error: 'Invite key is no longer valid' });
     }
-    res.json({ success: true });
+    res.json({ success: true, invite });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
 router.post('/create-invite', async (req, res) => {
-  const { email, service, reason, userID } = req.body;
+  const { email, service, reason, userId, userName } = req.body;
   try {
-    await referralService.createInvite(service, email, userID, reason);
+    await referralService.createInvite(service, email, userId, userName, reason);
     res.json({ success: true });
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ Message: 'An internal server error occurred while creating the invite.', error: error.message });
   }
 });
+
 
 module.exports = router;

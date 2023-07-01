@@ -13,7 +13,7 @@ const User = require('../../models/User');
 router.post(
   '/',
   [
-    auth,
+    auth(),
     [
       check('type', 'Type is required')
         .not()
@@ -43,7 +43,7 @@ router.post(
 // @route   GET /threads/:id
 // @desc    Get a thread by its ID
 // @access  Private
-router.get('/:id', auth, async (req, res) => {
+router.get('/:id', auth(), async (req, res) => {
   try {
     const thread = await Thread.findById(req.params.id);
     if (!thread) {
@@ -65,7 +65,7 @@ router.get('/:id', auth, async (req, res) => {
 router.post(
   '/:id/notes',
   [
-    auth,
+    auth(),
     [
       check('text', 'Text is required')
         .not()
@@ -105,7 +105,7 @@ router.post(
 router.put(
   '/:id/notes/:noteId',
   [
-    auth,
+    auth(),
     [
       check('text', 'Text is required')
         .not()
@@ -143,10 +143,84 @@ router.put(
   }
 );
 
+// @route   PUT /threads/:id/edit
+// @desc    Edit a thread
+// @access  Private (Moderators or auto-transitioning)
+router.put(
+  '/:id/edit',
+  [
+    auth(),
+    [
+      check('title', 'Title is required')
+        .not()
+        .isEmpty(),
+      check('forumId', 'Forum ID is required')
+        .not()
+        .isEmpty(),
+      check('ranking', 'Ranking must be a non-negative number')
+        .isInt({ min: 0 })
+    ]
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    try {
+      const { title, forumId, ranking, locked, sticky } = req.body;
+
+      // Check if the user has moderation permissions or is auto transitioning
+      // Assuming checkPerms is a function that checks permissions
+      if (!checkPerms(req.user, 'site_moderate_forums') && !req.body.transition) {
+        return res.status(403).json({ msg: 'Not Authorized' });
+      }
+
+      // Find the thread
+      const thread = await Thread.findById(req.params.id);
+
+      if (!thread) {
+        return res.status(404).json({ msg: 'Thread not found' });
+      }
+
+      // Check the write permissions for the forum
+      // Assuming Forum is a correct model or method to retrieve the forum details
+      const forum = await Forum.findById(forumId);
+      if (forum && forum.minClassWrite > req.user.class) {
+        return res.status(403).json({ msg: 'Not Authorized' });
+      }
+
+      // Edit the thread
+      thread.title = title;
+      thread.forum = forumId;
+      thread.ranking = ranking;
+
+      if (typeof locked !== 'undefined') {
+        thread.Locked = locked; // Updated field name
+      }
+
+      if (typeof sticky !== 'undefined') {
+        thread.Sticky = sticky; // Updated field name
+      }
+
+      // Save the edited thread
+      await thread.save();
+
+      res.json(thread);
+    } catch (err) {
+      console.error(err.message);
+      if (err.kind === 'ObjectId') {
+        return res.status(404).json({ msg: 'Thread not found' });
+      }
+      res.status(500).send('Server Error');
+    }
+  }
+);
+
 // @route   DELETE /threads/:id/notes/:noteId
 // @desc    Delete a note from a thread
 // @access  Private
-router.delete('/:id/notes/:noteId', auth, async (req, res) => {
+router.delete('/:id/notes/:noteId', auth(), async (req, res) => {
   try {
     const note = await Note.findById(req.params.noteId);
     if (!note) {

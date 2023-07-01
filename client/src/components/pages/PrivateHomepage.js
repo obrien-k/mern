@@ -8,7 +8,7 @@ import News from './News';
 import sampleData from './sampleData.json'; // temp
 import PrivateFooter from '../layout/PrivateFooter';
 
-function PrivateHomepage() {
+function PrivateHomepage({userId}) {
   console.log("Rendering PrivateHomepage");
     const [data, setData] = useState(null);
 
@@ -37,6 +37,7 @@ function PrivateHomepage() {
             </div>
            </div>
             <PrivateFooter
+            userId={userId}
             options={data?.options}
             userSessions={data?.userSessions}
             scriptStartTime={data?.scriptStartTime}

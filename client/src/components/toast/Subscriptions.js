@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const Subscriptions = () => {
+const Subscriptions = ({userId}) => {
     const [subscriptions, setSubscriptions] = useState([]);
     const [commentSubscriptions, setCommentSubscriptions] = useState([]);
     const [hasNewSubscriptions, setHasNewSubscriptions] = useState(false);
-    const userId = 'admin';
+    
     useEffect(() => {
         fetchSubscriptions();
         fetchCommentSubscriptions();

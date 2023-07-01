@@ -16,4 +16,4 @@ const BookmarkCollageSchema = new Schema({
     }
 });
 
-module.exports = BookmarkCollage = mongoose.model('BookmarkCollage', BookmarkCollageSchema);
+module.exports = BookmarkCollage = mongoose.model('bookmarkCollage', BookmarkCollageSchema);

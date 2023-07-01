@@ -1,14 +1,13 @@
-// routes/forumLastReadTopics.js
-
 const express = require('express');
 const router = express.Router();
-const auth = require('../../middleware/auth');
-const ForumLastReadTopic = require('../../models/ForumLastReadTopic');
+const auth = require('../../../../middleware/auth');
+//const checkPerms = require('../../../../middleware/permissions');
+const ForumLastReadTopic = require('../../../../models/forum/ForumLastReadTopic');
 
-// @route   POST api/forumLastReadTopics
+// @route   POST api/forums/last-read-topics
 // @desc    Mark a topic as read by a user
 // @access  Private
-router.post('/', auth, async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { TopicID, PostID } = req.body;
 

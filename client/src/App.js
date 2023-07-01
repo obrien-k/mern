@@ -1,36 +1,23 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import api from './utils/api';
 
-import PrivateHomepage from './components/pages/PrivateHomepage';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import Alert from './components/layout/Alert';
 
 import PrivateLayout from './components/layout/PrivateLayout';
+import PrivateHomepage from './components/pages/PrivateHomepage';
+
 import PublicLayout from './components/layout/PublicLayout';
+import PublicLanding from './components/layout/PublicLanding';
 
 import store from './store';
-import PublicLanding from './components/layout/PublicLanding';
-import { Provider } from 'react-redux';
 
-const token = localStorage.getItem('token');
-if (token) {
-  api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-}
-
-const AuthenticatedApp = () => (
+const AuthenticatedApp = ({userId, userName}) => (
   <React.Fragment>
-    <PrivateLayout pageTitle="Stellar">
-      <section className="container">
-        <Alert />
-        <Routes>
-          <Route path="/*" element={<PrivateHomepage />} />
-          <Route path="/login" element={<PrivateHomepage />} />
-          <Route path="/logout" element={<PublicLanding />} />
-        </Routes>
-      </section>
+    <PrivateLayout pageTitle="Stellar" userId={userId} userName={userName}>
     </PrivateLayout>
   </React.Fragment>
 );
@@ -41,9 +28,9 @@ const PublicApp = () => (
       <section className="container">
         <Alert />
         <Routes>
-          <Route path="/*" element={<PublicLayout />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/*" element={<PublicLanding />} />
         </Routes>
       </section>
     </PublicLayout>
@@ -52,10 +39,23 @@ const PublicApp = () => (
 
 const AuthenticationCheck = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  return isAuthenticated ? <AuthenticatedApp /> : <PublicApp />;
+  const userId = useSelector((state) => state.auth.user?._id);
+  const userName = useSelector((state) => state.auth.user?.username);
+
+  if (isAuthenticated) {
+    return <AuthenticatedApp userId={userId} userName={userName} />;
+  } else {
+    return <PublicApp />;
+  }
 };
 
 const App = () => {
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
+  }, []);
   return (
     <Provider store={store}>
       <Router>
@@ -64,5 +64,6 @@ const App = () => {
     </Provider>
   );
 };
+
 
 export default App;

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-const InviteForm = ({ userID }) => {
-  console.log('userID', userID);
+const InviteForm = (props) => {
+  const { userId, userName } = props;
   const [email, setEmail] = useState('');
   const [reason, setReason] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -18,25 +19,24 @@ const InviteForm = ({ userID }) => {
     setSuccessMessage(''); 
   
     try {
-      await axios.post('/api/services/referral/create-invite', { service, email, userID, reason });
+      console.log(userId + 'userId before axios post');
+      await axios.post('/api/services/referral/create-invite', { service, email, userId, userName, reason });
       
       setSuccessMessage('Invitation sent successfully.');
     } catch (error) {
-      setErrorMessage(error.response?.data?.Message || 'An error occurred while creating the invite.');
+      setErrorMessage(error.response?.data?.error || 'An error occurred while creating the invite.');
     }
   };
   
-  
-
   return (
     <div>
       <h2>
         <a href="/user/1">admin</a> &gt; Invites
       </h2>
       <div className="linkbox">
-        <a href="/user/invite-tree" className="brackets">
+        <Link to="/user/invite-tree" className="brackets">
           Invite tree
-        </a>
+        </Link>
       </div>
       <div className="box pad">
         <p>
@@ -73,6 +73,7 @@ const InviteForm = ({ userID }) => {
       </div>
       <h3>Invitee list</h3>
       <div className="box pad">
+        
         <table className="invite_table m_table" width="100%">
           <tbody>
             <tr className="colhead">

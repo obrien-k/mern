@@ -3,6 +3,9 @@ const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const User = require('../../../models/User');
 const Invite = require('../../../models/profile/invite');
+const convertToObjectId = require('../util/objectId');
+
+require('dotenv').config()
 
 class ReferralService {
   constructor() {
@@ -43,13 +46,20 @@ class ReferralService {
     */
   }
 
-  async createInvite(service, email, userID, reason) {
-    console.log(userID);
+  async createInvite(service, email, userId, userName, reason) {
+    console.log(userId);
+    console.log(reason);
+    const userObjectId = convertToObjectId(userId);
+
+    const user = await User.findById(userObjectId);
+    if (!user) {
+      throw new Error('User not found');
+    }
     if (typeof email !== 'string') {
       throw new Error('Invalid email parameter.');
     }
     try {
-      await this.canInviteUser(userID);
+      await this.canInviteUser(user);
     } catch (error) {
       throw new Error('Failed to verify user invitation privileges.');
     }
@@ -65,30 +75,24 @@ class ReferralService {
         }
       }*/
 
-      const user = await User.findById(userID);
+      
 
-      if (!user) {
-        throw new Error('User not found');
-      }
-
+      // Associate the invite with the user
       try {
         const existingInvite = await Invite.findOne({
-          InviterID: userID,
+          InviterID: user._id,
           Email: { $regex: `^${curEmail}$`, $options: 'i' },
         });
-
+  
         if (existingInvite) {
-          return { success: false, message: 'You already have a pending invite to that address!' };
-      }
-      
-      } catch (error) {
-        if (error.message === 'You already have a pending invite to that address!') {
-          throw error;
-        } else {
-          throw new Error('Error querying for existing invites.');
+          throw new Error('You already have a pending invite to that address!');
         }
-      }
-
+        } catch (error) {
+            console.error("Original error message:", error.message);
+            console.error("Original error stack:", error.stack);
+            
+            throw new Error(error.message || 'Error querying for existing invites.');
+        }
 
       const inviteKey = crypto.randomBytes(16).toString('hex');
       const inviteExpires = Date.now() + 3 * 24 * 60 * 60 * 1000; // 3 days
@@ -97,40 +101,22 @@ class ReferralService {
       try {
         // Save invite to the database
         invite = await Invite.create({
-          InviterID: userID,
+          InviterID: user._id,
           InviteKey: inviteKey,
           Email: curEmail,
           Expires: inviteExpires,
-          Reason: reason,
+          Reason: reason
         });
       } catch (error) {
         console.error("Original error message:", error.message);
         throw new Error('Failed to create invite in database.');
       }
-  
-      // Associate the invite with the user
-      try {
-      const existingInvite = await Invite.findOne({
-        InviterID: userID,
-        Email: { $regex: `^${curEmail}$`, $options: 'i' },
-      });
-
-      if (existingInvite) {
-        throw new Error('You already have a pending invite to that address!');
-      }
-      } catch (error) {
-          console.error("Original error message:", error.message);
-          console.error("Original error stack:", error.stack);
-          
-          throw new Error('Error querying for existing invites.');
-      }
-
-    
+      
       const siteName = 'Stellar'; // Replace with config
       const siteURL = 'https://stellargra.ph'; // Replace with config
 
       const message = `
-        The user ${username} has invited you to join ${siteName} and has specified this address (${curEmail}) as your email address. If you do not know this person, please ignore this email, and do not reply.
+        The user ${userName} has invited you to join ${siteName} and has specified this address (${curEmail}) as your email address. If you do not know this person, please ignore this email, and do not reply.
 
         Please note that selling invites, trading invites, and giving invites away publicly (e.g., on a forum) is strictly forbidden. If you have received your invite as a result of any of these things, do not bother signing up - you will be banned and lose your chances of ever signing up legitimately.
 
@@ -153,23 +139,25 @@ class ReferralService {
         secure: false, // use SSL
         auth: {
           user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASSWORD,
+          pass: process.env.EMAIL_PASS,
         },
       });
-
+      
       const mailOptions = {
         from: process.env.EMAIL_USER,
         to: curEmail,
         subject: `You have been invited to ${siteName}`,
         text: message,
       };
-
+      
       try {
         await transporter.sendMail(mailOptions);
+        console.log('Invitation email sent successfully.');
       } catch (error) {
-        console.error('Error sending email: ', error);
+        console.error('Error sending invitation email:', error);
         throw new Error('Failed to send the invitation email.');
       }
+      
     }
   }
 }

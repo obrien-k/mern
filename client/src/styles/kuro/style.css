@@ -1,4 +1,4 @@
-/* Layout (Torrents page) */
+/* Layout (Communities page) */
 
 /* We're going to opt for the category icon method for now, tags_* is also available */
 .cats_applications { width: 28px; height: 28px; background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAImSURBVHjatJa7bupAEIbHlhFQgEhBQUdFSyIk2pAGGgryBIEGShIQtZ0nIKelIh3dISU0IQ+AkpomVNAiQIg7Z8YaH6HIDouxV/rllbXeb+e6lg6HA0iSBG6MdDodwkcepXY6nSt6p7gAuEalUHFUDtVE3RhrpEstREgUH2XenOY91Bfqg+bdbndC64jjlIWfqDaqgJv3Tq42yHatQwltQByddQmQoe8oTRQoO+DSJ4ohQq9FFl8MxLhRghRQfzlL3QUytM3ZmT+1VihLE4kEnfwRdcs1RmPI6f/GWUpl8IB6uQiYTCbzu92ujtNQIBCAVCoF2WwWYrFYtN/vRxuNRm4wGNRns9nQ7/efLAvLwud41I/dtN/vYbPZwGq1gnA4TFBAGBSLRRiNRtBqtSbT6fQPHkSzKj9TIMPeuU2ZDgIvFguIx+OgaRpEIhEYj8dQrVbpEE2EFoSAnN4EC4nEd7lcgizLoKqq7m4apVIJCIhq/gQqFpaFRDPU5/PBdruFWq0GlUpFf0eWCsUQgZ+/ufG3sV6vYT6fg9frBY/H08NxZ+ZS5cg6zS5M30hRIBgM6k/uPtYWZjIZula+HboWn7ERWGap0WnKDsHaZjCz1pZzAGb0VKFeGnUAdmfc7m43b4Lci8CcAE7YsqHoB/JR57d1+fJ9COcCX23A6Kepee5HBvCF3eMq7D+QA14QhNqGmfVSam2qSV1+8S/E67kx+9lp/gkwAI16A6sS8qrsAAAAAElFTkSuQmCC') no-repeat center center; }
@@ -650,7 +650,7 @@ ul.poll li.graph {
     padding-left: 20px;
 }
 
-/* Layout (Torrents page) */
+/* Layout (Communities page) */
 
 .show_torrents {
     width: 28px;

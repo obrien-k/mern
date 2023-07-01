@@ -8,4 +8,4 @@ const ArtistAliasSchema = new mongoose.Schema({
   "userID": 456
 });
 
-module.exports = ArtistAlias = mongoose.model('apiApplication', ArtistAliasSchema);
+module.exports = ArtistAlias = mongoose.model('artistAlias', ArtistAliasSchema);

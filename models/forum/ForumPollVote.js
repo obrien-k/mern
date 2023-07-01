@@ -1,12 +1,15 @@
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
+
 const forumPollVoteSchema = new Schema({
   TopicID: {
     type: Schema.Types.ObjectId,
-    ref: 'ForumTopic',
+    ref: 'forumTopic',
     required: true
   },
   UserID: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'user',
     required: true
   },
   Vote: {
@@ -18,4 +21,5 @@ const forumPollVoteSchema = new Schema({
     }
   }
 });
-module.exports = forumPollVote = mongoose.model('ForumPollVote', forumPollVoteSchema);
+
+module.exports = forumPollVote = mongoose.model('forumPollVote', forumPollVoteSchema);

@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const CommentSchema = new Schema({
     page: {
         type: String,
-        enum: ['artist', 'collages', 'requests', 'torrents'],
+        enum: ['artist', 'collages', 'requests', 'communities'],
         required: true
     },
     page_id: {
@@ -32,4 +32,4 @@ const CommentSchema = new Schema({
     }
 });
 
-module.exports = Comment = mongoose.model('Comment', CommentSchema);
+module.exports = Comment = mongoose.model('comment', CommentSchema);

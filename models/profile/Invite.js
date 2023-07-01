@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const inviteSchema = new Schema({
   InviterID: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'user',
     required: true
   },
   InviteKey: {
@@ -29,4 +29,4 @@ const inviteSchema = new Schema({
 
 inviteSchema.index({ Expires: 1 });
 
-module.exports = Invite = mongoose.model('Invite', inviteSchema);
+module.exports = Invite = mongoose.model('invite', inviteSchema);

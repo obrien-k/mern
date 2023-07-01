@@ -1,4 +1,4 @@
-/* Layout (Torrents page) */
+/* Layout (Communities page) */
 
 /* We're going to opt for the category icon method for now, tags_* is also available */
 .cats_applications {
@@ -599,7 +599,7 @@ ul.poll li.graph {
   padding-left: 20px;
 }
 
-/* Layout (Torrents page) */
+/* Layout (Communities page) */
 
 .show_torrents {
   background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAOpJREFUeNrsltENhCAMQOnFGVzA+EviKIY5SdjEfxMWcAa1F0ww5ES04BE/6FdrWh7FtgCMKEIItLqUEqjxpIC+79G1EZEppUhrVBTnZVlYqhRgEAgA/wWu67oXSwwsOsPswFKlrwJuf77rOmQPiSkmU1S+b8MwAHDOMeTsW9CtVNc/ZFu9Mr3l25Fd9A7Up59Bq3meDz3l2/3ZdHF9fdm7/pttlLZt8e7I+j2iqwHg+ozjSBsXTdMcUtZal/sw7ba4aptHgbaiU6AkoAGlZvhhmeX9wOxHGvu0iHp5G6nrek9xmiZy/FeAAQAqWKlKZWzlvgAAAABJRU5ErkJggg==') no-repeat center center;

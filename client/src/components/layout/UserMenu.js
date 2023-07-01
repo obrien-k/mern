@@ -1,24 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadUser, logout } from '../../actions/auth';
 
-import InviteForm from '../profile/invite/InviteForm'; 
-import PrivateHomepage from '../pages/PrivateHomepage';
-
-const UserMenu = ({ pageId }) => {
+const UserMenu = ({ pageId, userId, userName }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-console.log(user);
-  // Simulating server-side array logic
-  const [alerts, setAlerts] = useState([]);
-  const [modBar, setModBar] = useState([]);
+
   const [useAdvancedSearch, setUseAdvancedSearch] = useState(false);
 
   useEffect(() => {
     // Populate the arrays with data fetched from an API.
-    setAlerts(['New staff blog post!']);
-    setModBar(['Toolbox']);
     const loggedUserSearchType = true; 
     setUseAdvancedSearch(loggedUserSearchType);
   }, []);
@@ -27,17 +18,14 @@ console.log(user);
     return <div>Loading...</div>; 
   }
 
-  const { _id, username, bonusPoints, bytesUploaded, bytesDownloaded, requiredRatio, flTokens, hasUnlimitedInvites } = user;
+  const { bonusPoints, bytesUploaded, bytesDownloaded, requiredRatio, flTokens, hasUnlimitedInvites } = user;
 
-let userID =_id;
   // Placeholder for formatSize function
   const formatSize = (bytes) => `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 
+  const addClass = (pageId, pages, className) => pages.includes(pageId) ? className : '';
 
-   
-   const addClass = (pageId, pages, className) => pages.includes(pageId) ? className : '';
- 
-   return (
+  return (
      <div id="wrapper">
       <h1 className="hidden">SITE_NAME</h1>
       <div id="header">
@@ -47,10 +35,10 @@ let userID =_id;
         <div id="userinfo">
           <ul id="userinfo_username">
             <li id="nav_userinfo">
-              <a href={`/user/${username}`} className="username">{username}</a>
+              <a href={`/user/${user}`} className="username">{userName}</a>
             </li>
             <li id="nav_useredit">
-              <a href={`/user/edit/${username}`}>Edit</a>
+              <a href={`/user/edit/${userId}`}>Edit</a>
             </li>
             <li id="nav_logout">
               <a href="/logout">Logout</a>
@@ -78,11 +66,11 @@ let userID =_id;
           </ul>
           <ul id="userinfo_stats">
             <li id="stats_seeding">
-              <a href={`/communities/seeding/${username}`}>Up:</a>
+              <a href={`/communities/seeding/${userName}`}>Up:</a>
               <span className="stat" title={formatSize(bytesUploaded)}>{formatSize(bytesUploaded)}</span>
             </li>
             <li id="stats_leeching">
-              <a href={`/communities/leeching/${username}`}>Down:</a>
+              <a href={`/communities/leeching/${userName}`}>Down:</a>
               <span className="stat" title={formatSize(bytesDownloaded)}>{formatSize(bytesDownloaded)}</span>
             </li>
             <li id="stats_ratio">
@@ -118,7 +106,7 @@ let userID =_id;
               <Link to="/requests.js">Requests</Link>
             </li>
             <li id="nav_forums" className={addClass(pageId, ['forums'], 'active')}>
-              <Link to="/forums.js">Forums</Link>
+              <Link to="/forums">Forums</Link>
             </li>
             <li id="nav_irc" className={addClass(pageId, ['chat'], 'active')}>
               <Link to="/wiki.js?action=article&name=irc">IRC</Link>
@@ -237,18 +225,6 @@ let userID =_id;
                     </ul>
             </div>
       </div>
-      <div>
-        {alerts.map((alert, index) => (
-          <div key={index} className="alert">{alert}</div>
-        ))}
-        {modBar.map((item, index) => (
-          <div key={index} className="modbar-item">{item}</div>
-        ))}
-      </div>
-      <Routes location={window.location}>
-        <Route path="/" element={<PrivateHomepage/>} />
-        <Route path="/invite" element={<InviteForm userID={userID}/>} />
-      </Routes>
     </div>
   );
 };

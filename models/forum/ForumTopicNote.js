@@ -1,12 +1,15 @@
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
+
 const forumTopicNoteSchema = new Schema({
   TopicID: {
     type: Schema.Types.ObjectId,
-    ref: 'ForumTopic',
+    ref: 'forumTopic',
     required: true
   },
   AuthorID: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'user',
     required: true
   },
   AddedTime: {
@@ -17,4 +20,5 @@ const forumTopicNoteSchema = new Schema({
     type: String
   }
 });
-module.exports = ForumTopicNote = mongoose.model('ForumTopicNote', forumTopicNoteSchema);
+
+module.exports = ForumTopicNote = mongoose.model('forumTopicNote', forumTopicNoteSchema);

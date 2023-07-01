@@ -12,4 +12,4 @@ const ConcertSchema = new Schema({
     }
 });
 
-module.exports = Concert = mongoose.model('Concert', ConcertSchema);
+module.exports = Concert = mongoose.model('concert', ConcertSchema);

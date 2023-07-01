@@ -11,7 +11,7 @@ const User = require('../../models/User');
 // @route GET api/profile/me
 // @desc  Get current users profile
 // @access Private
-router.get('/me', auth, async (req, res) => {
+router.get('/me', auth(), async (req, res) => {
   try {
     const profile = await Profile.findOne({ user: req.user.id }).populate(
       'user',
@@ -32,7 +32,7 @@ router.get('/me', auth, async (req, res) => {
 router.post(
   '/',
   [
-    auth,
+    auth(),
     [
       check('status', 'Status is required')
         .not()

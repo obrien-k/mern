@@ -10,6 +10,10 @@ const forumCategorySchema = new Schema({
   Sort: {
     type: Number,
     required: true
-  }
+  },
+  forums: [{
+    type: Schema.Types.ObjectId,
+    ref: 'forum'
+  }]
 });
-module.exports = ForumCategory = mongoose.model('ForumCategory', forumCategorySchema);
+module.exports = ForumCategory = mongoose.model('forumCategory', forumCategorySchema);

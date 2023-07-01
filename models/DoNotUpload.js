@@ -24,4 +24,4 @@ const DoNotUploadSchema = new Schema({
     }
 });
 
-module.exports = DoNotUpload = mongoose.model('DoNotUpload', DoNotUploadSchema);
+module.exports = DoNotUpload = mongoose.model('doNotUpload', DoNotUploadSchema);
