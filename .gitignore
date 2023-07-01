@@ -3,3 +3,4 @@ config/default.json
 .env
 .DS_Store
 .eslintcache
+client/.eslintcache
