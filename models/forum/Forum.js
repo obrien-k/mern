@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const forumSchema = new Schema({
-  CategoryID: {
+  ForumCategory: {
     type: Schema.Types.ObjectId,
     ref: 'forumCategory',
     required: true
@@ -39,21 +39,9 @@ const forumSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'forumTopic'
   }],
-  LastPostID: {
+  ForumPosts: {
     type: Schema.Types.ObjectId,
     ref: 'forumPost',
-  },
-  LastPostAuthorID: {
-    type: Schema.Types.ObjectId,
-    ref: 'user',
-  },
-  LastPostTopicID: {
-    type: Schema.Types.ObjectId,
-    ref: 'forumTopic',
-  },
-  LastPostTime: {
-    type: Date,
-    default: Date.now
   },
   AutoLock: {
     type: Boolean,
@@ -64,6 +52,6 @@ const forumSchema = new Schema({
     required: true,
     default: 4
   }
-});
+}, { timestamps: true});
 
 module.exports = Forum = mongoose.model('forum', forumSchema);

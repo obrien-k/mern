@@ -28,21 +28,50 @@ const Login = ({ login, isAuthenticated }) => {
     document.cookie = "cookie_test=1; expires=Thu, 01 Jan 1970 00:00:00 UTC";
   }, []);
 
+  useEffect(() => {
+    // This is the new useEffect block to handle ban logic
+    if (isBanned) {
+      const currentTime = new Date().getTime();
+      const remainingTime = bannedUntil - currentTime;
+      if (remainingTime > 0) {
+        setTimeout(() => {
+          setIsBanned(false);
+          setAttempts(0);
+        }, remainingTime);
+      } else {
+        setIsBanned(false);
+        setAttempts(0);
+      }
+    }
+  }, [isBanned, bannedUntil]);
+
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-    const onSubmit = (e) => {
-      e.preventDefault();
-      if (isBanned) {
-        setError(`You are banned from logging in for another ${bannedUntil}.`);
-        return;
+    const onSubmit = async (e) => {
+    e.preventDefault();
+
+    if (isBanned) {
+      setError(`You are banned from logging in until ${new Date(bannedUntil).toLocaleString()}.`);
+      return;
+    }
+
+    const wasSuccessful = await login(email, password); // Make sure login returns true/false based on success
+
+    if (!wasSuccessful) {
+      const newAttempts = attempts + 1;
+      setAttempts(newAttempts);
+
+      if (newAttempts >= 5) {
+        setIsBanned(true);
+        setBannedUntil(new Date().getTime() + 6 * 60 * 60 * 1000);
       }
-      login(email, password);
-    };
+    }
+  };
     
     useEffect(() => {
       if (isAuthenticated) {
-        navigate('/');
+        navigate('/private');
       }
     }, [isAuthenticated, navigate]);
 
