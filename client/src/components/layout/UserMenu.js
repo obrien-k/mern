@@ -30,15 +30,15 @@ const UserMenu = ({ pageId, userId, userName }) => {
       <h1 className="hidden">SITE_NAME</h1>
       <div id="header">
         <div id="logo">
-          <a href="/">Home</a>
+          <a href="/private/">Home</a>
         </div>
         <div id="userinfo">
           <ul id="userinfo_username">
             <li id="nav_userinfo">
-              <a href={`/user/${user}`} className="username">{userName}</a>
+              <a href={`/private/user/${user}`} className="username">{userName}</a>
             </li>
             <li id="nav_useredit">
-              <a href={`/user/edit/${userId}`}>Edit</a>
+              <a href={`/private/user/edit/${userId}`}>Edit</a>
             </li>
             <li id="nav_logout">
               <a href="/logout">Logout</a>
@@ -46,31 +46,31 @@ const UserMenu = ({ pageId, userId, userName }) => {
           </ul>
           <ul id="userinfo_major">
             <li id="nav_upload">
-              <a href="/upload" title="Upload">Upload</a>
+              <a href="/private/upload" title="Upload">Upload</a>
             </li>
             <li id="nav_bonus">
-              <a href="/bonus" title={`Bonus (${bonusPoints})`}>Bonus ({bonusPoints})</a>
+              <a href="/private/bonus" title={`Bonus (${bonusPoints})`}>Bonus ({bonusPoints})</a>
             </li>
             <li id="nav_invite">
-              <Link to="/invite">Invite</Link>
+              <Link to="/private/invite">Invite</Link>
             </li>
             <li id="nav_donate">
-              <a href="/donate">Donate</a>
+              <a href="/private/donate">Donate</a>
             </li>
             <li id="nav_forums" className={addClass(pageId, ['forums'], 'active')}>
-              <a href="forums.js">Forums</a>
+              <a href="/private/forums">Forums</a>
             </li>
             <li id="nav_irc" className={addClass(pageId, ['chat'], 'active')}>
-              <a href="wiki.js?action=article&name=irc">IRC</a>
+              <a href="/private/wiki/action=article&name=irc">IRC</a>
             </li>
           </ul>
           <ul id="userinfo_stats">
             <li id="stats_seeding">
-              <a href={`/communities/seeding/${userName}`}>Up:</a>
+              <a href={`/private/communities/seeding/${userName}`}>Up:</a>
               <span className="stat" title={formatSize(bytesUploaded)}>{formatSize(bytesUploaded)}</span>
             </li>
             <li id="stats_leeching">
-              <a href={`/communities/leeching/${userName}`}>Down:</a>
+              <a href={`/private/communities/leeching/${userName}`}>Down:</a>
               <span className="stat" title={formatSize(bytesDownloaded)}>{formatSize(bytesDownloaded)}</span>
             </li>
             <li id="stats_ratio">
@@ -78,13 +78,13 @@ const UserMenu = ({ pageId, userId, userName }) => {
             </li>
             {requiredRatio && (
               <li id="stats_required">
-                <a href="/rules#ratio">Required:</a>
+                <a href="/private/rules#ratio">Required:</a>
                 <span className="stat">{requiredRatio.toFixed(2)}</span>
               </li>
             )}
             {flTokens > 0 && (
               <li id="fl_tokens">
-                <a href="/wiki/tokens">Tokens:</a>
+                <a href="/private/wiki/tokens">Tokens:</a>
                 <span className="stat">{flTokens}</span>
               </li>
             )}
@@ -94,34 +94,34 @@ const UserMenu = ({ pageId, userId, userName }) => {
           <h4 className="hidden">Site Menu</h4>
           <ul>
             <li id="nav_index" className={addClass(pageId, ['index'], 'active')}>
-              <Link to="/index.js">Home</Link>
+              <Link to="/private/index">Home</Link>
             </li>
             <li id="nav_communities" className={addClass(pageId, ['communities'], 'active')}>
-              <Link to="/communities.js">Communities</Link>
+              <Link to="/private/communities">Communities</Link>
             </li>
             <li id="nav_collages" className={addClass(pageId, ['collages'], 'active')}>
-              <Link to="/collages.js">Collages</Link>
+              <Link to="/private/collages">Collages</Link>
             </li>
             <li id="nav_requests" className={addClass(pageId, ['requests'], 'active')}>
-              <Link to="/requests.js">Requests</Link>
+              <Link to="/private/requests">Requests</Link>
             </li>
             <li id="nav_forums" className={addClass(pageId, ['forums'], 'active')}>
-              <Link to="/forums">Forums</Link>
+              <Link to="/private/forums">Forums</Link>
             </li>
             <li id="nav_irc" className={addClass(pageId, ['chat'], 'active')}>
-              <Link to="/wiki.js?action=article&name=irc">IRC</Link>
+              <Link to="/private/wiki/action=article&name=irc">IRC</Link>
             </li>
             <li id="nav_top10" className={addClass(pageId, ['top10'], 'active')}>
-              <Link to="/top10.js">Top 10</Link>
+              <Link to="/private/top10">Top 10</Link>
             </li>
             <li id="nav_rules" className={addClass(pageId, ['rules'], 'active')}>
-              <Link to="/rules.js">Rules</Link>
+              <Link to="/private/rules">Rules</Link>
             </li>
             <li id="nav_wiki" className={addClass(pageId, ['wiki'], 'active')}>
-              <Link to="/wiki.js">Wiki</Link>
+              <Link to="/wiki">Wiki</Link>
             </li>
             <li id="nav_staff" className={addClass(pageId, ['staff'], 'active')}>
-              <Link to="/staff.js" title="Staff">Staff</Link>
+              <Link to="/private/staff" title="Staff">Staff</Link>
             </li>
           </ul>
         </div>

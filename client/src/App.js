@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useSelector, Provider } from 'react-redux';
+import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import api from './utils/api';
 
@@ -7,63 +7,56 @@ import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import Alert from './components/layout/Alert';
 
+import PrivateRoute from './components/routing/PrivateRoute';
 import PrivateLayout from './components/layout/PrivateLayout';
+import PrivateContent from './components/layout/PrivateContent';
 import PrivateHomepage from './components/pages/PrivateHomepage';
 
 import PublicLayout from './components/layout/PublicLayout';
 import PublicLanding from './components/layout/PublicLanding';
-
+import RecoveryPage from './components/auth/Recovery';
+import ReferralForm from './components/auth/ReferralForm';
 import store from './store';
 
-const AuthenticatedApp = ({userId, userName}) => (
-  <React.Fragment>
-    <PrivateLayout pageTitle="Stellar" userId={userId} userName={userName}>
-    </PrivateLayout>
-  </React.Fragment>
-);
-
-const PublicApp = () => (
-  <React.Fragment>
-    <PublicLayout pageTitle="Stellar">
-      <section className="container">
-        <Alert />
-        <Routes>
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/*" element={<PublicLanding />} />
-        </Routes>
-      </section>
-    </PublicLayout>
-  </React.Fragment>
-);
-
-const AuthenticationCheck = () => {
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const userId = useSelector((state) => state.auth.user?._id);
-  const userName = useSelector((state) => state.auth.user?.username);
-
-  if (isAuthenticated) {
-    return <AuthenticatedApp userId={userId} userName={userName} />;
-  } else {
-    return <PublicApp />;
-  }
-};
-
-const App = () => {
+const App = ({userId, userName}) => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     }
   }, []);
+
   return (
     <Provider store={store}>
       <Router>
-        <AuthenticationCheck />
+        <section className="container">
+          <Alert />
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/recovery" element={<PublicLayout pageTitle="Stellar"><RecoveryPage /></PublicLayout>} />
+            <Route path="/referral" element={<PublicLayout pageTitle="Stellar"><ReferralForm /></PublicLayout>} />
+            <Route path="/register" element={<PublicLayout pageTitle="Stellar"><Register /></PublicLayout>} />
+            <Route path="/login" element={<PublicLayout pageTitle="Stellar"><Login /></PublicLayout>} />
+            <Route path="/*" element={<PublicLayout pageTitle="Stellar"><PublicLanding /></PublicLayout>} />
+  
+            {/* Private Routes */}
+            <Route path="/private/*" element={
+              <PrivateRoute>
+                <PrivateLayout pageTitle="Stellar" userId={userId} userName={userName}>
+                  <Routes>
+                    {/* Here you can define sub-routes that should only be accessible when logged in */}
+                    <Route path="/*" element={<PrivateContent userId={userId}/>} />
+                    {/* Add more sub-routes here if needed */}
+                  </Routes>
+                </PrivateLayout>
+              </PrivateRoute>
+          } />
+          </Routes>
+        </section>
       </Router>
     </Provider>
   );
+  
 };
-
 
 export default App;
