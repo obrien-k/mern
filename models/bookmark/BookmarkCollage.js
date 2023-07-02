@@ -2,13 +2,13 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const BookmarkCollageSchema = new Schema({
-    user_id: {
-        type: Number,
-        required: true
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'user'
     },
-    collage_id: {
-        type: Number,
-        required: true
+    collage: {
+        type: Schema.Types.ObjectId,
+        ref: 'collage'
     },
     time: {
         type: Date,

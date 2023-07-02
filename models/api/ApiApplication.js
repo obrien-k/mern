@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const ApiApplicationSchema = new Schema({
-    userID: {
+    user: {
         type: Schema.Types.ObjectId,
         ref: 'User', 
         required: true

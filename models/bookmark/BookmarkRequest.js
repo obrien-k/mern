@@ -2,13 +2,13 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const BookmarkRequestSchema = new Schema({
-    user_id: {
-        type: Number,
-        required: true
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'user'
     },
-    request_id: {
-        type: Number,
-        required: true
+    request: {
+        type: Schema.Types.ObjectId,
+        ref: 'request'
     },
     time: {
         type: Date,

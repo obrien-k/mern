@@ -2,17 +2,17 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const forumLastReadTopicSchema = new Schema({
-  UserID: {
+  user: {
     type: Schema.Types.ObjectId,
     ref: 'user',
     required: true
   },
-  TopicID: {
+  forumTopic: {
     type: Schema.Types.ObjectId,
     ref: 'forumTopic',
     required: true
   },
-  PostID: {
+  forumPost: {
     type: Schema.Types.ObjectId,
     ref: 'forumPost',
     required: true

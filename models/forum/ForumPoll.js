@@ -2,25 +2,25 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const forumPollSchema = new Schema({
-  ForumTopic: {
+  forumTopic: {
     type: Schema.Types.ObjectId,
     ref: 'forumTopic',
     required: true
   },
-  Question: {
+  question: {
     type: String,
     required: true
   },
-  Answers: {
+  answers: {
     type: String,
     required: true
   },
-  Featured: {
+  featured: {
     type: Date,
     required: true,
     default: null
   },
-  Closed: {
+  closed: {
     type: Boolean,
     required: true,
     default: false

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const ArtistSchema = new Schema({
-    artist_id: {
+    artistId: {
         type: Number,
         required: true,
         unique: true
@@ -11,15 +11,15 @@ const ArtistSchema = new Schema({
         type: String,
         required: true
     },
-    revision_id: {
+    revisionId: {
         type: Number,
         required: true
     },
-    vanity_house: {
+    vanityHouse: {
         type: Boolean,
         default: false
     },
-    last_comment_id: {
+    lastCommentId: {
         type: Number,
         required: true
     }

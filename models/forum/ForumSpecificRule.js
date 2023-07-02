@@ -2,11 +2,15 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const forumSpecificRuleSchema = new Schema({
-  Forum: {
+  forum: {
     type: Schema.Types.ObjectId,
     ref: 'forum'
   },
-  Thread: {
+  thread: {
+    type: Schema.Types.ObjectId,
+    ref: 'thread'
+  },
+  forumTopic: {
     type: Schema.Types.ObjectId,
     ref: 'forumTopic'
   }

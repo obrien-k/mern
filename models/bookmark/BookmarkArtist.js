@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const BookmarkArtistSchema = new Schema({
-    user_id: {
+    userId: {
         type: Number,
         required: true
     },
-    artist_id: {
+    artistId: {
         type: Number,
         required: true
     },

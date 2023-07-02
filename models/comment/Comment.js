@@ -11,9 +11,9 @@ const CommentSchema = new Schema({
         type: Number,
         required: true
     },
-    author_id: {
-        type: Number,
-        required: true
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'user'
     },
     added_time: {
         type: Date,

@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
 
 const subscriptionSchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
     topicId: mongoose.Schema.Types.ObjectId,
 });
 
 const commentSubscriptionSchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
     page: String,
     pageId: mongoose.Schema.Types.ObjectId,
 });
 
 const notificationSchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
     quoterId: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
     page: String,
     pageId: mongoose.Schema.Types.ObjectId,

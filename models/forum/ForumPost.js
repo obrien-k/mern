@@ -2,24 +2,24 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const forumPostSchema = new Schema({
-  ForumTopic: {
+  forumTopic: {
     type: Schema.Types.ObjectId,
     ref: 'forumTopic',
     required: true,
     index: true
   },
-  Author: {
+  author: {
     type: Schema.Types.ObjectId,
     ref: 'user',
     required: true
   },
-  Body: {
+  body: {
     type: String,
     required: true,
     minlength: 1, // minimal validation
     maxlength: 5000 // ^^
   },
-  Edits: [{
+  edits: [{
     user: {
         type: Schema.Types.ObjectId,
         ref: 'user'

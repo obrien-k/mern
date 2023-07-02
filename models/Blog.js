@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const BlogSchema = new Schema({
-    user_id: {
-        type: Number,
-        required: true
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'user'
     },
     title: {
         type: String,
@@ -14,10 +14,6 @@ const BlogSchema = new Schema({
         type: String,
         required: true
     },
-    time: {
-        type: Date,
-        default: Date.now
-    },
     thread_id: {
         type: Number,
         default: null
@@ -26,6 +22,6 @@ const BlogSchema = new Schema({
         type: Boolean,
         default: false
     }
-});
+}, { timestamps: true });
 
 module.exports = Blog = mongoose.model('blog', BlogSchema);

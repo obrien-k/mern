@@ -11,22 +11,22 @@ function transformData(data) {
   data.forEach(forum => {
     console.log("Processing forum:", forum);
     
-    if (forum.ForumCategory) {
-      console.log("ForumCategory property of forum:", forum.ForumCategory); // Log here
+    if (forum.forumCategory) {
+      console.log("forumCategory property of forum:", forum.forumCategory); // Log here
       
-      const categoryId = forum.ForumCategory._id;
-      const categoryName = forum.ForumCategory.Name;
+      const categoryId = forum.forumCategory._id;
+      const categoryName = forum.forumCategory.name;
 
       if (categoryId && categoryName && !categoriesMap.has(categoryId)) {
         categoriesMap.set(categoryId, {
           _id: categoryId,
-          Name: categoryName,
-          Forums: []
+          name: categoryName,
+          forums: []
         });
       }
 
       if (categoriesMap.has(categoryId)) {
-        categoriesMap.get(categoryId).Forums.push(forum);
+        categoriesMap.get(categoryId).forums.push(forum);
       }
     }
   });
@@ -70,7 +70,7 @@ export const useAllForumsData = () => {
   const data = transformData(forums);
 
   console.log("Transformed data:", data);
-  
+
   return { data, isLoading, errorMessage: error };
 };
 

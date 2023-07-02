@@ -2,25 +2,25 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const ArtistTagSchema = new Schema({
-    tag_id: {
+    tagId: {
         type: Number,
         required: true
     },
-    artist_id: {
+    artistId: {
         type: Number,
         required: true
     },
-    positive_votes: {
+    positiveVotes: {
         type: Number,
         default: 1
     },
-    negative_votes: {
+    negativeVotes: {
         type: Number,
         default: 1
     },
-    user_id: {
-        type: Number,
-        default: null
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'user',
     }
 });
 

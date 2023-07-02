@@ -11,9 +11,9 @@ router.get('/', auth(), async (req, res, next) => {
   try {
     const forums = await Forum.find()
       .sort({ Sort: 1 })
-      .populate('ForumCategory')
-      .populate('ForumTopics')
-      .populate('ForumPosts');
+      .populate('forumCategory')
+      .populate('forumTopics')
+      .populate('forumPosts');
     console.log(forums);
     res.json(forums);
   } catch (err) {

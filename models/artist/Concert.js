@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const ConcertSchema = new Schema({
-    concert_id: {
+    concertId: {
         type: Number,
         required: true
     },
-    topic_id: {
+    topicId: {
         type: Number,
         required: true
     }

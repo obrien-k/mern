@@ -2,17 +2,17 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const forumPollVoteSchema = new Schema({
-  TopicID: {
+  forumTopic: {
     type: Schema.Types.ObjectId,
     ref: 'forumTopic',
     required: true
   },
-  UserID: {
+  user: {
     type: Schema.Types.ObjectId,
     ref: 'user',
     required: true
   },
-  Vote: {
+  vote: {
     type: Number,
     required: true,
     validate: {

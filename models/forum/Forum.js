@@ -2,52 +2,52 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const forumSchema = new Schema({
-  ForumCategory: {
+  forumCategory: {
     type: Schema.Types.ObjectId,
     ref: 'forumCategory',
     required: true
   },
-  Sort: {
+  sort: {
     type: Number,
     required: true
   },
-  Name: {
+  name: {
     type: String,
     required: true,
     default: ''
   },
-  Description: {
+  description: {
     type: String,
     default: ''
   },
-  MinClassRead: {
+  minClassRead: {
     type: Number,
     required: true,
     default: 0
   },
-  MinClassWrite: {
+  minClassWrite: {
     type: Number,
     required: true,
     default: 0
   },
-  MinClassCreate: {
+  minClassCreate: {
     type: Number,
     required: true,
     default: 0
   },
-  ForumTopics: [{
+  forumTopics: [{
     type: Schema.Types.ObjectId,
     ref: 'forumTopic'
   }],
-  ForumPosts: {
+  forumPosts: {
     type: Schema.Types.ObjectId,
     ref: 'forumPost',
   },
-  AutoLock: {
+  autoLock: {
     type: Boolean,
     default: true
   },
-  AutoLockWeeks: {
+  autoLockWeeks: {
     type: Number,
     required: true,
     default: 4
