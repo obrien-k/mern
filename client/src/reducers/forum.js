@@ -15,7 +15,9 @@ import {
   CREATE_FORUM_TOPIC,
   GET_ALL_FORUM_TOPICS,
   UPDATE_FORUM_TOPIC,
-  DELETE_FORUM_TOPIC
+  DELETE_FORUM_TOPIC,
+  LOADING_FORUMS,
+  LOADING_CATEGORIES
 } from '../actions/types';
 
 const initialState = {
@@ -23,19 +25,35 @@ const initialState = {
   topics: [],
   post: null,
   topic: null,
-  loading: true,
+  forums: [],
+  categories: [],
+  loadingForums: true,
+  loadingCategories: true,
   error: {}
 };
+
 
 export default function(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
+    case LOADING_FORUMS:
+      return {
+        ...state,
+        loadingForums: true
+      };
+
+    case LOADING_CATEGORIES:
+      return {
+        ...state,
+        loadingCategories: true
+      };
+
     case GET_ALL_FORUMS:
       return {
         ...state,
         forums: action.payload,
-        loading: false
+        loadingForums: false
     };
 
     case GET_FORUM_BY_ID:
@@ -56,7 +74,7 @@ export default function(state = initialState, action) {
     return {
       ...state,
       categories: action.payload,
-      loading: false
+      loadingCategories: false,
     };
 
   case GET_FORUM_CATEGORY_BY_ID:

@@ -16,89 +16,125 @@ import {
   GET_ALL_FORUM_TOPICS,
   UPDATE_FORUM_TOPIC,
   DELETE_FORUM_TOPIC,
+  LOADING_FORUMS,
+  LOADING_CATEGORIES
 } from './types';
 import api from '../utils/api';
 
 // Forums
 export const getAllForums = () => async dispatch => {
   try {
-    const res = await api.get('/api/forums');
+    dispatch({ type: LOADING_FORUMS });
+
+    const res = await api.get('/forums');
     dispatch({
       type: GET_ALL_FORUMS,
       payload: res.data
     });
   } catch (error) {
+    console.log('Error in action creator:', error); // Log the full error
+    const errorResponse = error.response || {};
     dispatch({
-      type: FORUM_ERROR,
-      payload: { msg: error.response.statusText, status: error.response.status }
+        type: FORUM_ERROR,
+        payload: { 
+            msg: errorResponse.statusText || 'Error message not available',
+            status: errorResponse.status || 'Status code not available',
+            error: error.toString() // Adding the full error as a string.
+        }
     });
   }
 };
 
 export const getForumById = id => async dispatch => {
   try {
-    const res = await api.get(`/api/forums/${id}`);
+    dispatch({ type: LOADING_CATEGORIES });
+
+    const res = await api.get(`/forums/${id}`);
     dispatch({
       type: GET_FORUM_BY_ID,
       payload: res.data
     });
   } catch (error) {
+    console.log('Error in action creator:', error); // Log the full error
+    const errorResponse = error.response || {};
     dispatch({
-      type: FORUM_ERROR,
-      payload: { msg: error.response.statusText, status: error.response.status }
+        type: FORUM_ERROR,
+        payload: { 
+            msg: errorResponse.statusText || 'Error message not available',
+            status: errorResponse.status || 'Status code not available',
+            error: error.toString() // Adding the full error as a string.
+        }
     });
   }
 };
 
 export const createForum = forumData => async dispatch => {
   try {
-    const res = await api.post('/api/forums', forumData);
+    const res = await api.post('/forums', forumData);
     dispatch({
       type: CREATE_FORUM,
       payload: res.data
     });
   } catch (error) {
+    console.log('Error in action creator:', error); // Log the full error
+    const errorResponse = error.response || {};
     dispatch({
-      type: FORUM_ERROR,
-      payload: { msg: error.response.statusText, status: error.response.status }
+        type: FORUM_ERROR,
+        payload: { 
+            msg: errorResponse.statusText || 'Error message not available',
+            status: errorResponse.status || 'Status code not available',
+            error: error.toString() // Adding the full error as a string.
+        }
     });
-  }
+}
 };
 
 // Forum Categories
 export const getAllForumCategories = () => async dispatch => {
   try {
-    const res = await api.get('/api/forums/categories');
+    const res = await api.get('/forums/categories');
     dispatch({
       type: GET_ALL_FORUM_CATEGORIES,
       payload: res.data
     });
   } catch (error) {
+    console.log('Error in action creator:', error); // Log the full error
+    const errorResponse = error.response || {};
     dispatch({
-      type: FORUM_ERROR,
-      payload: { msg: error.response.statusText, status: error.response.status }
+        type: FORUM_ERROR,
+        payload: { 
+            msg: errorResponse.statusText || 'Error message not available',
+            status: errorResponse.status || 'Status code not available',
+            error: error.toString() // Adding the full error as a string.
+        }
     });
-  }
+}
 };
 
 export const getForumCategoryById = id => async dispatch => {
   try {
-    const res = await api.get(`/api/forums/categories/${id}`);
+    const res = await api.get(`/forums/categories/${id}`);
     dispatch({
       type: GET_FORUM_CATEGORY_BY_ID,
       payload: res.data
     });
   } catch (error) {
+    console.log('Error in action creator:', error); // Log the full error
+    const errorResponse = error.response || {};
     dispatch({
-      type: FORUM_ERROR,
-      payload: { msg: error.response.statusText, status: error.response.status }
+        type: FORUM_ERROR,
+        payload: { 
+            msg: errorResponse.statusText || 'Error message not available',
+            status: errorResponse.status || 'Status code not available',
+            error: error.toString() // Adding the full error as a string.
+        }
     });
-  }
+}
 };
 
 export const createForumCategory = categoryData => async dispatch => {
   try {
-    const res = await api.post('/api/forums/categories', categoryData);
+    const res = await api.post('/forums/categories', categoryData);
     dispatch({
       type: CREATE_FORUM_CATEGORY,
       payload: res.data
@@ -106,14 +142,14 @@ export const createForumCategory = categoryData => async dispatch => {
   } catch (error) {
     dispatch({
       type: FORUM_ERROR,
-      payload: { msg: error.response.statusText, status: error.response.status }
+      payload: { msg: error?.response?.statusText, status: error?.response?.status }
     });
   }
 };
 
 export const updateForumCategory = (id, categoryData) => async dispatch => {
   try {
-    const res = await api.put(`/api/forums/categories/${id}`, categoryData);
+    const res = await api.put(`/forums/categories/${id}`, categoryData);
     dispatch({
       type: UPDATE_FORUM_CATEGORY,
       payload: { id, ...res.data }
@@ -121,14 +157,14 @@ export const updateForumCategory = (id, categoryData) => async dispatch => {
   } catch (error) {
     dispatch({
       type: FORUM_ERROR,
-      payload: { msg: error.response.statusText, status: error.response.status }
+      payload: { msg: error?.response?.statusText, status: error?.response?.status }
     });
   }
 };
 
 export const deleteForumCategory = id => async dispatch => {
   try {
-    await api.delete(`/api/forums/categories/${id}`);
+    await api.delete(`/forums/categories/${id}`);
     dispatch({
       type: DELETE_FORUM_CATEGORY,
       payload: id
@@ -136,7 +172,7 @@ export const deleteForumCategory = id => async dispatch => {
   } catch (error) {
     dispatch({
       type: FORUM_ERROR,
-      payload: { msg: error.response.statusText, status: error.response.status }
+      payload: { msg: error?.response?.statusText, status: error?.response?.status }
     });
   }
 };
@@ -146,7 +182,7 @@ export const deleteForumCategory = id => async dispatch => {
 
 export const createForumPost = (body, topicId) => async dispatch => {
   try {
-    const res = await api.post('/api/forums/posts', { body, topicId });
+    const res = await api.post('/forums/posts', { body, topicId });
     dispatch({
       type: CREATE_FORUM_POST,
       payload: res.data
@@ -154,44 +190,56 @@ export const createForumPost = (body, topicId) => async dispatch => {
   } catch (error) {
     dispatch({
       type: FORUM_ERROR,
-      payload: { msg: error.response.statusText, status: error.response.status }
+      payload: { msg: error?.response?.statusText, status: error?.response?.status }
     });
   }
 };
 
 export const getAllForumPosts = () => async dispatch => {
   try {
-    const res = await api.get('/api/forums/posts');
+    const res = await api.get('/forums/posts');
     dispatch({
       type: GET_ALL_FORUM_POSTS,
       payload: res.data
     });
   } catch (error) {
+    console.log('Error in action creator:', error); // Log the full error
+    const errorResponse = error.response || {};
     dispatch({
-      type: FORUM_ERROR,
-      payload: { msg: error.response.statusText, status: error.response.status }
+        type: FORUM_ERROR,
+        payload: { 
+            msg: errorResponse.statusText || 'Error message not available',
+            status: errorResponse.status || 'Status code not available',
+            error: error.toString() // Adding the full error as a string.
+        }
     });
-  }
+}
 };
 
 export const getForumPostById = id => async dispatch => {
   try {
-    const res = await api.get(`/api/forums/posts/${id}`);
+    const res = await api.get(`/forums/posts/${id}`);
     dispatch({
       type: GET_FORUM_POST_BY_ID,
       payload: res.data
     });
   } catch (error) {
+    console.log('Error in action creator:', error); // Log the full error
+    const errorResponse = error.response || {};
     dispatch({
-      type: FORUM_ERROR,
-      payload: { msg: error.response.statusText, status: error.response.status }
+        type: FORUM_ERROR,
+        payload: { 
+            msg: errorResponse.statusText || 'Error message not available',
+            status: errorResponse.status || 'Status code not available',
+            error: error.toString() // Adding the full error as a string.
+        }
     });
-  }
+}
 };
 
 export const deleteForumPost = id => async dispatch => {
   try {
-    await api.delete(`/api/forums/posts/${id}`);
+    await api.delete(`/forums/posts/${id}`);
     dispatch({
       type: DELETE_FORUM_POST,
       payload: id
@@ -199,7 +247,7 @@ export const deleteForumPost = id => async dispatch => {
   } catch (error) {
     dispatch({
       type: FORUM_ERROR,
-      payload: { msg: error.response.statusText, status: error.response.status }
+      payload: { msg: error?.response?.statusText, status: error?.response?.status }
     });
   }
 };
@@ -208,7 +256,7 @@ export const deleteForumPost = id => async dispatch => {
 
 export const createForumTopic = (title, forumId, body, question, answers) => async dispatch => {
   try {
-    const res = await api.post('/api/forums/topics', { title, forumId, body, question, answers });
+    const res = await api.post('/forums/topics', { title, forumId, body, question, answers });
     dispatch({
       type: CREATE_FORUM_TOPIC,
       payload: res.data
@@ -216,29 +264,35 @@ export const createForumTopic = (title, forumId, body, question, answers) => asy
   } catch (error) {
     dispatch({
       type: FORUM_ERROR,
-      payload: { msg: error.response.statusText, status: error.response.status }
+      payload: { msg: error?.response?.statusText, status: error?.response?.status }
     });
   }
 };
 
 export const getAllForumTopics = () => async dispatch => {
   try {
-    const res = await api.get('/api/forums/topics');
+    const res = await api.get('/forums/topics');
     dispatch({
       type: GET_ALL_FORUM_TOPICS,
       payload: res.data
     });
   } catch (error) {
+    console.log('Error in action creator:', error); // Log the full error
+    const errorResponse = error.response || {};
     dispatch({
-      type: FORUM_ERROR,
-      payload: { msg: error.response.statusText, status: error.response.status }
+        type: FORUM_ERROR,
+        payload: { 
+            msg: errorResponse.statusText || 'Error message not available',
+            status: errorResponse.status || 'Status code not available',
+            error: error.toString() // Adding the full error as a string.
+        }
     });
-  }
+}
 };
 
 export const updateForumTopic = (id, title) => async dispatch => {
   try {
-    const res = await api.put(`/api/forums/topics/${id}`, { title });
+    const res = await api.put(`/forums/topics/${id}`, { title });
     dispatch({
       type: UPDATE_FORUM_TOPIC,
       payload: { id, ...res.data }
@@ -246,14 +300,14 @@ export const updateForumTopic = (id, title) => async dispatch => {
   } catch (error) {
     dispatch({
       type: FORUM_ERROR,
-      payload: { msg: error.response.statusText, status: error.response.status }
+      payload: { msg: error?.response?.statusText, status: error?.response?.status }
     });
   }
 };
 
 export const deleteForumTopic = id => async dispatch => {
   try {
-    await api.delete(`/api/forums/topics/${id}`);
+    await api.delete(`/forums/topics/${id}`);
     dispatch({
       type: DELETE_FORUM_TOPIC,
       payload: id
@@ -261,7 +315,7 @@ export const deleteForumTopic = id => async dispatch => {
   } catch (error) {
     dispatch({
       type: FORUM_ERROR,
-      payload: { msg: error.response.statusText, status: error.response.status }
+      payload: { msg: error?.response?.statusText, status: error?.response?.status }
     });
   }
 };

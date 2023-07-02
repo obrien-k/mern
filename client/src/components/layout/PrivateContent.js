@@ -8,6 +8,7 @@ import InviteForm from '../profile/invite/InviteForm';
 import InviteTree from '../profile/invite/InviteTree';
 import PermissionManager from '../admin/PermissionManager';
 import NewTopicForm from '../sections/forum/NewTopicForm';
+import ErrorBoundary from './ErrorBoundary';
 
 const PrivateContent = ({userId, userName}) => {
   return (
@@ -15,7 +16,7 @@ const PrivateContent = ({userId, userName}) => {
       <Routes>
         <Route path='/forums/:forumID/new-topic' element={<NewTopicForm userId={userId}/>} />
         <Route path="/forums/:forumID" element={<ForumPage />} />
-        <Route path="/forums" element={<ForumListData />} />
+        <Route path="/forums" element={<ErrorBoundary><ForumListData /></ErrorBoundary>} />
         <Route path="/invite" element={<InviteForm userId={userId} userName={userName} />} />
         <Route path="/user/invite-tree" element={<InviteTree userId={userId} />} />
         <Route path="/tools/permissions" element={<PermissionManager userId={userId} />} />

@@ -4,19 +4,19 @@ import './ForumList.css';
 
 //todo forgot to add forum tooltip to model ?
 
-const ForumList = ({ combinedData }) => {
-  console.log(combinedData); // Add this line to check what's inside combinedData
+const ForumList = ({ forums }) => {
+  console.log(forums + 'ForumList.js'); // Add this line to check what's inside forums
 
-  if (!Array.isArray(combinedData)) {
+  if (!Array.isArray(forums)) {
       return <div>Forums data is not available or in an unexpected format.</div>;
   }
   return (
       <div className="thin">
           <h2>Forums</h2>
           <div className="forum-list">
-              {combinedData.map((category, index) => (
-                  <div key={category.id}>
-                      <h3>{category.name}</h3>
+              {forums.map((category, index) => (
+                  <div key={category._id}>
+                      <h3>{category.Name}</h3>
                       <table className="forum-index">
                           <thead>
                               <tr className="colhead">
@@ -28,7 +28,7 @@ const ForumList = ({ combinedData }) => {
                               </tr>
                           </thead>
                           <tbody>
-                              {category.forums.map((forum) => (
+                              {category.Forums.map((forum) => (
                                   <tr key={forum._id} className="forum-row">
                                       <td className="read"></td>
                                       <td className="forum">
@@ -37,14 +37,14 @@ const ForumList = ({ combinedData }) => {
                                           </h4>
                                       </td>
                                       <td className="latest">
-                                          {forum.LastPostID ? (
+                                          {forum.ForumPosts ? (
                                               <div>
                                                   <span className="last_post">
                                                       {/* Link to the last post */}
-                                                      <Link to={`/forums/${forum.LastPostTopicID}/posts/${forum.LastPostID}`}>{forum.LastPostBody}</Link>
+                                                      <Link to={`/forums/${forum._id}/posts/${forum.ForumPosts._id}`}>{forum.ForumPosts[0].body}</Link>
                                                   </span>
                                                   <span className="last_poster">
-                                                      by <Link to={`/user/${forum.LastPostAuthorID}`}>User</Link>
+                                                      by <Link to={`/user/${forum.ForumPosts[0]._id}`}>User</Link>
                                                   </span>
                                               </div>
                                           ) : (
