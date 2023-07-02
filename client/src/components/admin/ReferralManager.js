@@ -1,3 +1,5 @@
+import { SITE_NAME } from '../../config/config';
+
 class ReferralManager {
   constructor() {
     this.accounts = [];

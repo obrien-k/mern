@@ -36,7 +36,7 @@ function checkPerms(requiredPermission) {
 }
 
 // Toolbox endpoint
-router.get('/', auth(), async (req, res) => {
+router.get('/', async (req, res) => {
   const userId = req.headers.userId; // Get userId from request header
   const modBar = [];
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-
+import {SITE_NAME} from '../../config/config';
 const UserMenu = ({ pageId, userId, userName }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
@@ -26,11 +26,11 @@ const UserMenu = ({ pageId, userId, userName }) => {
   const addClass = (pageId, pages, className) => pages.includes(pageId) ? className : '';
 
   return (
-     <div id="wrapper">
-      <h1 className="hidden">SITE_NAME</h1>
+     <div>
+      <h1 className="hidden">{SITE_NAME}</h1>
       <div id="header">
         <div id="logo">
-          <a href="/private/">Home</a>
+          <Link to="/private/">Home</Link>
         </div>
         <div id="userinfo">
           <ul id="userinfo_username">
@@ -41,7 +41,7 @@ const UserMenu = ({ pageId, userId, userName }) => {
               <a href={`/private/user/edit/${userId}`}>Edit</a>
             </li>
             <li id="nav_logout">
-              <a href="/logout">Logout</a>
+              <Link to="/logout">Logout</Link>
             </li>
           </ul>
           <ul id="userinfo_major">

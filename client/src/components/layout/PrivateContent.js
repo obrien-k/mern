@@ -20,9 +20,9 @@ const PrivateContent = ({userId, userName}) => {
   return (
     <div id="content">
       <Routes>
-        <Route path='/forums/:forumID/new-topic' element={<NewTopicForm userId={userId}/>} />
-        <Route path="/forums/:forumID" element={<ForumPage />} />
-        <Route path="/forums" element={
+        <Route path='forums/:forumID/new-topic' element={<NewTopicForm userId={userId}/>} />
+        <Route path="forums/:forumID" element={<ForumPage />} />
+        <Route path="forums" element={
         <ErrorBoundary
           FallbackComponent={FallbackComponent}
           onError={logErrorToService}
@@ -31,11 +31,16 @@ const PrivateContent = ({userId, userName}) => {
         }}>
           <ForumListData />
         </ErrorBoundary>} />
-        <Route path="/invite" element={<InviteForm userId={userId} userName={userName} />} />
-        <Route path="/user/invite-tree" element={<InviteTree userId={userId} />} />
-        <Route path="/tools/permissions" element={<PermissionManager userId={userId} />} />
-        <Route path="/tools" element={<Toolbox userId={userId} />}/>
-        <Route path="/*" element={<PrivateHomepage userId={userId} />} />
+        <Route path="invite" element={<InviteForm userId={userId} userName={userName} />} />
+        <Route path="user/invite-tree" element={<InviteTree userId={userId} />} />
+        <Route path="staff/tools/permissions" element={<PermissionManager userId={userId} />} />
+        <Route path="staff/tools" element={<ErrorBoundary
+          FallbackComponent={FallbackComponent}
+          onError={logErrorToService}
+          onReset={() => {
+            // TODO reset state so it doesn't happen again
+        }}><Toolbox userId={userId} /></ErrorBoundary>}/>
+        <Route path="*" element={<PrivateHomepage userId={userId} />} />
       </Routes>
     </div>
   );

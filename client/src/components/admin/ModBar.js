@@ -33,7 +33,7 @@ const ModBar = ({userId}) => {
           <div key={index} dangerouslySetInnerHTML={{ __html: item }} />
         ))}
         {/* Link to navigate to Toolbox component */}
-        <Link to="/tools">Go to Toolbox</Link>
+        <Link to="/private/staff/tools">Go to Toolbox</Link>
       </div>
     </div>
   );

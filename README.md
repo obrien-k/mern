@@ -64,6 +64,10 @@ Stellar's front end is based on react, which is in the `./client` directory.
     - /utils -- api request via axios
 ```
 
+#### React routing notes
+
+The Stellar client checks for authentication when accessing the `/private` route, the Private[*] components use relative links to continue using this route.
+
 ### Express
 
 Express powers Stellar's back-end, the routes for which can be found in the `./routes/api` directory. The `server.js` file in the root directory starts and configures the service. This connects with NoSQL database models located in the eponymous directory, `./models`.

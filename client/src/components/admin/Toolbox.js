@@ -15,8 +15,8 @@ const Toolbox = ({userId}) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr><td><Link to="/tools/permissions">Permissions manager</Link></td></tr>
-                                <tr><td><a href="/tools/staff_groups">Staff page group manager</a></td></tr>
+                                <tr><td><Link to="/private/staff/tools/permissions">Permissions manager</Link></td></tr>
+                                <tr><td><a href="private/tools/staff_groups">Staff page group manager</a></td></tr>
                                 {/* ... other links */}
                             </tbody>
                         </table>
@@ -33,7 +33,7 @@ const Toolbox = ({userId}) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr><td><a href="/tools/create_user">Create user</a></td></tr>
+                                <tr><td><a href="/private/tools/create_user">Create user</a></td></tr>
                                 {/* ... other links */}
                             </tbody>
                         </table>
@@ -50,7 +50,7 @@ const Toolbox = ({userId}) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr><td><a href="/tools/economic_stats">Economic stats</a></td></tr>
+                                <tr><td><a href="/private/tools/economic_stats">Economic stats</a></td></tr>
                                 {/* ... other links */}
                             </tbody>
                         </table>

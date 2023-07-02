@@ -17,6 +17,7 @@ import PublicLanding from './components/layout/PublicLanding';
 import RecoveryPage from './components/auth/Recovery';
 import ReferralForm from './components/auth/ReferralForm';
 import store from './store';
+import Toolbox from './components/admin/Toolbox';
 
 const App = ({userId, userName}) => {
   useEffect(() => {
@@ -37,20 +38,18 @@ const App = ({userId, userName}) => {
             <Route path="/referral" element={<PublicLayout pageTitle="Stellar"><ReferralForm /></PublicLayout>} />
             <Route path="/register" element={<PublicLayout pageTitle="Stellar"><Register /></PublicLayout>} />
             <Route path="/login" element={<PublicLayout pageTitle="Stellar"><Login /></PublicLayout>} />
-            <Route path="/*" element={<PublicLayout pageTitle="Stellar"><PublicLanding /></PublicLayout>} />
   
             {/* Private Routes */}
             <Route path="/private/*" element={
               <PrivateRoute>
                 <PrivateLayout pageTitle="Stellar" userId={userId} userName={userName}>
-                  <Routes>
-                    {/* Here you can define sub-routes that should only be accessible when logged in */}
-                    <Route path="/*" element={<PrivateContent userId={userId}/>} />
-                    {/* Add more sub-routes here if needed */}
-                  </Routes>
+                    <PrivateContent userId={userId}/>  
                 </PrivateLayout>
               </PrivateRoute>
-          } />
+            } />
+
+            {/* Catch all route */}
+            <Route path="/*" element={<PublicLayout pageTitle="Stellar"><PublicLanding /></PublicLayout>} />
           </Routes>
         </section>
       </Router>

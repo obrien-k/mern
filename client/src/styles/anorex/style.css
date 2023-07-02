@@ -106,7 +106,7 @@ ul.thin li {
 	width: 100%;
 	min-width: 740px;
 	padding: 0px 0 0 0;
-	background: url('images/woodhead.png') repeat-x;
+	/*background: url('images/woodhead.png') repeat-x; find image reference*/
 	margin-bottom: 15px;
 }
 
@@ -123,7 +123,7 @@ ul.thin li {
 #footer {
 	margin-top: 40px;
 	width: 100%;
-	background: url('images/woodfoot.png');
+/*	background: url('images/woodfoot.png'); find image reference*/
 	text-align: center;
 	color: #FFFFFF;
 	padding: 1em 0;
@@ -393,7 +393,7 @@ p.min_padding {
 
 .head {
 	padding: 4px;
-	background: #b78234 url(images/woodnavcenter.png) repeat-x;
+	/* background: #b78234 url(images/woodnavcenter.png) repeat-x; find image reference*/
 	border-bottom: 1px solid #65430F;
 	font-weight: bold;
 }
@@ -453,7 +453,7 @@ td, th {
 }
 
 .colhead {
-	background: #b78234 url(images/woodnavcenter.png) repeat-x;
+	/* background: #b78234 url(images/woodnavcenter.png) repeat-x; */
 	font-weight: bold;
 }
 
@@ -471,7 +471,7 @@ td.colhead, .colhead td, .colhead th {
 }
 
 .colhead_dark {
-	background: #b78234 url(images/woodnavcenter.png) repeat-x;
+	/*background: #b78234 url(images/woodnavcenter.png) repeat-x;*/
 	font-weight: bold;
 }
 
