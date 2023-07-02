@@ -27,9 +27,9 @@ const PrivateContent = ({userId, userName}) => {
           // Reset the state of your app so the error doesn't happen again
         }}>
         <Routes>
-          <Route path='/forums/:forumID/new-topic' element={<NewTopicForm userId={userId}/>} />
-          <Route path="/forums/:forumID" element={<ForumPageTest />} />
-          <Route path="/forums" element={<ForumListData />} />
+          <Route path='/forums/:forumId/new-topic' element={<NewTopicForm userId={userId}/>} />
+          <Route path="/forums/:forumId" element={<ForumPageTest />} />
+          <Route path="/forums" element={<ForumPageTest />} />
           <Route path="/invite" element={<InviteForm userId={userId} userName={userName} />} />
           <Route path="/user/invite-tree" element={<InviteTree userId={userId} />} />
           <Route path="/tools/permissions" element={<PermissionManager userId={userId} />} />

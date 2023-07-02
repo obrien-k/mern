@@ -12,7 +12,7 @@ const ForumPoll = require('../../../../models/forum/ForumPoll');
 // @access  Private
 router.get('/', async (req, res) => {
   try {
-    const forumTopics = await ForumTopic.find().populate('ForumID', 'Name');
+    const forumTopics = await ForumTopic.find().populate('Forum', 'Name');
     res.json(forumTopics);
   } catch (err) {
     console.error(err.message);
@@ -29,7 +29,7 @@ router.post(
       auth(),
       [
           check('Title', 'Title is required').not().isEmpty(),
-          check('ForumID', 'ForumID is required').not().isEmpty(),
+          check('Forum', 'Forum is required').not().isEmpty(),
           check('Body', 'Body is required').not().isEmpty()
       ]
   ],
@@ -40,10 +40,10 @@ router.post(
       }
       
       try {
-          const { Title, ForumID, Body, Question, Answers } = req.body;
+          const { Title, Forum, Body, Question, Answers } = req.body;
 
-          // Check if the specified ForumID exists
-          const forum = await Forum.findById(ForumID);
+          // Check if the specified Forum exists
+          const forum = await Forum.findById(Forum);
           if (!forum) {
               return res.status(404).json({ msg: 'Forum not found' });
           }
@@ -64,13 +64,13 @@ router.post(
 
           // Creating new ForumTopic
           const newTopic = new ForumTopic({
-              Title,
-              AuthorID: req.user.id,
-              ForumID: forum._id,
-              NumPosts: 1, // the first post
-              IsLocked: false,
-              IsSticky: false,
-              LastPostTime: Date.now()
+            Title,
+            Author: req.user.id,
+            Forum: Forum._id,
+            NumPosts: 1, // the first post
+            IsLocked: false,
+            IsSticky: false,
+            LastPostTime: Date.now()
           });
 
           // Save the new topic
@@ -97,6 +97,7 @@ router.post(
 
           // Update the LastPostID of the topic
           topic.LastPostID = originalPost._id;
+          topic.LastPost = originalPost._id; // Setting LastPost field
           topic.LastPostAuthorID = req.user.id;
           topic.ForumPosts.push(originalPost._id);
           await topic.save();

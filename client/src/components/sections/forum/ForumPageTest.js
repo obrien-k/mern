@@ -8,7 +8,8 @@ const ForumPageTest = () => {
   const { data: forumData, isLoading, errorMessage } = useForumData(forumId);
 
   useEffect(() => {
-    console.log(forumData); // Log the forumData to the console
+    console.log(JSON.stringify(forumData) + 'FORUM PAGE TEST USE EFFECT');
+    
   }, [forumData]);
 
   if (isLoading) {
@@ -16,36 +17,28 @@ const ForumPageTest = () => {
   }
 
   if (errorMessage) {
-    return <div>Error: {errorMessage}</div>;
+    return <div><pre>Error: {JSON.stringify(errorMessage, null, 2)}</pre></div>;
   }
   
-  if (!forumData || !forumData.topics) {
+  if (!forumData || !forumData.length) {
     return <div>No data available</div>;
   }
-
-  console.log('forumData', forumData);
   
-
   return (
-      <div>
-        {forumData && forumData.map(category => (
-          <div key={category.id}>
-            <h2>Category: {category.name}</h2>
-            {category.forums && category.forums.map(forum => (
-              <div key={forum._id}>
-                <h3>Forum: {forum.name}</h3>
-                {forum.topics && forum.topics.map(topic => (
-                  <div key={topic._id}>
-                    <span>Topic: {topic.title}</span>
-                    <span> by {topic.author ? topic.author.name : 'Unknown'}</span>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-  );
+    <div>
+      {forumData.map((category) => (
+        <div key={category._id}>
+          <h2>{category.Name}</h2>
+          {category.Forums.map((forum) => (
+            <div key={forum._id}>
+              <h3>{forum.Name}</h3>
+              <p>{forum.Description}</p>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );  
 };
 
 export default ForumPageTest;
