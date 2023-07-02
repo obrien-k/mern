@@ -1,12 +1,11 @@
 import React from 'react';
-import { Link,useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useForumData } from '../../../hooks/useForumData';
 import './ForumList.css';
-import NewTopicForm from './NewTopicForm';
 
 const ForumPage = () => {
   const { forumId } = useParams();
-
+  
   const { data: forumData, isLoading, errorMessage } = useForumData(forumId);
 
   if (isLoading) {
@@ -16,13 +15,18 @@ const ForumPage = () => {
   if (errorMessage) {
     return <div>Error: {errorMessage}</div>;
   }
+  
+  if (!forumData || !forumData.topics) {
+    return <div>No data available</div>;
+  }
+
   return (
     <div className="thin">
       <h2>
-        <a href="forums.php">Forums</a> &gt; {forumData.name}
+        <Link to="/forums">Forums</Link> &gt; {forumData.name}
       </h2>
       <div className="linkbox">
-        <Link to={`forums/topics/${forumData.id}/new-topic`} className="brackets">
+        <Link to={`/forums/topics/${forumData.id}/new-topic`} className="brackets">
           New thread
         </Link>
         {/* Add more links as needed */}
@@ -37,28 +41,22 @@ const ForumPage = () => {
             </td>
             <td style={{ width: '14%' }}>Author</td>
           </tr>
-          {forumData && forumData.topics && forumData.topics.map((topic) => (
+          {forumData.topics.map((topic) => (
             <tr key={topic.id} className="rowb">
               <td className="td_read read tooltip"></td>
               <td className="td_latest">
                 <span style={{ float: 'left' }} className="last_topic">
                   <strong>
-                    <a
-                      href={`forums.php?action=viewthread&amp;threadid=${topic.id}`}
+                    <Link
+                      to={`/forums/viewthread?threadid=${topic.id}`}
                       className="tooltip"
-                      data-title-plain={topic.title}
                     >
                       {topic.title}
-                    </a>
+                    </Link>
                   </strong>
                 </span>
-                <span style={{ float: 'left' }} className="tooltip last_read">
-                  <a
-                    href={`forums.php?action=viewthread&amp;threadid=${topic.id}&amp;page=1#post1`}
-                  ></a>
-                </span>
                 <span style={{ float: 'right' }} className="last_poster">
-                  by <a href={`user.php?id=1`}>{topic.author}</a>{' '}
+                  by <Link to={`/user/${topic.author.id}`}>{topic.author.name}</Link>
                   <span className="time tooltip">{topic.lastPostTime}</span>
                 </span>
               </td>
@@ -70,10 +68,7 @@ const ForumPage = () => {
       </table>
       <div className="linkbox pager">{/* Add pager links here */}</div>
       <div className="linkbox">
-        <Link
-          to={`forums/catchup/forum/${forumData.id}`}
-          className="brackets"
-        >
+        <Link to={`/forums/catchup/forum/${forumData.id}`} className="brackets">
           Catch up
         </Link>
       </div>

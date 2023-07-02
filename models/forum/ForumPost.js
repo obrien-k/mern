@@ -2,20 +2,16 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const forumPostSchema = new Schema({
-  TopicID: {
+  ForumTopic: {
     type: Schema.Types.ObjectId,
     ref: 'forumTopic',
     required: true,
     index: true
   },
-  AuthorID: {
+  Author: {
     type: Schema.Types.ObjectId,
     ref: 'user',
     required: true
-  },
-  AddedTime: {
-    type: Date,
-    default: Date.now
   },
   Body: {
     type: String,
@@ -23,13 +19,15 @@ const forumPostSchema = new Schema({
     minlength: 1, // minimal validation
     maxlength: 5000 // ^^
   },
-  EditedUserID: [{
-    type: Schema.Types.ObjectId,
-    ref: 'user'
-  }],
-  EditedTime: [{
-    type: Date
+  Edits: [{
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'user'
+    },
+    time: {
+        type: Date
+    }
   }]
-});
+}, { timestamps: true});
 
 module.exports = ForumPost = mongoose.model('forumPost', forumPostSchema);

@@ -19,7 +19,7 @@ function NewTopicForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('/api/forum/topics', { // replace with your endpoint
+            const response = await fetch('/api/forum/topics', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

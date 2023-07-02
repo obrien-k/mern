@@ -41,6 +41,9 @@ const AuthenticationCheck = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const userId = useSelector((state) => state.auth.user?._id);
   const userName = useSelector((state) => state.auth.user?.username);
+  const forumId = useSelector((state) => state.auth.forum?._id);
+  const topicId = useSelector((state) => state.auth.topic?._id);
+  const postId = useSelector((state) => state.auth.post?._id);
 
   if (isAuthenticated) {
     return <AuthenticatedApp userId={userId} userName={userName} />;

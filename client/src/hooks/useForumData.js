@@ -21,48 +21,80 @@ export const useForumData = (forumId) => {
 
   useEffect(() => {
     if (forumId) {
-      dispatch(getForumById(forumId)); // Fetch data for a specific forum
+      console.log('forumId???')
+      // not workingdispatch(getForumById(forumId)); // Fetch data for a specific forum
     } else {
       dispatch(getAllForums()); // Fetch all forums
       dispatch(getAllForumCategories()); // Fetch all categories
       dispatch(getAllForumTopics()); // Fetch all forum topics
     }
   }, [forumId, dispatch]);
-
+  console.log('Raw forums data:', forums);
+  console.log('Raw categories data:', categories);
+  console.log('Raw topics data:', topics);
   let data;
   if (forumId) {
-    data = forum; // data for a specific forum including topics
+    console.log("if forumId");
+    data = forum;
+    console.log(data);
+    console.log("endif forumId");
   } else {
-    data = combineForumsAndCategories(forums, categories, topics); // combined data of all forums and categories
+    if (!forums || !categories) {
+      return { isLoading: true };  // Return early if forums or categories are not loaded
+    }
+    data = combineForumsAndCategories(forums, categories);
+    console.log('Combined data:', data);
   }
-
   return { data, isLoading: loading, errorMessage: error };
 };
+function combineForumsAndCategories(forums, categories) {
+  // Map through each category
+  return categories.map(category => {
+    // Filter the forums that belong to the current category
+    const categoryForums = forums.filter(forum => forum.ForumCategory._id === category._id);
 
-const combineForumsAndCategories = (forums, categories, topics) => {
+    // Return a new object representing the category with its forums included
+    return {
+      ...category,
+      forums: categoryForums
+    };
+  });
+}
+
+{/* Reverting to forums/categories only */}
+{/* 
+const combineForumsAndCategoriesandTopics = (forums, categories, topics) => {
+  if (!Array.isArray(forums) || !Array.isArray(categories) || !Array.isArray(topics)) {
+    return [];
+  }
+  
+  // Group topics by ForumID
   const topicsByForumId = topics.reduce((acc, topic) => {
-    const forumIdStr = topic.ForumID._id.toString();
-    if (!acc[forumIdStr]) {
-      acc[forumIdStr] = [];
+    if (topic.forumId) {
+      const forumIdStr = topic.forumId.toString();
+      if (!acc[forumIdStr]) {
+        acc[forumIdStr] = [];
+      }
+      acc[forumIdStr].push(topic);
     }
-    acc[forumIdStr].push(topic);
     return acc;
   }, {});
 
+  // Construct combined data
   return categories.map(category => {
+    const categoryForums = forums.filter(forum => 
+      forum.categoryId && forum.categoryId._id && 
+      forum.categoryId._id.toString() === category._id.toString()
+    );
+    
     return {
       id: category._id,
-      name: category.Name,
-      forums: forums.filter(forum => forum.CategoryID._id.toString() === category._id.toString())
-        .map(forum => {
-          const forumTopics = topicsByForumId[forum._id] || [];
-          forum.NumTopics = forumTopics.length;
-          forum.NumPosts = forumTopics.reduce((sum, topic) => sum + (topic.NumPosts || 0), 0);
-          return {
-            ...forum,
-            topics: forumTopics,
-          };
-        }),
+      name: category.name,
+      forums: categoryForums.map(forum => ({
+        ...forum,
+        topics: topicsByForumId[forum._id] || []
+      }))
     };
   });
 };
+*/}

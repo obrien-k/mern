@@ -11,9 +11,23 @@ const forumCategorySchema = new Schema({
     type: Number,
     required: true
   },
-  forums: [{
+  Forums: [{
     type: Schema.Types.ObjectId,
     ref: 'forum'
   }]
 });
+
+// Pre-save middleware for ForumCategory schema
+forumCategorySchema.pre('save', async function (next) {
+  const forumIds = this.Forums;
+
+  // Validate that the referenced Forums exist
+  const forumExists = await mongoose.model('forum').exists({ _id: { $in: forumIds } });
+  if (!forumExists) {
+    throw new Error('Invalid Forum IDs');
+  }
+
+  next();
+});
+
 module.exports = ForumCategory = mongoose.model('forumCategory', forumCategorySchema);

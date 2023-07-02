@@ -17,6 +17,7 @@ router.get('/services-list', async (req, res) => {
   }
 });
 
+// Generate a referral verification token
 router.get('/generate-token', async (req, res) => {
   try {
     const token = await referralService.generateToken();
@@ -26,6 +27,7 @@ router.get('/generate-token', async (req, res) => {
   }
 });
 
+// Verify token with external service
 router.get('/verify-token', async (req, res) => {
   const { service, userId } = req.query;
   try {
@@ -36,6 +38,7 @@ router.get('/verify-token', async (req, res) => {
   }
 });
 
+// Verify invite key
 router.get('/verify-invite-key', async (req, res) => {
   const { inviteKey } = req.query;
   try {
@@ -52,6 +55,7 @@ router.get('/verify-invite-key', async (req, res) => {
   }
 });
 
+// Create invite
 router.post('/create-invite', async (req, res) => {
   const { email, service, reason, userId, userName } = req.body;
   try {

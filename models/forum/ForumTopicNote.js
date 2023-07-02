@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const forumTopicNoteSchema = new Schema({
-  TopicID: {
+  ForumTopic: {
     type: Schema.Types.ObjectId,
     ref: 'forumTopic',
     required: true

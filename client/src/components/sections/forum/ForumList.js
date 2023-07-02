@@ -36,15 +36,16 @@ const ForumList = ({ combinedData }) => {
                                               <Link to={`/forums/${forum._id}`}>{forum.Name}</Link>
                                           </h4>
                                       </td>
+                                      {/* todo add forum tooltip */}
                                       <td className="latest">
-                                          {forum.LastPostID ? (
+                                          {forum.LastPost ? (
                                               <div>
                                                   <span className="last_post">
                                                       {/* Link to the last post */}
-                                                      <Link to={`/forums/${forum.LastPostTopicID}/posts/${forum.LastPostID}`}>{forum.LastPostBody}</Link>
+                                                      <Link to={`/forums/${forum.LastPost.ForumTopic._id}/posts/${forum.LastPost._id}`}>{forum.LastPost.body}</Link>
                                                   </span>
                                                   <span className="last_poster">
-                                                      by <Link to={`/user/${forum.LastPostAuthorID}`}>User</Link>
+                                                      by <Link to={`/user/${forum.LastPost.Author._id}`}>User</Link>
                                                   </span>
                                               </div>
                                           ) : (
