@@ -6,7 +6,6 @@ import FeaturedAlbum from './FeaturedAlbum';
 import VanityAlbum from './VanityAlbum';
 import News from './News';
 import sampleData from './sampleData.json'; // temp
-import PrivateFooter from '../layout/PrivateFooter';
 
 function PrivateHomepage({userId}) {
   console.log("Rendering PrivateHomepage");
@@ -26,25 +25,17 @@ function PrivateHomepage({userId}) {
           <div id="content">
             <div className="thin">
               <div className="sidebar"> 
-              <Stats data={data?.stats} />
-              <Polls data={data?.polls} />
-              <Recommendations data={data?.recommendations} />
-              <FeaturedAlbum />
-              <VanityAlbum />
+                <Stats data={data?.stats} />
+                <Polls data={data?.polls} />
+                <Recommendations data={data?.recommendations} />
+                <FeaturedAlbum />
+                <VanityAlbum />
+              </div>
+              <div className="main_column">
+                <News data={data?.news} />
+              </div>
             </div>
-            <div className="main_column">
-              <News data={data?.news} />
-            </div>
-           </div>
-            <PrivateFooter
-            userId={userId}
-            options={data?.options}
-            userSessions={data?.userSessions}
-            scriptStartTime={data?.scriptStartTime}
-            siteLaunchYear={data?.siteLaunchYear}
-            siteName={data?.siteName}
-            />
-            </div>
+          </div>
         </div>
     );
 }

@@ -41,7 +41,12 @@ const PrivateContent = ({userId, userName}) => {
         }}>
           <ForumListData />
         </ErrorBoundary>} />
-        <Route path="communities" element={<CommunitiesPage userId={userId} />} />
+        <Route path="communities" element={<ErrorBoundary
+          FallbackComponent={FallbackComponent}
+          onError={logErrorToService}
+          onReset={() => {
+            // TODO reset state so it doesn't happen again
+        }}><CommunitiesPage userId={userId} /></ErrorBoundary>} />
         <Route path="contribute" element={<ErrorBoundary
           FallbackComponent={FallbackComponent}
           onError={logErrorToService}
