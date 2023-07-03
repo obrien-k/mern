@@ -61,8 +61,8 @@ const PermissionManager = () => {
                 <tbody>
                     {permissions.map(permission => (
                         <tr key={permission._id}>
-                            <td>{permission.name}</td>
-                            <td>{permission.level}</td>
+                            <td>{permission.field_2}</td>
+                            <td>{permission.field_1}</td>
                             <td>{permission.userCount}</td>
                             <td>
                                 <button onClick={() => handleEdit(permission._id)}>Edit</button>

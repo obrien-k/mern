@@ -47,7 +47,7 @@ const UserMenu = ({ pageId, userId, userName }) => {
           </ul>
           <ul id="userinfo_major">
             <li id="nav_upload">
-              <a href="/private/upload" title="Upload">Upload</a>
+              <a href="/private/contribute" title="Contribute">Contribute</a>
             </li>
             <li id="nav_bonus">
               <a href="/private/bonus" title={`Bonus (${bonusPoints})`}>Bonus ({bonusPoints})</a>

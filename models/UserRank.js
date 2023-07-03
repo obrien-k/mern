@@ -112,4 +112,4 @@ const UserRankSchema = new Schema({
   }
 });
 
-module.exports = UserRank = mongoose.model('userRank', UserRankSchema);
+module.exports = UserRank = mongoose.model('UserRank', UserRankSchema);

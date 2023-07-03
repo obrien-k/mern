@@ -13,7 +13,7 @@ const CommentSchema = new Schema({
     },
     author: {
         type: Schema.Types.ObjectId,
-        ref: 'user'
+        ref: 'User'
     },
     added_time: {
         type: Date,
@@ -32,4 +32,4 @@ const CommentSchema = new Schema({
     }
 });
 
-module.exports = Comment = mongoose.model('comment', CommentSchema);
+module.exports = Comment = mongoose.model('Comment', CommentSchema);

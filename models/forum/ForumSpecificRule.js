@@ -4,16 +4,16 @@ const { Schema } = mongoose;
 const forumSpecificRuleSchema = new Schema({
   forum: {
     type: Schema.Types.ObjectId,
-    ref: 'forum'
+    ref: 'Forum'
   },
   thread: {
     type: Schema.Types.ObjectId,
-    ref: 'thread'
+    ref: 'Thread'
   },
   forumTopic: {
     type: Schema.Types.ObjectId,
-    ref: 'forumTopic'
+    ref: 'ForumTopic'
   }
 });
 
-module.exports = ForumSpecificRule = mongoose.model('forumSpecificRule', forumSpecificRuleSchema);
+module.exports = ForumSpecificRule = mongoose.model('ForumSpecificRule', forumSpecificRuleSchema);

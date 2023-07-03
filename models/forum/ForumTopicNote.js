@@ -4,12 +4,12 @@ const { Schema } = mongoose;
 const forumTopicNoteSchema = new Schema({
   forumTopic: {
     type: Schema.Types.ObjectId,
-    ref: 'forumTopic',
+    ref: 'ForumTopic',
     required: true
   },
   author: {
     type: Schema.Types.ObjectId,
-    ref: 'user',
+    ref: 'User',
     required: true
   },
   body: {
@@ -18,4 +18,4 @@ const forumTopicNoteSchema = new Schema({
   }
 }, { timestamps: true});
 
-module.exports = ForumTopicNote = mongoose.model('forumTopicNote', forumTopicNoteSchema);
+module.exports = ForumTopicNote = mongoose.model('ForumTopicNote', forumTopicNoteSchema);

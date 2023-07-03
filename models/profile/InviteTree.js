@@ -31,4 +31,4 @@ const inviteTreeSchema = new Schema({
 
 inviteTreeSchema.index({ InviterID: 1, UserID: 1 }, { unique: true });
 
-module.exports = InviteTree = mongoose.model('inviteTree', inviteTreeSchema);
+module.exports = InviteTree = mongoose.model('InviteTree', inviteTreeSchema);

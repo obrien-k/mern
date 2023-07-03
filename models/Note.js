@@ -4,12 +4,12 @@ const Schema = mongoose.Schema;
 const NoteSchema = new Schema({
   thread: {
     type: Schema.Types.ObjectId,
-    ref: 'thread',
+    ref: 'Thread',
     required: true
   },
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'user',
+    ref: 'User',
     required: true
   },
   text: {
@@ -27,4 +27,4 @@ const NoteSchema = new Schema({
   }
 });
 
-module.exports = Note = mongoose.model('note', NoteSchema);
+module.exports = Note = mongoose.model('Note', NoteSchema);

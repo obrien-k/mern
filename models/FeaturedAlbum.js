@@ -24,4 +24,4 @@ const FeaturedAlbumSchema = new Schema({
     }
 });
 
-module.exports = FeaturedAlbum = mongoose.model('featuredAlbum', FeaturedAlbumSchema);
+module.exports = FeaturedAlbum = mongoose.model('FeaturedAlbum', FeaturedAlbumSchema);

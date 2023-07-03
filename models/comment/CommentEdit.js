@@ -26,4 +26,4 @@ const CommentEditSchema = new Schema({
 
 CommentEditSchema.index({ page: 1, post_id: 1, edit_time: 1 });
 
-module.exports = CommentEdit = mongoose.model('commentEdit', CommentEditSchema);
+module.exports = CommentEdit = mongoose.model('CommentEdit', CommentEditSchema);

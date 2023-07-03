@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const forumTopicSchema = new Schema({
   thread: {
     type: Schema.Types.ObjectId,
-    ref: 'thread',
+    ref: 'Thread',
     default: null
   },
   title: {
@@ -13,7 +13,7 @@ const forumTopicSchema = new Schema({
   },
   author: {
     type: Schema.Types.ObjectId,
-    ref: 'user',
+    ref: 'User',
     required: true
   },
   isLocked: {
@@ -28,7 +28,7 @@ const forumTopicSchema = new Schema({
   },
   forum: {
     type: Schema.Types.ObjectId,
-    ref: 'forum',
+    ref: 'Forum',
     required: true
   },
   numPosts: {
@@ -42,8 +42,8 @@ const forumTopicSchema = new Schema({
   },
   forumPosts: [{
     type: Schema.Types.ObjectId,
-    ref: 'forumPost'
+    ref: 'ForumPost'
   }],
 }, { timestamps: true});
 
-module.exports = mongoose.model('forumTopic', forumTopicSchema);
+module.exports = mongoose.model('ForumTopic', forumTopicSchema);

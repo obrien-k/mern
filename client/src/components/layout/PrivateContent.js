@@ -10,6 +10,7 @@ import PermissionManager from '../admin/PermissionManager';
 import NewTopicForm from '../sections/forum/NewTopicForm';
 import ErrorBoundary from './ErrorBoundary';
 import FallbackComponent from './FallbackComponent';
+import ContributeForm from '../sections/contribute/ContributeForm';
 
 const logErrorToService = (error, info) => {
   //TODO
@@ -20,18 +21,6 @@ const PrivateContent = ({userId, userName}) => {
   return (
     <div id="content">
       <Routes>
-        <Route path='forums/:forumID/new-topic' element={<NewTopicForm userId={userId}/>} />
-        <Route path="forums/:forumID" element={<ForumPage />} />
-        <Route path="forums" element={
-        <ErrorBoundary
-          FallbackComponent={FallbackComponent}
-          onError={logErrorToService}
-          onReset={() => {
-            // TODO reset state so it doesn't happen again
-        }}>
-          <ForumListData />
-        </ErrorBoundary>} />
-        <Route path="invite" element={<InviteForm userId={userId} userName={userName} />} />
         <Route path="user/invite-tree" element={<InviteTree userId={userId} />} />
         <Route path="staff/tools/permissions" element={<PermissionManager userId={userId} />} />
         <Route path="staff/tools" element={<ErrorBoundary
@@ -40,6 +29,24 @@ const PrivateContent = ({userId, userName}) => {
           onReset={() => {
             // TODO reset state so it doesn't happen again
         }}><Toolbox userId={userId} /></ErrorBoundary>}/>
+         <Route path='forums/:forumID/new-topic' element={<NewTopicForm userId={userId}/>} />
+        <Route path="forums/:forumID" element={<ForumPage />} />
+         <Route path="forums" element={
+        <ErrorBoundary
+          FallbackComponent={FallbackComponent}
+          onError={logErrorToService}
+          onReset={() => {
+            // TODO reset state so it doesn't happen again
+        }}>
+          <ForumListData />
+        </ErrorBoundary>} />
+        <Route path="contribute" element={<ErrorBoundary
+          FallbackComponent={FallbackComponent}
+          onError={logErrorToService}
+          onReset={() => {
+            // TODO reset state so it doesn't happen again
+        }}><ContributeForm userId={userId} /></ErrorBoundary>}/>
+        <Route path="invite" element={<InviteForm userId={userId} userName={userName} />} />
         <Route path="*" element={<PrivateHomepage userId={userId} />} />
       </Routes>
     </div>
