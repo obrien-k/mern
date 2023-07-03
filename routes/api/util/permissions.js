@@ -1,11 +1,125 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../../../models/User');
+const { check, validationResult } = require('express-validator');
 const auth = require('../../../middleware/auth');
 
+const UserRank = require('../../../models/UserRank');
+
+// @route   POST api/tools/permissions
+// @desc    Create a UserRank
+// @access  Private
+router.post(
+  '/',
+  [
+    auth(), // Add any necessary middleware for authentication
+    [
+      // Add validation checks for the required fields
+      check('field1', 'Field 1 is required').not().isEmpty(),
+      check('field2', 'Field 2 is required').not().isEmpty()
+    ]
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    try {
+      const newUserRank = new UserRank({
+        field1: req.body.field1,
+        field2: req.body.field2,
+        field3: req.body.field3,
+        field4: req.body.field4,
+        field5: req.body.field5,
+        field6: req.body.field6
+      });
+
+      const userRank = await newUserRank.save();
+
+      res.json(userRank);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
+
+// @route   GET api/tools/permissions
+// @desc    Get all UserRanks
+// @access  Private
 router.get('/', auth(), async (req, res) => {
-  const permissions = await Permission.find();
-  res.json(permissions);
+  try {
+    const userRanks = await UserRank.find();
+    res.json(userRanks);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route   GET api/tools/permissions/:id
+// @desc    Get UserRank by ID
+// @access  Private
+router.get('/:id', auth(), async (req, res) => {
+  try {
+    const userRank = await UserRank.findById(req.params.id);
+
+    if (!userRank) {
+      return res.status(404).json({ msg: 'UserRank not found' });
+    }
+
+    res.json(userRank);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route   PUT api/tools/permissions/:id
+// @desc    Update a UserRank
+// @access  Private
+router.put('/:id', auth(), async (req, res) => {
+  try {
+    const userRank = await UserRank.findById(req.params.id);
+
+    if (!userRank) {
+      return res.status(404).json({ msg: 'UserRank not found' });
+    }
+
+    // Update the fields of the userRank object
+    userRank.field1 = req.body.field1;
+    userRank.field2 = req.body.field2;
+    userRank.field3 = req.body.field3;
+    userRank.field4 = req.body.field4;
+    userRank.field5 = req.body.field5;
+    userRank.field6 = req.body.field6;
+
+    await userRank.save();
+
+    res.json(userRank);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route   DELETE api/tools/permissions/:id
+// @desc    Delete a UserRank
+// @access  Private
+router.delete('/:id', auth(), async (req, res) => {
+  try {
+    const userRank = await UserRank.findById(req.params.id);
+
+    if (!userRank) {
+      return res.status(404).json({ msg: 'UserRank not found' });
+    }
+
+    await userRank.remove();
+    res.json({ msg: 'UserRank removed' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
 });
 
 router.get('/:rank', auth(), async (req, res) => {
@@ -63,24 +177,5 @@ router.get('/:rank', auth(), async (req, res) => {
     res.status(500).json({ error: 'An error occurred while retrieving user permissions.' });
   }
 });
-
-router.post('/', auth(), async (req, res) => {
-  const permission = new Permission(req.body);
-  await permission.save();
-  res.json(permission);
-});
-
-router.put('/:id', auth('admin_manage_permissions'), async (req, res) => {
-  const permission = new Permission(req.body);
-  await permission.save();
-  res.json(permission);
-});
-
-
-router.delete('/:id', auth(), async (req, res) => {
-  await Permission.findByIdAndDelete(req.params.id);
-  res.json({message: 'Permission deleted'});
-});
-
 
 module.exports = router;

@@ -21,19 +21,19 @@ const ModBar = ({userId}) => {
       });
 
     return () => {
-      cancelToken.cancel('Request canceled by cleanup'); //
+      cancelToken.cancel('Request canceled by cleanup');
     };
   }, []);
 
   return (
-    <div className='modBar'>
+    <div className='alertbar blend'>
       <div>
-        {error && <div>{error}</div>}
+        {error && <div>{error}</div>}   
         {modBar.map((item, index) => (
           <div key={index} dangerouslySetInnerHTML={{ __html: item }} />
         ))}
         {/* Link to navigate to Toolbox component */}
-        <Link to="/private/staff/tools">Go to Toolbox</Link>
+        <Link to="/private/staff/tools">Toolbox</Link>
       </div>
     </div>
   );

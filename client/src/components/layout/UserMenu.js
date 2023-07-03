@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {SITE_NAME} from '../../config/config';
+
 const UserMenu = ({ pageId, userId, userName }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
