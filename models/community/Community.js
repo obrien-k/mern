@@ -43,7 +43,7 @@ const groupSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Community'
   },
-  members: [{
+  consumers: [{
     type: Schema.Types.ObjectId,
     ref: 'Consumer'
   }],
@@ -60,10 +60,10 @@ const consumerSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
-  communities: [{
+  community: {
     type: Schema.Types.ObjectId,
     ref: 'Community'
-  }],
+  },
   groups: [{
     type: Schema.Types.ObjectId,
     ref: 'Group'
@@ -81,10 +81,10 @@ const contributorSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
-  communities: [{
+  community: {
     type: Schema.Types.ObjectId,
     ref: 'Community'
-  }],
+  },
   contributions: [{
     type: Schema.Types.ObjectId,
     ref: 'Contribution'

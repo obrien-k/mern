@@ -11,6 +11,7 @@ import NewTopicForm from '../sections/forum/NewTopicForm';
 import ErrorBoundary from './ErrorBoundary';
 import FallbackComponent from './FallbackComponent';
 import ContributeForm from '../sections/contribute/ContributeForm';
+import CommunitiesPage from '../sections/communities/CommunitiesPage';
 
 const logErrorToService = (error, info) => {
   //TODO
@@ -40,6 +41,7 @@ const PrivateContent = ({userId, userName}) => {
         }}>
           <ForumListData />
         </ErrorBoundary>} />
+        <Route path="communities" element={<CommunitiesPage userId={userId} />} />
         <Route path="contribute" element={<ErrorBoundary
           FallbackComponent={FallbackComponent}
           onError={logErrorToService}

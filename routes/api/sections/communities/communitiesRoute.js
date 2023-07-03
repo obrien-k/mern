@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../../../../middleware/auth');
-const Community = require('../../../../models/community/Community');
+const { Community } = require('../../../../models/community/Community');
 
 // @route   GET api/communities
 // @desc    Get all communities

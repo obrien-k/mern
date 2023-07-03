@@ -22,9 +22,9 @@ const CommentSchema = new Schema({
     body: {
         type: String
     },
-    edited_user_id: {
-        type: Number,
-        default: null
+    edited_user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     },
     edited_time: {
         type: Date,

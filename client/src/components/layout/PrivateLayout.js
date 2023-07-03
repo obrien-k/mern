@@ -1,6 +1,4 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
-import '../../styles/layer_cake/style.css'; 
 import PrivateHeader from './PrivateHeader';
 import PrivateFooter from './PrivateFooter';
 
