@@ -3,7 +3,7 @@ import { useAllCommunitiesData } from '../../../hooks/useAllCommunitiesData';
 import CommunitiesTable from './CommunitiesTable';
 
 const CommunitiesPage = () => {
-  const { data, isLoading, errorMessage } = useAllCommunitiesData();
+  const { transformedData, isLoading, errorMessage } = useAllCommunitiesData();
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -13,9 +13,10 @@ const CommunitiesPage = () => {
     return <div>Error: {JSON.stringify(errorMessage)}</div>;
   }
 
-
   return (
-    <CommunitiesTable communities={data} />
+    <div>
+      <div><CommunitiesTable communities={transformedData} /></div>
+    </div>
   );
 };
 

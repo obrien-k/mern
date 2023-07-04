@@ -12,6 +12,7 @@ import ErrorBoundary from './ErrorBoundary';
 import FallbackComponent from './FallbackComponent';
 import ContributeForm from '../sections/contribute/ContributeForm';
 import CommunitiesPage from '../sections/communities/CommunitiesPage';
+import PermissionFormPage from '../admin/PermissionFormPage'; // VScode is throwing an error but seems fine (capitalization of file)
 
 const logErrorToService = (error, info) => {
   //TODO
@@ -23,6 +24,8 @@ const PrivateContent = ({userId, userName}) => {
     <div id="content">
       <Routes>
         <Route path="user/invite-tree" element={<InviteTree userId={userId} />} />
+        <Route path="staff/tools/permissions/new" element={<PermissionFormPage userId={userId} />} />
+        <Route path="staff/tools/permissions/:id/edit" element={<PermissionFormPage userId={userId} />} />
         <Route path="staff/tools/permissions" element={<PermissionManager userId={userId} />} />
         <Route path="staff/tools" element={<ErrorBoundary
           FallbackComponent={FallbackComponent}

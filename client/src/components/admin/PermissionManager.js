@@ -29,26 +29,29 @@ const PermissionManager = () => {
     }, []);
 
     const fetchPermissions = async () => {
-        const response = await axios.get('/tools/permissions/');
+        const response = await api.get('/tools/permissions/');
         setPermissions(response.data);
     };
 
     const handleEdit = async (id) => {
       if (window.confirm('Are you sure you want to edit this permission class?')) {
-          await axios.put(`/tools/permissions/${id}`);
+          await api.put(`/tools/permissions/${id}`);
           fetchPermissions();
       }
   };
 
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to remove this permission class?')) {
-            await axios.delete(`/tools/permissions/${id}`);
+            await api.delete(`/tools/permissions/${id}`);
             fetchPermissions();
         }
     };
 
     return (
-        <div>
+        <div className='thin'>
+            <div className='linkbox'>
+                <Link to='/private/staff/tools/permissions/new' className='brackets'>Create New Permission Class</Link> <Link to='/private/staff' className='brackets'>Back to Toolbox</Link>
+            </div>
             <table width="100%">
                 <thead>
                     <tr>
@@ -61,12 +64,12 @@ const PermissionManager = () => {
                 <tbody>
                     {permissions.map(permission => (
                         <tr key={permission._id}>
-                            <td>{permission.field_2}</td>
-                            <td>{permission.field_1}</td>
+                            <td>{permission.field2}</td>
+                            <td>{permission.field1}</td>
                             <td>{permission.userCount}</td>
                             <td>
-                                <button onClick={() => handleEdit(permission._id)}>Edit</button>
-                                <button onClick={() => handleDelete(permission._id)}>Delete</button>
+                                <Link to={`/private/staff/tools/permissions/${permission._id}/edit`} className='brackets'>Edit</Link>
+                                <Link onClick={() => handleDelete(permission._id)} className='brackets'>Delete</Link>
                             </td>
                         </tr>
                     ))}

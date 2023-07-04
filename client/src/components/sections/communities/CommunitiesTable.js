@@ -3,27 +3,42 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 const CommunitiesTable = ({ communities }) => {
+  console.log(communities);
   return (
-    <table className="community_table cats grouping m_table" id="community_table">
+    <table className="torrent_table cats grouping m_table" id="torrent_table">
       <thead>
         <tr className="colhead">
-          <td className="small" aria-label="Empty cell"></td>
-          <td className="small cats_col" aria-label="Empty cell"></td>
-          <td className="m_th_left m_th_left_collapsable" width="100%">Name / Year</td>
+          <td className="small"></td>
+          <td className="small cats_col"></td>
+          <td className="m_th_left m_th_left_collapsable" width="100%">
+            Name / <a href="?order_way=desc&order_by=year">Year</a>
+          </td>
           <td>Files</td>
-          <td>Time</td>
-          <td>Size</td>
-          <td className="sign snatches">Snatches</td>
-          <td className="sign seeders">Seeders</td>
-          <td className="sign leechers">Leechers</td>
+          <td><a href="?order_way=asc&order_by=time">Time</a></td>
+          <td><a href="?order_way=desc&order_by=size">Size</a></td>
+          <td className="sign snatches">
+            <a href="?order_way=desc&order_by=snatched">
+              <img src="/static/styles/public/images/snatched.png" className="tooltip" alt="Snatches" title="Snatches" />
+            </a>
+          </td>
+          <td className="sign seeders">
+            <a href="?order_way=desc&order_by=seeders">
+              <img src="/static//styles/public/images/seeders.png" className="tooltip" alt="Contributors" title="Seeders" />
+            </a>
+          </td>
+          <td className="sign leechers">
+            <a href="?order_way=desc&order_by=leechers">
+              <img src="/static/styles/public/images/leechers.png" className="tooltip" alt="Consumers" title="Leechers" />
+            </a>
+          </td>
         </tr>
       </thead>
       <tbody>
         {communities.length > 0 ? (
           communities.map(community => (
-            <React.Fragment key={community.id || community.name}>
+            <React.Fragment key={community.id}>
               {/* Community Row */}
-              <tr className="torrent">
+              <tr key={`community-row-${community._id}`} className="torrent">
               <td></td>
               <td className="center cats_col m_cats_col m_td_left">
                 <div className={community.tooltipClass}></div>
@@ -35,7 +50,6 @@ const CommunitiesTable = ({ communities }) => {
                   </span>
                   <Link to={`/communities/${community._id}`} className="tooltip" dir="ltr">{community.name}</Link>
                   <div className={community.communityInfoClass}></div>
-                  <div className="tags"><Link to={`/communities/${community._id}/tags`}>{community.tags}</Link></div>
                 </div>
               </td>
               <td className="td_file_count">{community.files}</td>
@@ -47,41 +61,40 @@ const CommunitiesTable = ({ communities }) => {
             </tr>
 
               {/* Group Rows */}
-              {community.groups && community.groups.map(group => (
-                <React.Fragment key={group._id || group.name}>
+              {community.groups &&
+              community.groups.map((group, index) => (
+                <React.Fragment key={group._id}>
                   {/* Group Row */}
-                  <tr className="group">
-                    <td></td>
+                  <tr key={`group-row-${group._id}`} className="group">
+                    <td className="td_collapse center m_td_left">
+                      <div id="showimg_2" className="hide_torrents" key={`group-div-${group._id}`}>
+                        <Link to='#' className='tooltip show_torrents_link'></Link>
+                        </div>
+                    </td>
                     <td className="center cats_col">
                       {/* Replace this with relevant data */}
                       <div className={group.type}></div>
                     </td>
-                    <td className="td_info">
+                    <td colSpan='2' className="td_info big_info">
+                      <div className="group_info clear">
+                        <Link to={`${group.community._id}`} className="tooltip" dir="ltr">{group.community.name}</Link> -
+                        <Link to={`${group.community._id}/groups/${group._id}`} className='tooltip' dir='ltr'>{group.title}</Link> <p>{group.year} 'todo group.release_type'</p>
+                        <span className="add_bookmark float_right">
+                        <Link to="#" id="bookmarklink_torrent_2" className="brackets" Bookmark={('group', 2, 'Remove bookmark')}>Bookmark</Link>
+                        </span>
                       {/* Replace the links and data below with relevant data */}
                       <span>
                         [<Link to={`/groups/${group._id}/consume`} className="tooltip">DL</Link> | <Link to={`/groups/${group._id}/report`} className="tooltip">RP</Link>]
                       </span>
-                      <a href={`/groups/${group._id}/consume`} className="tooltip" dir="ltr">{group.title}</a>
                       <div className={group.tooltipClass}></div>
-                      <div className="tags"><a href={`/groups/${group._id}/tags`}>{group.tags}</a></div>
+                      </div>
                     </td>
-                    {/* ... other table cells for the group ... */}
+                    <td className="td_time nobr"><span className="time tooltip">{group.time}</span></td>
+                    <td className="td_size number_column nobr">{group.size}</td>
+                    <td className="td_snatched m_td_right number_column">{group.snatches}</td>
+                    <td className="td_seeders m_td_right number_column">{group.contributors}</td>
+                    <td className="td_leechers m_td_right number_column">{group.consumers}</td>
                   </tr>
-                  
-                  {/* Contributions Rows within Group */}
-                  {group.contributions && group.contributions.map(contribution => (
-                    <tr className="group_contribution" key={contribution._id || contribution.name}>
-                      <td></td>
-                      <td className="center cats_col">
-                        {/* Replace this with relevant data */}
-                        <div className={contribution.tooltipClass}></div>
-                      </td>
-                      <td className="td_info">
-                        <a href={`#contribution/${contribution._id}`} className="tooltip" dir="ltr">{contribution.name}</a>
-                      </td>
-                      {/* ... other table cells for the contribution ... */}
-                    </tr>
-                  ))}
                 </React.Fragment>
               ))}
               </React.Fragment>
@@ -99,21 +112,39 @@ const CommunitiesTable = ({ communities }) => {
 CommunitiesTable.propTypes = {
   communities: PropTypes.arrayOf(
     PropTypes.shape({
+      _id: PropTypes.string.isRequired,
       tooltipClass: PropTypes.string,
       communityLink: PropTypes.string,
       name: PropTypes.string.isRequired,
       communityInfoClass: PropTypes.string,
-      tags: PropTypes.arrayOf(PropTypes.number),
-      tag: PropTypes.string,
+      tags: PropTypes.string,
       files: PropTypes.number,
       time: PropTypes.string,
       size: PropTypes.string,
       snatches: PropTypes.number,
-      seeders: PropTypes.arrayOf(PropTypes.string),
-      leechers: PropTypes.arrayOf(PropTypes.string),
-      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      contributors: PropTypes.number,
+      consumers: PropTypes.number,
+      groups: PropTypes.arrayOf(
+        PropTypes.shape({
+          _id: PropTypes.string.isRequired,
+          type: PropTypes.string,
+          community: PropTypes.shape({
+            _id: PropTypes.string.isRequired,
+            name: PropTypes.string.isRequired,
+          }),
+          title: PropTypes.string.isRequired,
+          year: PropTypes.number.isRequired,
+          tooltipClass: PropTypes.string,
+          time: PropTypes.string,
+          size: PropTypes.string,
+          snatches: PropTypes.number,
+          contributors: PropTypes.number,
+          consumers: PropTypes.number,
+        })
+      ),
     })
   ).isRequired,
 };
+
 
 export default CommunitiesTable;

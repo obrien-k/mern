@@ -1,27 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-
-const SearchBox = ({ forums }) => {
-  if (!Array.isArray(forums)) {
-      return <div>Forums data is not available or in an unexpected format.</div>;
-  }
+const SearchBox = () => {
   return (
 <div className="box filter_communities">
     <div className="head">
         <strong>
             <span id="ft_basic_text" className="">Basic /</span>
             <span id="ft_basic_link" className="hidden">
-                <a href="#" onClick={() => toggleCommunitySearch('basic')}>Basic</a> /
+                <a href="#">Basic</a> /
             </span>
             <span id="ft_advanced_text" className="hidden">Advanced</span>
             <span id="ft_advanced_link" className="">
-                <a href="#" onClick={() => toggleCommunitySearch('advanced')}>Advanced</a>
+                <a href="#">Advanced</a>
             </span>
             Search
         </strong>
         <span style={{ float: 'right' }}>
-            <a href="#" onClick={() => toggleCommunitySearch(0)} id="ft_toggle" className="brackets">Hide</a>
+            <a href="#" id="ft_toggle" className="brackets">Hide</a>
         </span>
     </div>
     <div id="ft_container" className="pad">
@@ -56,7 +52,7 @@ const SearchBox = ({ forums }) => {
                 </td>
              </tr>
               <tr id="edition_expand" className="ftr_advanced hidden">
-                <td colspan="4" className="center ft_edition_expand"><a href="#" className="brackets" onclick="ToggleEditionRows(); return false;">Click here to toggle searching for specific remaster information</a></td>
+                <td colspan="4" className="center ft_edition_expand"><a href="#" className="brackets">Click here to toggle searching for specific remaster information</a></td>
               </tr>
               <tr id="edition_title" className="ftr_advanced hidden hidden">
                 <td className="label">Edition title:</td>
@@ -255,10 +251,10 @@ const SearchBox = ({ forums }) => {
             </tr>
         </tbody></table>
         <table className="layout cat_list hidden" id="taglist">
-            <tbody><tr>onClick={() => toggleTag('basic')}
-                <td width="12.5%"><a href="#" onClick={() => toggleTag('female.fronted.symphonic.death.metal')}>female.fronted.symphonic.death.metal</a></td>
-                <td width="12.5%"><a href="#" onClick={() => toggleTag('pop')}>pop</a></td>
-                <td width="12.5%"><a href="#" onClick={() => toggleTag('rock')}>rock</a></td>
+            <tbody><tr>
+                <td width="12.5%"><a href="#">female.fronted.symphonic.death.metal</a></td>
+                <td width="12.5%"><a href="#">pop</a></td>
+                <td width="12.5%"><a href="#">rock</a></td>
                 <td colspan="4"> </td>
             </tr>
         </tbody></table>
@@ -269,7 +265,7 @@ const SearchBox = ({ forums }) => {
                     <a className="brackets" href="random/artist">Random Artist</a>
                 </td>
                 <td className="label">
-                    <a className="brackets" href="#" onclick="$('#taglist').gtoggle(); if (this.innerHTML == 'View tags') { this.innerHTML = 'Hide tags'; } else { this.innerHTML = 'View tags'; }; return false;">View tags</a>
+                    <a className="brackets" href="#">View tags</a>
                 </td>
             </tr>
             </tbody>
@@ -278,4 +274,4 @@ const SearchBox = ({ forums }) => {
     </div>
 </div>
 )};
-module.exports = SearchBox;
+export default SearchBox;

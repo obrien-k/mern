@@ -47,6 +47,30 @@ const groupSchema = new Schema({
   type: {
     type: String,
     enum: ['Music', 'Applications', 'E-Books', 'E-Learning Videos', 'Audiobooks', 'Comedy', 'Comics']
+  },
+  releaseType: {
+    type: String,
+    enum: ['Album', 'Single', 'EP', 'Anthology', 'Compilation', 'DJ Mix', 'Live', 'Remix', 'Bootleg', 'Interview', 'Mixtape', 'Demo', 'Concert Recording', 'Unknown']
+  },
+  year: {
+    type: Number,
+    min: 1900,
+    max: 2100,
+    required: true
+  },
+  isEdition: {
+    type: Boolean,
+    default: false
+  },
+  edition:{
+    year: {
+      type: Number,
+      min: 1900,
+      max: 2100
+    },
+    title: String,
+    recordLabel: String,
+    catalogNumber: String
   }
 }, { timestamps: true});
 

@@ -41,6 +41,10 @@ const contributionSchema = new Schema({
   type: {
     type: String,
     enum: ['txt', 'wav', 'pdf', 'wmv', 'ogg', 'lua', 'jpg', 'png']
+  },
+  jsonFile:{
+    type: Boolean,
+    default: false
   }
 }, { timestamps: true });
 
