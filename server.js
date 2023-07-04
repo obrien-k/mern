@@ -39,6 +39,7 @@ app.use('/api/services/invite-tree', require('./routes/api/services/inviteTree')
 
 // Communities routes
 app.use('/api/communities', require('./routes/api/sections/communities/communitiesRoute'));
+app.use('/api/contributions', require('./routes/api/sections/communities/contributions'));
 //app.use('/api/artist', require('./routes/api/artist'));
 
 // Forums routes

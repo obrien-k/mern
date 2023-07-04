@@ -1,28 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../../../../middleware/auth');
-const checkPerms = require('../../../../middleware/permissions');
+const { asyncHandler } = require('../../../../middleware/asyncHandler');
 const ForumTopicNote = require('../../../../models/forum/ForumTopicNote');
 
 
 // @route   GET api/forums/topics/notes
 // @desc    Get all notes for a forum topic
 // @access  Private
-router.get('/', auth(), async (req, res) => {
-  try {
+router.get('/', auth(), asyncHandler(async (req, res) => {
     const topicNotes = await ForumTopicNote.find({}).sort({ createdAt: -1 });
     res.json(topicNotes);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
+}));
 
 // @route   POST api/forums/topics/notes
 // @desc    Add a note to a forum topic
 // @access  Private
-router.post('/', auth(), async (req, res) => {
-  try {
+router.post('/', auth(), asyncHandler(async (req, res) => {
     const { Body } = req.body;
 
     // Creating new ForumTopicNote
@@ -33,17 +27,12 @@ router.post('/', auth(), async (req, res) => {
 
     const topicNote = await newTopicNote.save();
     res.json(topicNote);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
+}));
 
 // @route   DELETE api/forums/topics/notes/:noteId
 // @desc    Delete a note from a forum topic
 // @access  Private
-router.delete('/:noteId', auth(), checkPerms, async (req, res) => {
-  try {
+router.delete('/:noteId', auth(), asyncHandler(async (req, res) => {
     const note = await ForumTopicNote.findById(req.params.noteId);
 
     if (!note) {
@@ -52,10 +41,6 @@ router.delete('/:noteId', auth(), checkPerms, async (req, res) => {
 
     await note.remove();
     res.json({ msg: 'Note removed' });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
+}));
 
 module.exports = router;

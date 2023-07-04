@@ -12,7 +12,7 @@ const contributorSchema = new Schema({
   },
   contributions: [{
     type: Schema.Types.ObjectId,
-    ref: 'Group'
+    ref: 'Contribution'
   }]
 }, { timestamps: true });
 
