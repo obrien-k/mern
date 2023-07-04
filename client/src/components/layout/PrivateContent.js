@@ -9,19 +9,55 @@ import InviteTree from '../profile/invite/InviteTree';
 import PermissionManager from '../admin/PermissionManager';
 import NewTopicForm from '../sections/forum/NewTopicForm';
 import ErrorBoundary from './ErrorBoundary';
+import FallbackComponent from './FallbackComponent';
+import ContributeForm from '../sections/contribute/ContributeForm';
+import CommunitiesPage from '../sections/communities/CommunitiesPage';
+import PermissionFormPage from '../admin/PermissionFormPage'; // VScode is throwing an error but seems fine (capitalization of file)
+
+const logErrorToService = (error, info) => {
+  //TODO
+  console.log(error, info);
+};
 
 const PrivateContent = ({userId, userName}) => {
   return (
     <div id="content">
       <Routes>
-        <Route path='/forums/:forumID/new-topic' element={<NewTopicForm userId={userId}/>} />
-        <Route path="/forums/:forumID" element={<ForumPage />} />
-        <Route path="/forums" element={<ErrorBoundary><ForumListData /></ErrorBoundary>} />
-        <Route path="/invite" element={<InviteForm userId={userId} userName={userName} />} />
-        <Route path="/user/invite-tree" element={<InviteTree userId={userId} />} />
-        <Route path="/tools/permissions" element={<PermissionManager userId={userId} />} />
-        <Route path="/tools" element={<Toolbox userId={userId} />}/>
-        <Route path="/*" element={<PrivateHomepage userId={userId} />} />
+        <Route path="user/invite-tree" element={<InviteTree userId={userId} />} />
+        <Route path="staff/tools/permissions/new" element={<PermissionFormPage userId={userId} />} />
+        <Route path="staff/tools/permissions/:id/edit" element={<PermissionFormPage userId={userId} />} />
+        <Route path="staff/tools/permissions" element={<PermissionManager userId={userId} />} />
+        <Route path="staff/tools" element={<ErrorBoundary
+          FallbackComponent={FallbackComponent}
+          onError={logErrorToService}
+          onReset={() => {
+            // TODO reset state so it doesn't happen again
+        }}><Toolbox userId={userId} /></ErrorBoundary>}/>
+         <Route path='forums/:forumID/new-topic' element={<NewTopicForm userId={userId}/>} />
+        <Route path="forums/:forumID" element={<ForumPage />} />
+         <Route path="forums" element={
+        <ErrorBoundary
+          FallbackComponent={FallbackComponent}
+          onError={logErrorToService}
+          onReset={() => {
+            // TODO reset state so it doesn't happen again
+        }}>
+          <ForumListData />
+        </ErrorBoundary>} />
+        <Route path="communities" element={<ErrorBoundary
+          FallbackComponent={FallbackComponent}
+          onError={logErrorToService}
+          onReset={() => {
+            // TODO reset state so it doesn't happen again
+        }}><CommunitiesPage userId={userId} /></ErrorBoundary>} />
+        <Route path="contribute" element={<ErrorBoundary
+          FallbackComponent={FallbackComponent}
+          onError={logErrorToService}
+          onReset={() => {
+            // TODO reset state so it doesn't happen again
+        }}><ContributeForm userId={userId} /></ErrorBoundary>}/>
+        <Route path="invite" element={<InviteForm userId={userId} userName={userName} />} />
+        <Route path="*" element={<PrivateHomepage userId={userId} />} />
       </Routes>
     </div>
   );

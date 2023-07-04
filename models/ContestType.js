@@ -9,4 +9,4 @@ const ContestTypeSchema = new Schema({
     }
 });
 
-module.exports = ContestType = mongoose.model('contestType', ContestTypeSchema);
+module.exports = ContestType = mongoose.model('ContestType', ContestTypeSchema);

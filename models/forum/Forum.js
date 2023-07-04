@@ -2,56 +2,56 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const forumSchema = new Schema({
-  ForumCategory: {
+  forumCategory: {
     type: Schema.Types.ObjectId,
-    ref: 'forumCategory',
+    ref: 'ForumCategory',
     required: true
   },
-  Sort: {
+  sort: {
     type: Number,
     required: true
   },
-  Name: {
+  name: {
     type: String,
     required: true,
     default: ''
   },
-  Description: {
+  description: {
     type: String,
     default: ''
   },
-  MinClassRead: {
+  minClassRead: {
     type: Number,
     required: true,
     default: 0
   },
-  MinClassWrite: {
+  minClassWrite: {
     type: Number,
     required: true,
     default: 0
   },
-  MinClassCreate: {
+  minClassCreate: {
     type: Number,
     required: true,
     default: 0
   },
-  ForumTopics: [{
+  forumTopics: [{
     type: Schema.Types.ObjectId,
-    ref: 'forumTopic'
+    ref: 'ForumTopic'
   }],
-  ForumPosts: {
+  forumPosts: {
     type: Schema.Types.ObjectId,
-    ref: 'forumPost',
+    ref: 'ForumPost',
   },
-  AutoLock: {
+  autoLock: {
     type: Boolean,
     default: true
   },
-  AutoLockWeeks: {
+  autoLockWeeks: {
     type: Number,
     required: true,
     default: 4
   }
 }, { timestamps: true});
 
-module.exports = Forum = mongoose.model('forum', forumSchema);
+module.exports = Forum = mongoose.model('Forum', forumSchema);

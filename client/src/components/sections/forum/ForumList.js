@@ -16,7 +16,7 @@ const ForumList = ({ forums }) => {
           <div className="forum-list">
               {forums.map((category, index) => (
                   <div key={category._id}>
-                      <h3>{category.Name}</h3>
+                      <h3>{category.name}</h3>
                       <table className="forum-index">
                           <thead>
                               <tr className="colhead">
@@ -28,31 +28,31 @@ const ForumList = ({ forums }) => {
                               </tr>
                           </thead>
                           <tbody>
-                              {category.Forums.map((forum) => (
+                              {category.forums.map((forum) => (
                                   <tr key={forum._id} className="forum-row">
                                       <td className="read"></td>
                                       <td className="forum">
                                           <h4>
-                                              <Link to={`/forums/${forum._id}`}>{forum.Name}</Link>
+                                              <Link to={`/forums/${forum._id}`}>{forum.name}</Link>
                                           </h4>
                                       </td>
                                       <td className="latest">
-                                          {forum.ForumPosts ? (
+                                          {forum.forumPosts ? (
                                               <div>
                                                   <span className="last_post">
                                                       {/* Link to the last post */}
-                                                      <Link to={`/forums/${forum._id}/posts/${forum.ForumPosts._id}`}>{forum.ForumPosts[0].body}</Link>
+                                                      <Link to={`/forums/${forum._id}/posts/${forum.forumPosts._id}`}>{forum.forumPosts.body}</Link>
                                                   </span>
                                                   <span className="last_poster">
-                                                      by <Link to={`/user/${forum.ForumPosts[0]._id}`}>User</Link>
+                                                      by <Link to={`/user/${forum.forumPosts._id}`}>User</Link>
                                                   </span>
                                               </div>
                                           ) : (
                                               <span>There are no topics here. <Link to={`/forums/${forum._id}/new`}>Create one!</Link></span>
                                           )}
                                       </td>
-                                      <td className="number-column">{forum.NumTopics}</td>
-                                      <td className="number-column">{forum.NumPosts}</td>
+                                      <td className="number-column">{forum.numTopics}</td>
+                                      <td className="number-column">{forum.numPosts}</td>
                                   </tr>
                               ))}
                           </tbody>

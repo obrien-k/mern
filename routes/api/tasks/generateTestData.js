@@ -6,9 +6,8 @@ const { forumTopics, forums, forumCategories } = require('./forumSeedData');
 
 const generateTestData = async () => {
   try {
-    // Insert UserRanks
-    await UserRank.insertMany([  {
-  _id: 2,
+// Insert UserRanks
+await UserRank.insertMany([  {
   field1: 100,
   field2: 'User',
   field3: {
@@ -27,7 +26,6 @@ const generateTestData = async () => {
   field6: 0
 },
 {
-  _id: 3,
   field1: 150,
   field2: 'Member',
   field3: {
@@ -53,7 +51,6 @@ const generateTestData = async () => {
   field6: 0
 },
 {
-  _id: 4,
   field1: 200,
   field2: 'Power User',
   field3: {
@@ -81,7 +78,6 @@ const generateTestData = async () => {
   field6: 0
 },
 {
-  _id: 5,
   field1: 250,
   field2: 'Elite',
   field3: {
@@ -113,7 +109,6 @@ const generateTestData = async () => {
   field6: 0
 },
 {
-  _id: 19,
   field1: 201,
   field2: 'Artist',
   field3: {
@@ -133,7 +128,6 @@ const generateTestData = async () => {
   field6: 9
 },
 {
-  _id: 20,
   field1: 202,
   field2: 'Donor',
   field3: {
@@ -159,7 +153,6 @@ const generateTestData = async () => {
   field6: 10
 },
 {
-  _id: 42,
   field1: 205,
   field2: 'Donor',
   field3: {
@@ -184,7 +177,6 @@ const generateTestData = async () => {
   field6: 10
 },
 {
-  _id: 23,
   field1: 255,
   field2: 'First Line Support',
   field3: {
@@ -197,7 +189,6 @@ const generateTestData = async () => {
   field6: 1
 },
 {
-  _id: 41,
   field1: 257,
   field2: 'Recruiter',
   field3: {
@@ -209,7 +200,7 @@ const generateTestData = async () => {
   field6: 1
 },
 {
-  _id: 30,
+
   field1: 300,
   field2: 'Interviewer',
   field3: {
@@ -220,7 +211,6 @@ const generateTestData = async () => {
   field6: 1
 },
 {
-  _id: 31,
   field1: 310,
   field2: 'Community Celebrity',
   field3: {
@@ -231,7 +221,6 @@ const generateTestData = async () => {
   field6: 1
 },
 {
-  _id: 32,
   field1: 320,
   field2: 'Designer',
   field3: {
@@ -258,7 +247,6 @@ const generateTestData = async () => {
   field6: 1
 },
 {
-  _id: 33,
   field1: 330,
   field2: 'Security Team',
   field3: {
@@ -271,7 +259,6 @@ const generateTestData = async () => {
   field6: 1
 },
 {
-  _id: 34,
   field1: 340,
   field2: 'IRC Team',
   field3: {
@@ -282,7 +269,6 @@ const generateTestData = async () => {
   field6: 1
 },
 {
-  _id: 35,
   field1: 350,
   field2: 'Shadow Team',
   field3: {
@@ -308,7 +294,6 @@ const generateTestData = async () => {
   field6: 1
 },
 {
-  _id: 36,
   field1: 360,
   field2: 'Alpha Team',
   field3: {
@@ -320,7 +305,6 @@ const generateTestData = async () => {
   field6: 1
 },
 {
-  _id: 37,
   field1: 370,
   field2: 'Bravo Team',
   field3: {
@@ -331,7 +315,6 @@ const generateTestData = async () => {
   field6: 1
 },
 {
-  _id: 38,
   field1: 380,
   field2: 'Charlie Team',
   field3: {
@@ -360,7 +343,6 @@ const generateTestData = async () => {
   field6: 1
 },
 {
-  _id: 39,
   field1: 395,
   field2: 'Delta Team',
   field3: {
@@ -387,9 +369,8 @@ const generateTestData = async () => {
   field6: 1
 },
 {
-  _id: 25,
   field1: 400,
-  field2: 'Community Leader',
+  field2: 'Community Lead',
   field3: {
     site_leech: true,
     site_upload: true,
@@ -420,7 +401,6 @@ const generateTestData = async () => {
   field6: 0
 },
 {
-  _id: 29,
   field1: 450,
   field2: 'Power TM',
   field3: {
@@ -453,7 +433,6 @@ const generateTestData = async () => {
   field6: 0
 },
 {
-  _id: 28,
   field1: 500,
   field2: 'Elite TM',
   field3: {
@@ -487,7 +466,6 @@ const generateTestData = async () => {
   field6: 0
 },
 {
-  _id: 26,
   field1: 601,
   field2: 'VIP',
   field3: {
@@ -521,7 +499,6 @@ const generateTestData = async () => {
   field6: 0
 },
 {
-  _id: 27,
   field1: 605,
   field2: 'Legend',
   field3: {
@@ -532,7 +509,6 @@ const generateTestData = async () => {
   field6: 0
 },
 {
-  _id: 21,
   field1: 800,
   field2: 'Forum Moderator',
   field3: {
@@ -581,7 +557,6 @@ const generateTestData = async () => {
   field6: 0
   },
 {
-  _id: 22,
   field1: 850,
   field2: 'Community Moderator',
   field3: {
@@ -647,7 +622,6 @@ const generateTestData = async () => {
   field6: 0
 },
 {
-  _id: 11,
   field1: 900,
   field2: 'Moderator',
   field3: {
@@ -721,7 +695,6 @@ const generateTestData = async () => {
   field6: 0
 },
 {
-  _id: 24,
   field1: 950,
   field2: 'Developer',
   field3: {
@@ -757,7 +730,6 @@ const generateTestData = async () => {
   field6: 0
 },
 {
-  _id: 40,
   field1: 980,
   field2: 'Administrator',
   field3: {
@@ -865,7 +837,6 @@ const generateTestData = async () => {
   field6: 0
 },
 {
-  _id: 15,
   field1: 1000,
   field2: 'Sysop',
   field3: {

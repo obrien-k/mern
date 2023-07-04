@@ -26,4 +26,4 @@ const CoverArtSchema = new Schema({
 
 CoverArtSchema.index({ group_id: 1, image: 1 }, { unique: true });
 
-module.exports = CoverArt = mongoose.model('coverArt', CoverArtSchema);
+module.exports = CoverArt = mongoose.model('CoverArt', CoverArtSchema);

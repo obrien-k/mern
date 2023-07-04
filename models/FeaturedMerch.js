@@ -28,4 +28,4 @@ const FeaturedMerchSchema = new Schema({
     }
 });
 
-module.exports = FeaturedMerch = mongoose.model('featuredMerch', FeaturedMerchSchema);
+module.exports = FeaturedMerch = mongoose.model('FeaturedMerch', FeaturedMerchSchema);

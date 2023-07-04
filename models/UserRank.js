@@ -2,10 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const UserRankSchema = new Schema({
-  _id: {
-    type: Number,
-    required: true
-  },
   field1: {
     type: Number,
     required: true
@@ -116,4 +112,4 @@ const UserRankSchema = new Schema({
   }
 });
 
-module.exports = UserRank = mongoose.model('userRank', UserRankSchema);
+module.exports = UserRank = mongoose.model('UserRank', UserRankSchema);

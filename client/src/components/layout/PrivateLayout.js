@@ -1,14 +1,15 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
-import '../../styles/layer_cake/style.css'; 
 import PrivateHeader from './PrivateHeader';
-import PrivateContent from './PrivateContent';
+import PrivateFooter from './PrivateFooter';
 
-const PrivateLayout = ({ pageTitle, userId, userName, children }) => {
+const PrivateLayout = ({ pageTitle, userId, userName, options, userSessions, scriptStartTime, children }) => {
   return (
     <div>
+      <link rel="stylesheet" type="text/css" href="/static/styles/layer_cake/style.css" />
+      <link rel="stylesheet" type="text/css" href="/static/styles/global.css" />
       <PrivateHeader userId={userId} userName={userName} pageId={1} />
       {children}
+      <PrivateFooter userId={userId} options={options} userSessions={userSessions} scriptStartTime={scriptStartTime} siteLaunchYear='2009' siteName='Stellar' />
     </div>
   );
 };

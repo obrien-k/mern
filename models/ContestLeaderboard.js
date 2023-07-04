@@ -38,4 +38,4 @@ const ContestLeaderboardSchema = new Schema({
 
 ContestLeaderboardSchema.index({ flac_count: 1, last_upload: 1, user_id: 1 });
 
-module.exports = ContestLeaderboard = mongoose.model('contestLeaderboard', ContestLeaderboardSchema);
+module.exports = ContestLeaderboard = mongoose.model('ContestLeaderboard', ContestLeaderboardSchema);

@@ -2,21 +2,21 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const forumLastReadTopicSchema = new Schema({
-  UserID: {
+  user: {
     type: Schema.Types.ObjectId,
-    ref: 'user',
+    ref: 'User',
     required: true
   },
-  TopicID: {
+  forumTopic: {
     type: Schema.Types.ObjectId,
-    ref: 'forumTopic',
+    ref: 'ForumTopic',
     required: true
   },
-  PostID: {
+  forumPost: {
     type: Schema.Types.ObjectId,
-    ref: 'forumPost',
+    ref: 'ForumPost',
     required: true
   }
 });
 
-module.exports = ForumLastReadTopic = mongoose.model('forumLastReadTopic', forumLastReadTopicSchema);
+module.exports = ForumLastReadTopic = mongoose.model('ForumLastReadTopic', forumLastReadTopicSchema);

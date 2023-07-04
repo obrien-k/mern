@@ -11,9 +11,9 @@ const CommentSchema = new Schema({
         type: Number,
         required: true
     },
-    author_id: {
-        type: Number,
-        required: true
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     },
     added_time: {
         type: Date,
@@ -22,9 +22,9 @@ const CommentSchema = new Schema({
     body: {
         type: String
     },
-    edited_user_id: {
-        type: Number,
-        default: null
+    edited_user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     },
     edited_time: {
         type: Date,
@@ -32,4 +32,4 @@ const CommentSchema = new Schema({
     }
 });
 
-module.exports = Comment = mongoose.model('comment', CommentSchema);
+module.exports = Comment = mongoose.model('Comment', CommentSchema);

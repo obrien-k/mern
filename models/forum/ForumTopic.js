@@ -2,52 +2,48 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const forumTopicSchema = new Schema({
-  Thread: {
+  thread: {
     type: Schema.Types.ObjectId,
-    ref: 'thread',
+    ref: 'Thread',
     default: null
   },
-  Title: {
+  title: {
     type: String,
     required: true
   },
-  Author: {
+  author: {
     type: Schema.Types.ObjectId,
-    ref: 'user',
+    ref: 'User',
     required: true
   },
-  IsLocked: {
+  isLocked: {
     type: Boolean,
     required: true,
     default: false
   },
-  IsSticky: {
+  isSticky: {
     type: Boolean,
     required: true,
     default: false
   },
-  Forum: {
+  forum: {
     type: Schema.Types.ObjectId,
-    ref: 'forum',
+    ref: 'Forum',
     required: true
   },
-  NumPosts: {
+  numPosts: {
     type: Number,
     required: true,
     default: 0
-  },
-  LastPost: {
-    type: Schema.Types.ObjectId,
-    ref: 'forumPost',
   },
   Ranking: {
     type: Number,
     default: 0
   },
-  ForumPosts: [{
+  forumPosts: [{
     type: Schema.Types.ObjectId,
-    ref: 'forumPost'
+    ref: 'ForumPost'
   }],
 }, { timestamps: true});
 
-module.exports = mongoose.model('forumTopic', forumTopicSchema);
+module.exports = mongoose.model('ForumTopic', forumTopicSchema);

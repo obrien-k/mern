@@ -2,18 +2,18 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const forumCategorySchema = new Schema({
-  Name: {
+  name: {
     type: String,
     required: true,
     default: ''
   },
-  Sort: {
+  sort: {
     type: Number,
     required: true
   },
-  Forums: [{
+  forums: [{
     type: Schema.Types.ObjectId,
-    ref: 'forum'
+    ref: 'Forum'
   }]
 });
 
@@ -30,4 +30,4 @@ forumCategorySchema.pre('save', async function (next) {
   next();
 });
 
-module.exports = ForumCategory = mongoose.model('forumCategory', forumCategorySchema);
+module.exports = ForumCategory = mongoose.model('ForumCategory', forumCategorySchema);

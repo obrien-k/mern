@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('../../../models/User');
 
 
-// mod
+// /api/tools/mod/ endpoint
 router.post('/mod', async (req, res) => {
     const { userIds, adminComment, banReason } = req.body;
     try {  console.log(req.body)

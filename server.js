@@ -23,12 +23,13 @@ app.use(express.json({ extended: false }));
 
 app.get('/', (req, res) => res.send('API Running'));
 
-// Use routes
+// User routes
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/profile', require('./routes/api/profile'));
 app.use('/api/stylesheet', require('./routes/api/stylesheet'));
-//app.use('/api/posts', require('./routes/api/posts'));
+
+app.use('/api/comments', require('./routes/api/sections/comments'));
 app.use('/api/announcements', require('./routes/api/announcements'));
 app.use('/api/subscriptions', require('./routes/api/subscriptions'));
 
@@ -36,7 +37,12 @@ app.use('/api/subscriptions', require('./routes/api/subscriptions'));
 app.use('/api/services/referral', require('./routes/api/services/referralRoute'));
 app.use('/api/services/invite-tree', require('./routes/api/services/inviteTree'));
 
-// forums Routes
+// Communities routes
+app.use('/api/communities', require('./routes/api/sections/communities/communitiesRoute'));
+app.use('/api/contributions', require('./routes/api/sections/communities/contributions'));
+//app.use('/api/artist', require('./routes/api/artist'));
+
+// Forums routes
 app.use('/api/forums/categories', require('./routes/api/sections/forum/forumCategory'));
 app.use('/api/forums/last-read-topic', require('./routes/api/sections/forum/forumLastReadTopic'));
 app.use('/api/forums/poll', require('./routes/api/sections/forum/forumPoll'));
@@ -46,7 +52,7 @@ app.use('/api/forums/topics', require('./routes/api/sections/forum/forumTopic'))
 app.use('/api/forums/topics/notes', require('./routes/api/sections/forum/forumTopicNote'));
 app.use('/api/forums', require('./routes/api/sections/forum/forumRoute'));
 
-//app.use('/api/artist', require('./routes/api/artist'));
+
 app.use('/api/taskRunner', require('./routes/api/tasks/taskRunner'));
 app.use('/api/taskRunner/fix-posts', require('./routes/api/tasks/fixForumPosts'));
 

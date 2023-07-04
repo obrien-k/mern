@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Route, Routes, useLocation } from 'react-router-dom';
-import Login from '../auth/Login';
-import Register from '../auth/Register';
-import RecoveryPage from '../auth/Recovery';
+import { Link } from 'react-router-dom';
 
 const PublicLanding = () => {
   const SHOW_PUBLIC_INDEX = true; // Replace with your logic
@@ -11,14 +8,6 @@ const PublicLanding = () => {
   const RECOVERY = true; // Replace with your logic
 
   const [showContent, setShowContent] = useState(SHOW_PUBLIC_INDEX);
-
-  // Get the current location
-  const location = useLocation();
-
-  if (!showContent) {
-    window.location.href = '/login'; // Redirect to the login page
-    return null;
-  }
 
   return (
     <>
@@ -65,13 +54,6 @@ const PublicLanding = () => {
           )}
         </span>
       </div>
-
-      {/* Render the login, register, and recovery components */}
-      <Routes location={location}>
-        <Route path="/login" component={<Login />} />
-        <Route path="/register" component={<Register />} />
-        <Route path="/recovery" component={<RecoveryPage />} />
-      </Routes>
     </>
   );
 };

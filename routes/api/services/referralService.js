@@ -4,6 +4,7 @@ const nodemailer = require('nodemailer');
 const User = require('../../../models/User');
 const Invite = require('../../../models/profile/invite');
 const convertToObjectId = require('../util/objectId');
+const { SITE_NAME, SITE_URL } = require('../../../config/default.json');
 
 require('dotenv').config()
 
@@ -116,20 +117,20 @@ class ReferralService {
       const siteURL = 'https://stellargra.ph'; // Replace with config
 
       const message = `
-        The user ${userName} has invited you to join ${siteName} and has specified this address (${curEmail}) as your email address. If you do not know this person, please ignore this email, and do not reply.
+        The user ${userName} has invited you to join ${SITE_NAME} and has specified this address (${curEmail}) as your email address. If you do not know this person, please ignore this email, and do not reply.
 
         Please note that selling invites, trading invites, and giving invites away publicly (e.g., on a forum) is strictly forbidden. If you have received your invite as a result of any of these things, do not bother signing up - you will be banned and lose your chances of ever signing up legitimately.
 
-        If you have previously had an account at ${siteName}, do not use this invite. Instead, please join ${this.disabledChan} on ${this.ircServer} and ask for your account to be reactivated.
+        If you have previously had an account at ${SITE_NAME}, do not use this invite. Instead, please join ${this.disabledChan} on ${this.ircServer} and ask for your account to be reactivated.
 
         To confirm your invite, click on the following link:
 
-        ${siteURL}register.php?invite=${inviteKey}
+        ${SITE_URL}register/?invite=${inviteKey}
 
         After you register, you will be able to use your account. Please take note that if you do not use this invite in the next 3 days, it will expire. We urge you to read the RULES and the wiki immediately after you join.
 
         Thank you,
-        ${siteName} Staff
+        ${SITE_URL} Staff
       `;
 
       // Sending email

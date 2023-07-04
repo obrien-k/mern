@@ -1,10 +1,10 @@
 import React from 'react';
 
-import '../../styles/public/style.css'; 
-
 const PublicLayout = ({ pageTitle, children }) => {
   return (
     <div>
+      <link rel="stylesheet" type="text/css" href="/static/styles/kuro/style.css" />
+      <link rel="stylesheet" type="text/css" href="/static/styles/global.css" />
       {children}
     </div>
   );

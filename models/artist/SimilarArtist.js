@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const VoteSchema = new Schema({
-    user_id: {
+    user: {
         type: Number,
         required: true
     },
@@ -14,13 +14,13 @@ const VoteSchema = new Schema({
 }, {_id: false});
 
 const SimilarArtistSchema = new Schema({
-    artist_id: {
+    artistId: {
         type: Number,
-        ref: 'Artist', // This should match the model name for artists
+        ref: 'Artist',
         required: true
     },
-    similar_artist: {
-        similar_id: {
+    similarArtist: {
+        similarId: {
             type: Number,
             required: true
         },

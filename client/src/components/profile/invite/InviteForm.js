@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { SITE_NAME } from '../../../config/config';
 
 const InviteForm = (props) => {
   const { userId, userName } = props;
@@ -43,7 +44,7 @@ const InviteForm = (props) => {
           Please note that selling, trading, or publicly giving away our invitations— or responding to public invite requests— is strictly forbidden, and may result in you and your entire invite tree being banned.
         </p>
         <p>
-          Do not send an invite to anyone who has previously had an Orpheus Dev account. Please direct them to # on if they wish to reactivate their account.
+          Do not send an invite to anyone who has previously had an {SITE_NAME} account. Please direct them to # on if they wish to reactivate their account.
         </p>
         <p>
           Remember that you are responsible for ALL invitees, and your account and/or privileges may be disabled due to your invitees' actions. You should know and trust the person you're inviting. If you aren't familiar enough with the user to trust them, do not invite them.
