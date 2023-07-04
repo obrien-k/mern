@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 
 
 const SearchBox = ({ forums }) => {
-  console.log(forums + 'ForumList.js'); // Add this line to check what's inside forums
-
   if (!Array.isArray(forums)) {
       return <div>Forums data is not available or in an unexpected format.</div>;
   }

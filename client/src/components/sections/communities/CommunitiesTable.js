@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 const CommunitiesTable = ({ communities }) => {
   return (
@@ -30,62 +31,55 @@ const CommunitiesTable = ({ communities }) => {
               <td className="td_info big_info">
                 <div className="group_info clear">
                   <span>
-                    [<a href={community.downloadLink} className="tooltip">DL</a> | <a href={community.reportLink} className="tooltip">RP</a>]
+                    [<Link to={`/communities/${community._id}/consume`} className="tooltip">DL</Link> | <Link to={`/communities/${community._id}/report`} className="tooltip">RP</Link>]
                   </span>
-                  <a href={community.communityLink} className="tooltip" dir="ltr">{community.name}</a>
+                  <Link to={`/communities/${community._id}`} className="tooltip" dir="ltr">{community.name}</Link>
                   <div className={community.communityInfoClass}></div>
-                  <div className="tags"><a href={community.tagLink}>{community.tag}</a></div>
+                  <div className="tags"><Link to={`/communities/${community._id}/tags`}>{community.tags}</Link></div>
                 </div>
               </td>
               <td className="td_file_count">{community.files}</td>
               <td className="td_time nobr"><span className="time tooltip">{community.time}</span></td>
               <td className="td_size number_column nobr">{community.size}</td>
               <td className="td_snatched m_td_right number_column">{community.snatches}</td>
-              <td className="td_seeders m_td_right number_column">{community.seeders}</td>
-              <td className="td_leechers m_td_right number_column">{community.leechers}</td>
+              <td className="td_seeders m_td_right number_column">{community.contributors}</td>
+              <td className="td_leechers m_td_right number_column">{community.consumers}</td>
             </tr>
 
               {/* Group Rows */}
               {community.groups && community.groups.map(group => (
-                <React.Fragment key={group.id || group.name}>
+                <React.Fragment key={group._id || group.name}>
                   {/* Group Row */}
                   <tr className="group">
                     <td></td>
                     <td className="center cats_col">
-                      <div className={group.tooltipClass}></div>
+                      {/* Replace this with relevant data */}
+                      <div className={group.type}></div>
                     </td>
                     <td className="td_info">
+                      {/* Replace the links and data below with relevant data */}
                       <span>
-                        [<a href={group.downloadLink} className="tooltip">DL</a> | <a href={group.reportLink} className="tooltip">RP</a>]
+                        [<Link to={`/groups/${group._id}/consume`} className="tooltip">DL</Link> | <Link to={`/groups/${group._id}/report`} className="tooltip">RP</Link>]
                       </span>
-                      <a href={group.groupLink} className="tooltip" dir="ltr">{group.name}</a>
-                      <div className={group.groupInfoClass}></div>
-                      <div className="tags"><a href={group.tagLink}>{group.tag}</a></div>
+                      <a href={`/groups/${group._id}/consume`} className="tooltip" dir="ltr">{group.title}</a>
+                      <div className={group.tooltipClass}></div>
+                      <div className="tags"><a href={`/groups/${group._id}/tags`}>{group.tags}</a></div>
                     </td>
-                    <td className="td_file_count">{group.files}</td>
-                    <td className="td_time nobr"><span className="time tooltip">{group.time}</span></td>
-                    <td className="td_size number_column nobr">{group.size}</td>
-                    <td className="td_snatched m_td_right number_column">{group.snatches}</td>
-                    <td className="td_seeders m_td_right number_column">{group.seeders}</td>
-                    <td className="td_leechers m_td_right number_column">{group.leechers}</td>
+                    {/* ... other table cells for the group ... */}
                   </tr>
                   
-                  {/* Torrents Rows within Group */}
-                  {group.torrents && group.torrents.map(torrent => (
-                    <tr className="group_torrent" key={torrent.id || torrent.name}>
+                  {/* Contributions Rows within Group */}
+                  {group.contributions && group.contributions.map(contribution => (
+                    <tr className="group_contribution" key={contribution._id || contribution.name}>
                       <td></td>
                       <td className="center cats_col">
-                        <div className={torrent.tooltipClass}></div>
+                        {/* Replace this with relevant data */}
+                        <div className={contribution.tooltipClass}></div>
                       </td>
                       <td className="td_info">
-                        <a href={torrent.torrentLink} className="tooltip" dir="ltr">{torrent.name}</a>
+                        <a href={`#contribution/${contribution._id}`} className="tooltip" dir="ltr">{contribution.name}</a>
                       </td>
-                      <td className="td_file_count">{torrent.files}</td>
-                      <td className="td_time nobr"><span className="time tooltip">{torrent.time}</span></td>
-                      <td className="td_size number_column nobr">{torrent.size}</td>
-                      <td className="td_snatched m_td_right number_column">{torrent.snatches}</td>
-                      <td className="td_seeders m_td_right number_column">{torrent.seeders}</td>
-                      <td className="td_leechers m_td_right number_column">{torrent.leechers}</td>
+                      {/* ... other table cells for the contribution ... */}
                     </tr>
                   ))}
                 </React.Fragment>
@@ -106,19 +100,17 @@ CommunitiesTable.propTypes = {
   communities: PropTypes.arrayOf(
     PropTypes.shape({
       tooltipClass: PropTypes.string,
-      downloadLink: PropTypes.string,
-      reportLink: PropTypes.string,
       communityLink: PropTypes.string,
       name: PropTypes.string.isRequired,
       communityInfoClass: PropTypes.string,
-      tagLink: PropTypes.string,
+      tags: PropTypes.arrayOf(PropTypes.number),
       tag: PropTypes.string,
       files: PropTypes.number,
       time: PropTypes.string,
       size: PropTypes.string,
       snatches: PropTypes.number,
-      seeders: PropTypes.number,
-      leechers: PropTypes.number,
+      seeders: PropTypes.arrayOf(PropTypes.string),
+      leechers: PropTypes.arrayOf(PropTypes.string),
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     })
   ).isRequired,

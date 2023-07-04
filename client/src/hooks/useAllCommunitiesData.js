@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllCommunities, getCommunityGroups } from '../actions/communities';
 
-function getTooltipType(communityType) {
+function getTooltipClasses(communityType) {
   switch (communityType) {
     case 'Comics':
       return 'tooltip cats_comics';
@@ -23,13 +23,13 @@ function getTooltipType(communityType) {
   }
 }
 
-function transformData(data, groupData) {
+function transformData(data, communityGroups) {
   return data.map(community => {
-    const groups = groupData(community._id);
-    
+    const groups = communityGroups.filter(group => group.community._id === community._id);
+
     return {
       name: community.name,
-      tooltipClass: getTooltipType(community.type) + ' ' + 'tags_test',
+      tooltipClass: getTooltipClasses(community.type) + ' ' + 'tags_test',
       downloadLink: `communities/download/${community._id}`,
       reportLink: `reportsv2/report/${community._id}`,
       communityLink: `communities/${community._id}`,
@@ -57,27 +57,29 @@ export const useAllCommunitiesData = () => {
     loadingCommunityGroups: state.communities.loadingCommunityGroups,
     error: state.communities.error,
   }));
+
   useEffect(() => {
     dispatch(getAllCommunities());
   }, [dispatch]);
 
   useEffect(() => {
-    if (communities && !loadingCommunities) {
+    if (!loadingCommunities && loadingCommunityGroups) {
       communities.forEach((community) => {
         dispatch(getCommunityGroups(community._id));
       });
     }
-  }, [communities, dispatch, loadingCommunities]);
+  }, [communities, communityGroups, dispatch, loadingCommunities, loadingCommunityGroups]);
 
-  const groupData = (communityId) => {
-    return communityGroups.find((group) => group.community === communityId);
+  const handleError = () => {
+    if (error) {
+      console.error('Error fetching communities:', error);
+      // Handle the error according to your application's requirements.
+    }
   };
 
-  if (!communities || loadingCommunities || loadingCommunityGroups) {
-    return { isLoading: true, errorMessage: error };
-  }
+  handleError();
 
-  const data = transformData(communities, groupData);
+  const data = !loadingCommunityGroups ? transformData(communities, communityGroups) : [];
 
-  return { data, isLoading: false, errorMessage: error };
+  return { data, isLoading: loadingCommunities || loadingCommunityGroups, errorMessage: error };
 };

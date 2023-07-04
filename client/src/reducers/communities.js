@@ -9,7 +9,7 @@ import {
 
 const initialState = {
   communities:[],
-  groups: [],
+  communityGroups: [],
   loadingCommunities: true,
   loadingCommunityGroups: true,
   error: {}

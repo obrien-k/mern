@@ -5,10 +5,6 @@ import ForumList from './ForumList';
 const ForumListData = () => {
   const { data: combinedData, isLoading, errorMessage } = useAllForumsData();
 
-  console.log('combinedData', combinedData);
-  console.log('isLoading', isLoading);
-  console.log('errorMessage', errorMessage);
-
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -18,10 +14,8 @@ const ForumListData = () => {
   }
 
   if (combinedData && Array.isArray(combinedData) && combinedData.length > 0) {
-    console.log('Passing data to ForumList', combinedData);
     return <ForumList forums={combinedData} />;
   } else {
-    console.log('No data to display');
     return <div>No data to display</div>;
   }
 };

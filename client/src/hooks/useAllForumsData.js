@@ -9,11 +9,8 @@ function transformData(data) {
   const categoriesMap = new Map();
 
   data.forEach(forum => {
-    console.log("Processing forum:", forum);
-    
     if (forum.forumCategory) {
-      console.log("forumCategory property of forum:", forum.forumCategory); // Log here
-      
+
       const categoryId = forum.forumCategory._id;
       const categoryName = forum.forumCategory.name;
 
@@ -32,8 +29,6 @@ function transformData(data) {
   });
 
   const transformedData = Array.from(categoriesMap.values());
-  console.log("Transformed categoriesMap:", categoriesMap);
-  console.log("Transformed data array:", transformedData);
   return transformedData;
 }
 
@@ -56,20 +51,11 @@ export const useAllForumsData = () => {
     dispatch(getAllForumCategories());
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log('Forums data has changed:', forums);
-  }, [forums]);   
-
-  console.log("Forums from redux:", forums);
-  console.log("Categories from redux:", categories);
-
   if (!forums || !categories) {
     return { isLoading: true };
   }
 
   const data = transformData(forums);
-
-  console.log("Transformed data:", data);
 
   return { data, isLoading, errorMessage: error };
 };
