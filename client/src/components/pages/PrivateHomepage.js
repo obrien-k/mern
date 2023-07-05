@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import Stats from './Stats';
-import Polls from './Polls';
-import Recommendations from './Recommendations';
-import FeaturedAlbum from './FeaturedAlbum';
-import VanityAlbum from './VanityAlbum';
-import News from './News';
+import Stats from './sidebar/Stats';
+import Polls from './sidebar/Polls';
+import Recommendations from './sidebar/Recommendations';
+import FeaturedAlbum from './sidebar/FeaturedAlbum';
+import VanityAlbum from './sidebar/VanityAlbum';
+import News from './sidebar/News';
 import sampleData from './sampleData.json'; // temp
 
 function PrivateHomepage({userId}) {

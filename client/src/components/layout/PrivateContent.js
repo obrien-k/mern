@@ -25,7 +25,7 @@ const PrivateContent = ({userId, userName}) => {
       <Routes>
         <Route path="user/invite-tree" element={<InviteTree userId={userId} />} />
         <Route path="staff/tools/permissions/new" element={<PermissionFormPage userId={userId} />} />
-        <Route path="staff/tools/permissions/:id/edit" element={<PermissionFormPage userId={userId} />} />
+        <Route path="staff/tools/permissions/:id/edit" element={<PermissionFormPage />} />
         <Route path="staff/tools/permissions" element={<PermissionManager userId={userId} />} />
         <Route path="staff/tools" element={<ErrorBoundary
           FallbackComponent={FallbackComponent}

@@ -1,14 +1,13 @@
 import React from 'react';
 
-const PermissionFormClass = ({ classData, setClassData }) => {
-console.log(classData);
+const PermissionFormClass = ({ classData, setClassData, createRank, updateUserRank }) => {
   const {
     sitePermissions,
     usersPermissions,
     communitiesPermissions,
     adminPermissions,
   } = classData;
-  console.log(classData);
+
   const renderCheckboxes = (permissions, section) => (
     Object.keys(permissions).map(key => (
       <div key={key}>
@@ -19,7 +18,7 @@ console.log(classData);
           checked={permissions[key]}
           onChange={(e) => setClassData({
             ...classData,
-            [section]: { ...permissions, [key]: e.target.checked }
+            [section]: { ...classData[section], [key]: e.target.checked }
           })}
         />
         <label htmlFor={key}>{key.replace(/_/g, ' ')}</label>
@@ -27,6 +26,7 @@ console.log(classData);
       </div>
     ))
   );
+
 
   return (
     <div className="permissions">
@@ -88,10 +88,6 @@ console.log(classData);
               </tr>
             </tbody>
           </table>
-        </div>
-
-        <div className="submit_container">
-          <button type="submit">Save Permission Class</button>
         </div>
     </div>
   );

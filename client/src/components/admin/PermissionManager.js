@@ -69,7 +69,7 @@ const PermissionManager = () => {
                             <td>{permission.userCount}</td>
                             <td>
                                 <Link to={`/private/staff/tools/permissions/${permission._id}/edit`} className='brackets'>Edit</Link>
-                                <Link onClick={() => handleDelete(permission._id)} className='brackets'>Delete</Link>
+                                <span onClick={() => handleDelete(permission._id)} className='brackets'>Delete</span>
                             </td>
                         </tr>
                     ))}
