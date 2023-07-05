@@ -83,10 +83,10 @@ useEffect(() => {
       field2: inputData.permissionName,
       field6: inputData.showOnStaffPage,
       field3: {
-        sitePermissions,
-        usersPermissions,
-        communitiesPermissions,
-        adminPermissions
+        ...sitePermissions,
+        ...usersPermissions,
+        ...communitiesPermissions,
+        ...adminPermissions
       }
     };
 

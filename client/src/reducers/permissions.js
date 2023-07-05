@@ -38,8 +38,10 @@ export default function(state = initialState, action) {
     case UPDATE_USER_RANK:
       return {
         ...state,
-        rankPermissions: state.rankPermissions.map(rank => rank._id === payload._id ? payload : rank),
-        loadingPermissions: false
+        rankPermissions: {
+          ...state.rankPermissions,
+          ...action.payload
+        }
       };
     case CREATE_USER_RANK:
       return {
