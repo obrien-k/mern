@@ -24,13 +24,12 @@ const ModBar = ({userId}) => {
       cancelToken.cancel('Request canceled by cleanup');
     };
   }, []);
-
   return (
     <div className='alertbar blend'>
       <div>
         {error && <div>{error}</div>}   
         {modBar.map((item, index) => (
-          <div key={index} dangerouslySetInnerHTML={{ __html: item }} />
+           <div key={`modBar-${index}`} dangerouslySetInnerHTML={{ __html: item }} />
         ))}
         {/* Link to navigate to Toolbox component */}
         <Link to="/private/staff/tools">Toolbox</Link>

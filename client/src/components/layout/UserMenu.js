@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import {SITE_NAME} from '../../config/config';
 
 const UserMenu = ({ pageId, userId, userName }) => {
   const dispatch = useDispatch();
@@ -28,8 +27,6 @@ const UserMenu = ({ pageId, userId, userName }) => {
 
   return (
      <div>
-      <h1 className="hidden">{SITE_NAME}</h1>
-      <div id="header">
         <div id="logo">
           <Link to="/private/">Home</Link>
         </div>
@@ -226,7 +223,6 @@ const UserMenu = ({ pageId, userId, userName }) => {
                     </ul>
             </div>
       </div>
-    </div>
   );
 };
 

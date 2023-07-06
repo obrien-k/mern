@@ -46,7 +46,7 @@ export default function(state = initialState, action) {
     case CREATE_USER_RANK:
       return {
         ...state,
-        rankPermissions: [...state.rankPermissions, payload],
+        rankPermissions: {...state.rankPermissions, payload},
         loadingPermissions: false
       };
       

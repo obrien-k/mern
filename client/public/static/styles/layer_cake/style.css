@@ -55,7 +55,7 @@ html {
 }
 
 body {
-  background-color: #ded7d1;
+  background-color: #E2E2E2;
   color: #000;
   font-family: tahoma, helvetica, sans-serif;
   font-size: 8pt;
@@ -156,14 +156,14 @@ ul.thin li {
 /* Layout (Every page) */
 
 #header {
-  background: #DED7D1;
+  background: #CCC;
   padding: 0 0 0 0;
   width: 100%;
 }
 
 #content {
   margin: auto;
-  margin-top: 100px;
+  margin-top: 10px;
   overflow: hidden;
   width: 90%;
 }
@@ -176,10 +176,10 @@ ul.thin li {
 }
 
 #logo {
-  background: url('./images/logo.png') no-repeat center center;
-  height: 200px;
+  background: url('./images/logo-new.png') no-repeat center center;
+  height: 100px;
   margin: 0 auto;
-  width: 200px;
+  width: 650px;
 }
 
 #logo a {
@@ -323,7 +323,6 @@ ul.thin li {
 
 #alerts {
   background: #e2e2e2;
-  margin-bottom: -85px;
   margin-top: 85px;
   padding: 10px 0;
 }

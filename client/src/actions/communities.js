@@ -19,20 +19,20 @@ export const getAllCommunities = () => async dispatch => {
       payload: res.data
     });
   } catch (error) {
-    console.log('Error in action creator:', error); // Log the full error
+    console.log('Error in action creator:', error);
     const errorResponse = error.response || {};
     dispatch({
         type: COMMUNITIES_ERROR,
         payload: { 
             msg: errorResponse.statusText || 'Error message not available',
             status: errorResponse.status || 'Status code not available',
-            error: error.toString() // Adding the full error as a string.
+            error: error.toString()
         }
     });
   }
 };
 
-// GROUPS
+// Get Community's Groups by ID
 export const getCommunityGroups = id => async dispatch => {
   try {
     dispatch({ type: LOADING_COMMUNITY_GROUPS });
@@ -43,14 +43,14 @@ export const getCommunityGroups = id => async dispatch => {
       payload: res.data
     });
   } catch (error) {
-    console.log('Error in action creator:', error); // Log the full error
+    console.log('Error in action creator:', error);
     const errorResponse = error.response || {};
     dispatch({
         type: COMMUNITY_GROUPS_ERROR,
         payload: { 
             msg: errorResponse.statusText || 'Error message not available',
             status: errorResponse.status || 'Status code not available',
-            error: error.toString() // Adding the full error as a string.
+            error: error.toString()
         }
     });
   }

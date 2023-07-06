@@ -26,8 +26,6 @@ const PermissionFormClass = ({ classData, setClassData, createRank, updateUserRa
       </div>
     ))
   );
-
-
   return (
     <div className="permissions">
       <div className="permission_container">
@@ -44,7 +42,6 @@ const PermissionFormClass = ({ classData, setClassData, createRank, updateUserRa
           </tbody>
         </table>
       </div>
-
         <div className="permission_container">
           <table>
             <tbody>
@@ -59,7 +56,6 @@ const PermissionFormClass = ({ classData, setClassData, createRank, updateUserRa
             </tbody>
           </table>
         </div>
-
         <div className="permission_container">
           <table>
             <tbody>
@@ -74,7 +70,6 @@ const PermissionFormClass = ({ classData, setClassData, createRank, updateUserRa
             </tbody>
           </table>
         </div>
-
         <div className="permission_container">
           <table>
             <tbody>

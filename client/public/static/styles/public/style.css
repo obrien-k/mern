@@ -74,9 +74,9 @@ input[type="text"]:invalid, input[type="password"]:invalid {
 }
 
 #logo {
-	height: 60px;
-	width: 244px;
-	background-image: url('images/logo.png');
+	height: 75px;
+	width: 650px;
+	background-image: url('images/logo-new.png');
 	background-repeat: no-repeat;
 	background-position: top left;
 	padding: 50px 0px 0px 0px;
