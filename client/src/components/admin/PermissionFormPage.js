@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
@@ -7,7 +7,7 @@ import {
   updateUserRank,
   getRankPermissions
 } from '../../actions/permissions';
-import { permissionsStructured } from '../../utils/permissionsStructured';
+import { structuredPermissions } from '../../utils/structuredPermissions';
 
 import PermissionFormInput from './PermissionFormInput';
 import PermissionFormClass from './PermissionFormClass';
@@ -51,7 +51,7 @@ useEffect(() => {
   console.log('rankPermission changed:', rankPermissions);
 
   if (rankPermissions) {
-    const nestedPermissions = permissionsStructured(rankPermissions.field3);
+    const nestedPermissions = structuredPermissions(rankPermissions.field3);
     console.log('nestedPermissions:', nestedPermissions);
 
     setClassData({
@@ -103,6 +103,9 @@ useEffect(() => {
   };
   return (
     <div>
+      <div className='linkbox'>
+        <Link to='/private/staff/tools/permissions' className='brackets'>Back to Permissions Manager</Link> <Link to='/private/staff/tools' className='brackets'>Back to Toolbox</Link>
+      </div>
       <form onSubmit={handleSubmit}>
         <PermissionFormInput inputData={inputData} setInputData={setInputData} />
         <PermissionFormClass classData={classData} setClassData={setClassData} />

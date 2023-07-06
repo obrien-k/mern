@@ -50,7 +50,7 @@ const PermissionManager = () => {
     return (
         <div className='thin'>
             <div className='linkbox'>
-                <Link to='/private/staff/tools/permissions/new' className='brackets'>Create New Permission Class</Link> <Link to='/private/staff' className='brackets'>Back to Toolbox</Link>
+                <Link to='/private/staff/tools/permissions/new' className='brackets'>Create New Permission Class</Link> <Link to='/private/staff/tools' className='brackets'>Back to Toolbox</Link>
             </div>
             <table width="100%">
                 <thead>

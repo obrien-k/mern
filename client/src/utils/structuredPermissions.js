@@ -1,4 +1,4 @@
-exports.permissionsStructured = (flatPermissions) => {
+exports.structuredPermissions = (flatPermissions) => {
   const nestedPermissions = {
     sitePermissions: {},
     usersPermissions: {},

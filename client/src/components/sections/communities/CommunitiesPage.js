@@ -13,6 +13,9 @@ const CommunitiesPage = () => {
     return <div>Error: {JSON.stringify(errorMessage)}</div>;
   }
 
+  if (isLoading === false && transformedData.length > 0) {
+    console.log(transformedData);
+  }
   return (
     <div>
       <div><CommunitiesTable communities={transformedData} /></div>
