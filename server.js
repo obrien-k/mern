@@ -53,8 +53,8 @@ app.use(`${forumsBasePath}/last-read-topic`, require(`${forumsSectionPath}/forum
 app.use(`${forumsBasePath}/poll`, require(`${forumsSectionPath}/forumPoll`));
 app.use(`${forumsBasePath}/poll-vote`, require(`${forumsSectionPath}/forumPollVote`));
 app.use(`${forumsBasePath}/posts`, require(`${forumsSectionPath}/forumPost`));
-app.use(`${forumsBasePath}/topics`, require(`${forumsSectionPath}/forumTopic`));
-app.use(`${forumsBasePath}/topics/notes`, require(`${forumsSectionPath}/forumTopicNote`));
+//app.use(`${forumsBasePath}/:id/topics`, require(`${forumsSectionPath}/forumTopic`));
+app.use(`${forumsBasePath}/:id/topics/notes`, require(`${forumsSectionPath}/forumTopicNote`));
 app.use(forumsBasePath, require(`${forumsSectionPath}/forumRoute`));
 
 // Task Runner

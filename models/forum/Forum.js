@@ -35,10 +35,12 @@ const forumSchema = new Schema({
     required: true,
     default: 0
   },
-  forumTopics: [{
-    type: Schema.Types.ObjectId,
-    ref: 'ForumTopic'
-  }],
+  forumTopics: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'ForumTopic',
+    },
+  ],
   forumPosts: {
     type: Schema.Types.ObjectId,
     ref: 'ForumPost',
@@ -53,5 +55,12 @@ const forumSchema = new Schema({
     default: 4
   }
 }, { timestamps: true});
+
+forumSchema.virtual('forumTopicsWithRefs', {
+  ref: 'ForumTopic',
+  localField: '_id',
+  foreignField: 'forum',
+  justOne: false,
+});
 
 module.exports = Forum = mongoose.model('Forum', forumSchema);

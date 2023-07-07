@@ -47,9 +47,10 @@ export const getAllForums = () => async dispatch => {
 
 export const getForumById = id => async dispatch => {
   try {
-    dispatch({ type: LOADING_CATEGORIES });
+    dispatch({ type: LOADING_FORUMS });
 
     const res = await api.get(`/forums/${id}`);
+    console.log('Response from the server:', res);
     dispatch({
       type: GET_FORUM_BY_ID,
       payload: res.data
@@ -256,7 +257,7 @@ export const deleteForumPost = id => async dispatch => {
 
 export const createForumTopic = (title, forumId, body, question, answers) => async dispatch => {
   try {
-    const res = await api.post('/forums/topics', { title, forumId, body, question, answers });
+    const res = await api.post(`/forums/${forumId}/topics`, { title, forumId, body, question, answers });
     dispatch({
       type: CREATE_FORUM_TOPIC,
       payload: res.data
@@ -269,30 +270,32 @@ export const createForumTopic = (title, forumId, body, question, answers) => asy
   }
 };
 
-export const getAllForumTopics = () => async dispatch => {
+export const getAllForumTopics = (forumId) => async (dispatch) => {
   try {
-    const res = await api.get('/forums/topics');
+    const res = await api
+      .get(`/forums/${forumId}/topics`)
+      const forumTopics = res.data || []; // If no topics are returned, set it to an empty array
     dispatch({
       type: GET_ALL_FORUM_TOPICS,
-      payload: res.data
+      payload: forumTopics,
     });
   } catch (error) {
-    console.log('Error in action creator:', error); // Log the full error
+    console.log('Error in action creator:', error);
     const errorResponse = error.response || {};
     dispatch({
-        type: FORUM_ERROR,
-        payload: { 
-            msg: errorResponse.statusText || 'Error message not available',
-            status: errorResponse.status || 'Status code not available',
-            error: error.toString() // Adding the full error as a string.
-        }
+      type: FORUM_ERROR,
+      payload: {
+        msg: errorResponse.statusText || 'Error message not available',
+        status: errorResponse.status || 'Status code not available',
+        error: error.toString(),
+      },
     });
-}
+  }
 };
 
-export const updateForumTopic = (id, title) => async dispatch => {
+export const updateForumTopic = (forumId, id, title) => async dispatch => {
   try {
-    const res = await api.put(`/forums/topics/${id}`, { title });
+    const res = await api.put(`/forums/${forumId}topics/${id}`, { title });
     dispatch({
       type: UPDATE_FORUM_TOPIC,
       payload: { id, ...res.data }
@@ -305,9 +308,9 @@ export const updateForumTopic = (id, title) => async dispatch => {
   }
 };
 
-export const deleteForumTopic = id => async dispatch => {
+export const deleteForumTopic = (forumId, id) => async dispatch => {
   try {
-    await api.delete(`/forums/topics/${id}`);
+    await api.delete(`/forums/${forumId}/topics/${id}`);
     dispatch({
       type: DELETE_FORUM_TOPIC,
       payload: id

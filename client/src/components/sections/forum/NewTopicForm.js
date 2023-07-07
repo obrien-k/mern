@@ -1,45 +1,36 @@
 import React, { useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { useCreateForumTopic } from '../../../hooks/useCreateForumTopic';
 
-function NewTopicForm() {
+const NewTopicForm = () => {
+    const { forumId } = useParams();
+    const { submitTopic } = useCreateForumTopic();
+
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
     const [question, setQuestion] = useState('');
     const [answers, setAnswers] = useState(['']);
-    const [subscribe, setSubscribe] = useState(false);
+    const [forum, setForum] = useState(forumId);
 
-    const handleAnswerChange = (index, value) => {
+    const handleAddAnswer = () => {
+        setAnswers([...answers, '']);
+    };
+
+    const handleRemoveAnswer = (index) => {
+        setAnswers(answers.filter((_, i) => i !== index));
+    };
+
+    const handleAnswerChange = (e, index) => {
         const newAnswers = [...answers];
-        newAnswers[index] = value;
+        newAnswers[index] = e.target.value;
         setAnswers(newAnswers);
     };
 
-    const addAnswerField = () => setAnswers([...answers, '']);
-    const removeAnswerField = () => setAnswers(answers.slice(0, -1));
-
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        try {
-            const response = await fetch('/api/forum/topics', { // replace with your endpoint
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    Title: title,
-                    Body: body,
-                    Question: question,
-                    Answers: answers.filter(answer => answer.trim() !== '')
-                })
-            });
-
-            const data = await response.json();
-            console.log(data);
-
-        } catch (error) {
-            console.error('Error submitting new topic:', error);
-        }
+        
+        submitTopic(title, forum, body, question, answers.filter(answer => answer.trim() !== ''));
     };
-
     return (
         <div className="new-topic-form">
             <h2>New Topic</h2>
@@ -63,16 +54,11 @@ function NewTopicForm() {
                 <div>
                     {answers.map((answer, index) => (
                         <div key={index}>
-                            <input type="text" value={answer} onChange={(e) => handleAnswerChange(index, e.target.value)} />
+                            <input type="text" value={answer} onChange={(e) => handleAnswerChange(e, index)} />
+                            <button type="button" onClick={() => handleRemoveAnswer(index)}>-</button>
                         </div>
                     ))}
-                    <button type="button" onClick={addAnswerField}>+</button>
-                    <button type="button" onClick={removeAnswerField}>-</button>
-                </div>
-
-                <div>
-                    <input type="checkbox" id="subscribe" checked={subscribe} onChange={(e) => setSubscribe(e.target.checked)} />
-                    <label htmlFor="subscribe">Subscribe to topic</label>
+                    <button type="button" onClick={handleAddAnswer}>+</button>
                 </div>
 
                 <div>

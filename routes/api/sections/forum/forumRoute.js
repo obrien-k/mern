@@ -6,7 +6,7 @@ const Forum = require('../../../../models/forum/Forum');
 
 // @route   GET api/forums
 // @desc    Get all forums
-// @access  Public
+// @access  Private
 router.get('/', auth(), asyncHandler(async (req, res) => {
   const forums = await Forum.find()
     .sort({ Sort: 1 })
@@ -15,6 +15,26 @@ router.get('/', auth(), asyncHandler(async (req, res) => {
     .populate('forumPosts');
   console.log(forums);
   res.json(forums);
+}));
+
+// @route   GET api/forums/:forumId/topics
+// @desc    Get all forum topics
+// @access  Private
+router.use('/:forumId/topics', (req, res, next) => {
+  console.log('Inside /:forumId/topics route');
+  console.log('forumId:', req.params.forumId);
+  next();
+}, require('./forumTopic'));
+
+// @route   GET api/forums/:id
+// @desc    Get forum by ID
+// @access  Private
+router.get('/:id', auth(), asyncHandler(async (req, res) => {
+  const forum = await Forum.findById(req.params.id)
+  .populate('forumTopics')
+  .populate('forumPosts');
+  console.log(forum);
+  res.json(forum);
 }));
 
 // @route   POST api/forums

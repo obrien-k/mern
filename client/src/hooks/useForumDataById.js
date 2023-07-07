@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getForumById } from '../actions/forum';
 
 export const useForumDataById = (forumId) => {
+  console.log("Hook is being called with forumId:", forumId);
   const dispatch = useDispatch();
 
   const { forum, loading, error } = useSelector((state) => ({

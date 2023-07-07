@@ -33,8 +33,13 @@ const PrivateContent = ({userId, userName}) => {
           onReset={() => {
             // TODO reset state so it doesn't happen again
         }}><Toolbox userId={userId} /></ErrorBoundary>}/>
-         <Route path='forums/:forumID/new-topic' element={<NewTopicForm userId={userId}/>} />
-        <Route path="forums/:forumID" element={<ForumPage />} />
+         <Route path='forums/:forumId/new' element={<NewTopicForm userId={userId}/>} />
+        <Route path="forums/:forumId" element={<ErrorBoundary
+          FallbackComponent={FallbackComponent}
+          onError={logErrorToService}
+          onReset={() => {
+            // TODO reset state so it doesn't happen again
+        }}><ForumPage /></ErrorBoundary>} />
          <Route path="forums" element={
         <ErrorBoundary
           FallbackComponent={FallbackComponent}

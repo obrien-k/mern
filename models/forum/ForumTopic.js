@@ -44,6 +44,15 @@ const forumTopicSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'ForumPost'
   }],
+  edits: [{
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    time: {
+        type: Date
+    }
+  }]
 }, { timestamps: true});
 
 module.exports = mongoose.model('ForumTopic', forumTopicSchema);

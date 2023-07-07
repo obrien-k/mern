@@ -1,24 +1,27 @@
-import React from 'react';
-import { useAllForumsData } from '../../../hooks/useAllForumsData'; 
-import ForumList from './ForumList';
+import React from "react";
+import useAllForumsData from "../../../hooks/useAllForumsData";
+import ForumList from "./ForumList";
 
 const ForumListData = () => {
-  const { data: combinedData, isLoading, errorMessage } = useAllForumsData();
+  const { loading, error, forums, forumCategories } = useAllForumsData();
+  console.log("ForumListData - forums:", forums); // Add this console log
 
-  if (isLoading) {
+  if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (errorMessage && Object.keys(errorMessage).length > 0) {
-    return <div>Error: {JSON.stringify(errorMessage)}</div>;
+  if (error && Object.keys(error).length > 0) {
+    const errorMessage = error || "An error occurred while fetching data";
+    return <div>Error: {errorMessage}</div>;
   }
-
-  if (combinedData && Array.isArray(combinedData) && combinedData.length > 0) {
-    return <ForumList forums={combinedData} />;
-  } else {
-    return <div>No data to display</div>;
-  }
+  return (
+    <ForumList
+      loading={loading}
+      error={error}
+      forums={forums}
+      forumCategories={forumCategories}
+    />
+  );
 };
-
 
 export default ForumListData;

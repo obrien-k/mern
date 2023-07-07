@@ -21,12 +21,12 @@ import {
 } from '../actions/types';
 
 const initialState = {
-  posts: [],
-  topics: [],
-  post: null,
-  topic: null,
+  forumPosts: [],
+  forumTopics: [],
+  forumPost: null,
+  forumTopic: null,
   forums: [],
-  categories: [],
+  forumCategories: [],
   loadingForums: true,
   loadingCategories: true,
   error: {}
@@ -73,28 +73,28 @@ export default function(state = initialState, action) {
   case GET_ALL_FORUM_CATEGORIES:
     return {
       ...state,
-      categories: action.payload,
+      forumCategories: action.payload,
       loadingCategories: false,
     };
 
   case GET_FORUM_CATEGORY_BY_ID:
     return {
       ...state,
-      category: action.payload,
+      forumCategory: action.payload,
       loading: false
     };
 
   case CREATE_FORUM_CATEGORY:
     return {
       ...state,
-      categories: [action.payload, ...state.categories],
+      forumCategories: [action.payload, ...state.forumCategories],
       loading: false
     };
 
   case UPDATE_FORUM_CATEGORY:
     return {
       ...state,
-      categories: state.categories.map(category =>
+      forumCategories: state.forumCategories.map(category =>
         category._id === action.payload.id ? action.payload : category
       ),
       loading: false
@@ -103,62 +103,62 @@ export default function(state = initialState, action) {
   case DELETE_FORUM_CATEGORY:
     return {
       ...state,
-      categories: state.categories.filter(category => category._id !== action.payload),
+      forumCategories: state.forumCategories.filter(category => category._id !== action.payload),
       loading: false
     };
 
     case GET_ALL_FORUM_POSTS:
       return {
         ...state,
-        posts: payload,
+        posts: action.payload,
         loading: false
       };
     case GET_FORUM_POST_BY_ID:
       return {
         ...state,
-        post: payload,
+        post: action.payload,
         loading: false
       };
     case CREATE_FORUM_POST:
       return {
         ...state,
-        posts: [payload, ...state.posts],
+        posts: [action.payload, ...state.posts],
         loading: false
       };
     case DELETE_FORUM_POST:
       return {
         ...state,
-        posts: state.posts.filter(post => post._id !== payload),
+        posts: state.posts.filter(post => post._id !== action.payload),
         loading: false
       };
     case GET_ALL_FORUM_TOPICS:
       return {
         ...state,
-        topics: payload,
+        forumTopics: action.payload,
         loading: false
       };
     case CREATE_FORUM_TOPIC:
       return {
         ...state,
-        topics: [payload, ...state.topics],
+        topics: [action.payload, ...state.topics],
         loading: false
       };
     case UPDATE_FORUM_TOPIC:
       return {
         ...state,
-        topics: state.topics.map(topic => (topic._id === payload.id ? payload : topic)),
+        topics: state.topics.map(topic => (topic._id === payload.id ? action.payload : topic)),
         loading: false
       };
     case DELETE_FORUM_TOPIC:
       return {
         ...state,
-        topics: state.topics.filter(topic => topic._id !== payload),
+        topics: state.topics.filter(topic => topic._id !== action.payload),
         loading: false
       };
     case FORUM_ERROR:
       return {
         ...state,
-        error: payload,
+        error: action.payload,
         loading: false
       };
     default:
