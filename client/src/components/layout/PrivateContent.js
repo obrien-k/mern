@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import ForumListData from "../sections/forum/ForumListData";
+import ForumCategoryPage from "../sections/forum/ForumCategoryPage";
 import ForumPage from "../sections/forum/ForumPage";
 import ForumTopicPage from "../sections/forum/ForumTopicPage";
 import PrivateHomepage from "../pages/PrivateHomepage";
@@ -13,6 +13,7 @@ import ErrorBoundary from "./ErrorBoundary";
 import FallbackComponent from "./FallbackComponent";
 import ContributeForm from "../sections/contribute/ContributeForm";
 import CommunitiesPage from "../sections/communities/CommunitiesPage";
+import CommunityPage from "../sections/communities/CommunityPage";
 import PermissionFormPage from "../admin/PermissionFormPage"; // VScode is throwing an error but seems fine (capitalization of file)
 
 const logErrorToService = (error, info) => {
@@ -96,10 +97,11 @@ const PrivateContent = ({ userId, userName }) => {
                 // TODO reset state so it doesn't happen again
               }}
             >
-              <ForumListData />
+              <ForumCategoryPage />
             </ErrorBoundary>
           }
         />
+        <Route path="communities/:communityId" element={<CommunityPage />} />
         <Route
           path="communities"
           element={

@@ -1,6 +1,6 @@
 import React from "react";
-import {Link} from "react-router-dom";
-import PropTypes from 'prop-types';
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 const CommunityRow = ({ community }) => {
   return (
@@ -12,18 +12,46 @@ const CommunityRow = ({ community }) => {
       <td className="td_info big_info">
         <div className="group_info clear">
           <span>
-            [<Link to={`/communities/${community._id}/consume`} className="tooltip">DL</Link> | <Link to={`/communities/${community._id}/report`} className="tooltip">RP</Link>]
+            [
+            <Link
+              to={`/private/communities/${community._id}/consume`}
+              className="tooltip"
+            >
+              DL
+            </Link>{" "}
+            |{" "}
+            <Link
+              to={`/private/communities/${community._id}/report`}
+              className="tooltip"
+            >
+              RP
+            </Link>
+            ]
           </span>
-          <Link to={`/communities/${community._id}`} className="tooltip" dir="ltr">{community.name}</Link>
+          <Link
+            to={`/private/communities/${community._id}`}
+            className="tooltip"
+            dir="ltr"
+          >
+            {community.name}
+          </Link>
           <div className={community.communityInfoClass}></div>
         </div>
       </td>
       <td className="td_file_count">{community.files}</td>
-      <td className="td_time nobr"><span className="time tooltip">{community.time}</span></td>
+      <td className="td_time nobr">
+        <span className="time tooltip">{community.time}</span>
+      </td>
       <td className="td_size number_column nobr">{community.size}</td>
-      <td className="td_snatched m_td_right number_column">{community.snatches}</td>
-      <td className="td_seeders m_td_right number_column">{community.contributors}</td>
-      <td className="td_leechers m_td_right number_column">{community.consumers}</td>
+      <td className="td_snatched m_td_right number_column">
+        {community.snatches}
+      </td>
+      <td className="td_seeders m_td_right number_column">
+        {community.contributors}
+      </td>
+      <td className="td_leechers m_td_right number_column">
+        {community.consumers}
+      </td>
     </tr>
   );
 };
@@ -42,7 +70,7 @@ CommunityRow.propTypes = {
     snatches: PropTypes.number,
     contributors: PropTypes.number,
     consumers: PropTypes.number,
-  })
+  }),
 };
 
 export default CommunityRow;

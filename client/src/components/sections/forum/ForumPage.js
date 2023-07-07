@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { useForumDataById } from "../../../hooks/useForumDataById";
-import "./ForumList.css";
+import "./Forum.css";
 
 const ForumPage = () => {
   const { forumId } = useParams();

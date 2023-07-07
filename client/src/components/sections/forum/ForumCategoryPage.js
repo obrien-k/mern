@@ -1,10 +1,10 @@
 import React from "react";
 import useAllForumsData from "../../../hooks/useAllForumsData";
-import ForumList from "./ForumList";
+import ForumCategoryList from "./ForumCategoryList";
 
-const ForumListData = () => {
+const ForumCategoryPage = () => {
   const { loading, error, forums, forumCategories } = useAllForumsData();
-  console.log("ForumListData - forums:", forums); // Add this console log
+  console.log("ForumCategoryPage - forums:", forums); // Add this console log
 
   if (loading) {
     return <div>Loading...</div>;
@@ -15,7 +15,7 @@ const ForumListData = () => {
     return <div>Error: {errorMessage}</div>;
   }
   return (
-    <ForumList
+    <ForumCategoryList
       loading={loading}
       error={error}
       forums={forums}
@@ -24,4 +24,4 @@ const ForumListData = () => {
   );
 };
 
-export default ForumListData;
+export default ForumCategoryPage;

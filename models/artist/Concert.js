@@ -1,15 +1,17 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const ConcertSchema = new Schema({
-    concertId: {
-        type: Number,
-        required: true
-    },
-    topicId: {
-        type: Number,
-        required: true
-    }
+  artist: {
+    type: Schema.Types.ObjectId,
+    ref: "Artist",
+    required: true,
+  },
+  forumTopic: {
+    type: Schema.Types.ObjectId,
+    ref: "ForumTopic",
+    required: true,
+  },
 });
 
-module.exports = Concert = mongoose.model('concert', ConcertSchema);
+module.exports = Concert = mongoose.model("Concert", ConcertSchema);

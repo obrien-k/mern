@@ -1,10 +1,21 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
-const ArtistAliasSchema = new mongoose.Schema({
-  "artistID": 123,
-  "name": "artist_name",
-  "redirect": 0,
-  "userID": 456
+const ArtistAliasSchema = new Schema({
+  artist: {
+    type: Schema.Types.ObjectId,
+    ref: "Artist",
+    required: true,
+  },
+  redirect: {
+    type: Schema.Types.ObjectId,
+    ref: "Artist",
+    required: true,
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
-module.exports = ArtistAlias = mongoose.model('artistAlias', ArtistAliasSchema);
+module.exports = ArtistAlias = mongoose.model("ArtistAlias", ArtistAliasSchema);

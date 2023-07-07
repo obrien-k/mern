@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
+const mongoose = require("mongoose");
 const { check, validationResult } = require("express-validator");
 const auth = require("../../../../middleware/auth");
 const { asyncHandler } = require("../../../../middleware/asyncHandler");
@@ -8,7 +9,6 @@ const ForumPost = require("../../../../models/forum/ForumPost");
 const Forum = require("../../../../models/forum/Forum");
 const ForumPoll = require("../../../../models/forum/ForumPoll");
 const forumPost = require("./forumPost");
-const mongoose = require("mongoose");
 
 // @route   GET api/forums/:forumId/topics
 // @desc    Get all forum topics

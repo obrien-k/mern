@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./ForumList.css";
+import "./Forum.css";
 
-const ForumList = ({ forums, forumCategories, loading, error }) => {
+const ForumCategoryList = ({ forums, forumCategories, loading, error }) => {
   if (loading) {
     return <div>Loading forums...</div>;
   }
@@ -95,4 +95,4 @@ const ForumList = ({ forums, forumCategories, loading, error }) => {
   );
 };
 
-export default ForumList;
+export default ForumCategoryList;
