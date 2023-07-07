@@ -1,34 +1,43 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { SITE_NAME } from '../../../config/config';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import { SITE_NAME } from "../../../config/config";
 
 const InviteForm = (props) => {
   const { userId, userName } = props;
-  const [email, setEmail] = useState('');
-  const [reason, setReason] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [email, setEmail] = useState("");
+  const [reason, setReason] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // todo dynamic
-    const service = 'WHATCD';
-  
-    setErrorMessage(''); 
-    setSuccessMessage(''); 
-  
+    const service = "WHATCD";
+
+    setErrorMessage("");
+    setSuccessMessage("");
+
     try {
-      console.log(userId + 'userId before axios post');
-      await axios.post('/api/services/referral/create-invite', { service, email, userId, userName, reason });
-      
-      setSuccessMessage('Invitation sent successfully.');
+      console.log(userId + "userId before axios post");
+      await axios.post("/api/profile/referral/create-invite", {
+        service,
+        email,
+        userId,
+        userName,
+        reason,
+      });
+
+      setSuccessMessage("Invitation sent successfully.");
     } catch (error) {
-      setErrorMessage(error.response?.data?.error || 'An error occurred while creating the invite.');
+      setErrorMessage(
+        error.response?.data?.error ||
+          "An error occurred while creating the invite."
+      );
     }
   };
-  
+
   return (
     <div>
       <h2>
@@ -41,16 +50,27 @@ const InviteForm = (props) => {
       </div>
       <div className="box pad">
         <p>
-          Please note that selling, trading, or publicly giving away our invitations— or responding to public invite requests— is strictly forbidden, and may result in you and your entire invite tree being banned.
+          Please note that selling, trading, or publicly giving away our
+          invitations— or responding to public invite requests— is strictly
+          forbidden, and may result in you and your entire invite tree being
+          banned.
         </p>
         <p>
-          Do not send an invite to anyone who has previously had an {SITE_NAME} account. Please direct them to # on if they wish to reactivate their account.
+          Do not send an invite to anyone who has previously had an {SITE_NAME}{" "}
+          account. Please direct them to # on if they wish to reactivate their
+          account.
         </p>
         <p>
-          Remember that you are responsible for ALL invitees, and your account and/or privileges may be disabled due to your invitees' actions. You should know and trust the person you're inviting. If you aren't familiar enough with the user to trust them, do not invite them.
+          Remember that you are responsible for ALL invitees, and your account
+          and/or privileges may be disabled due to your invitees' actions. You
+          should know and trust the person you're inviting. If you aren't
+          familiar enough with the user to trust them, do not invite them.
         </p>
         <p>
-          <em>Do not send an invite if you have not read or do not understand the information above.</em>
+          <em>
+            Do not send an invite if you have not read or do not understand the
+            information above.
+          </em>
         </p>
       </div>
       <div className="box box2">
@@ -58,14 +78,28 @@ const InviteForm = (props) => {
           <div className="field_div">
             <div className="label">Email address:</div>
             <div className="input">
-              <input type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} size="60" required />
+              <input
+                type="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                size="60"
+                required
+              />
               <input type="submit" value="Invite" />
             </div>
           </div>
           <div className="field_div">
             <div className="label">Staff Note:</div>
             <div className="input">
-              <input type="text" name="reason" value={reason} onChange={(e) => setReason(e.target.value)} size="60" maxLength="255" />
+              <input
+                type="text"
+                name="reason"
+                value={reason}
+                onChange={(e) => setReason(e.target.value)}
+                size="60"
+                maxLength="255"
+              />
             </div>
           </div>
           {successMessage && <div className="success">{successMessage}</div>}
@@ -74,7 +108,6 @@ const InviteForm = (props) => {
       </div>
       <h3>Invitee list</h3>
       <div className="box pad">
-        
         <table className="invite_table m_table" width="100%">
           <tbody>
             <tr className="colhead">
@@ -88,13 +121,17 @@ const InviteForm = (props) => {
                 <a href="/user/invite?order=joined&amp;sort=asc">Joined</a>
               </td>
               <td>
-                <a href="/user/invite?order=lastseen&amp;sort=desc">Last Seen</a>
+                <a href="/user/invite?order=lastseen&amp;sort=desc">
+                  Last Seen
+                </a>
               </td>
               <td className="m_th_right">
                 <a href="/user/invite?order=uploaded&amp;sort=desc">Uploaded</a>
               </td>
               <td className="m_th_right">
-                <a href="/user/invite?order=downloaded&amp;sort=desc">Downloaded</a>
+                <a href="/user/invite?order=downloaded&amp;sort=desc">
+                  Downloaded
+                </a>
               </td>
               <td className="m_th_right">
                 <a href="/user/invite?order=ratio&amp;sort=desc">Ratio</a>

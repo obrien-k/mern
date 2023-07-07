@@ -1,18 +1,14 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import PrivateHeader from "./PrivateHeader";
 import PrivateFooter from "./PrivateFooter";
 
 const PrivateLayout = (props) => {
-  const {
-    pageTitle,
-    userId,
-    userName,
-    options,
-    userSessions,
-    scriptStartTime,
-    children,
-  } = props;
-  console.log("userId", userId);
+  const user = useSelector((state) => state.auth.user);
+
+  const userId = user?._id;
+  const userName = user?.username;
+  const { pageTitle, options, userSessions, scriptStartTime, children } = props;
   return (
     <div>
       <link
@@ -22,7 +18,7 @@ const PrivateLayout = (props) => {
       />
       <link rel="stylesheet" type="text/css" href="/static/styles/global.css" />
       <PrivateHeader userId={userId} userName={userName} pageId={1} />
-      {children}
+      {React.cloneElement(props.children, { userId, userName })}
       <PrivateFooter
         userId={userId}
         options={options}

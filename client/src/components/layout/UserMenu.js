@@ -3,32 +3,29 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 const UserMenu = (props) => {
-  const { pageId, userId, userName } = props;
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user);
-
-  const [useAdvancedSearch, setUseAdvancedSearch] = useState(false);
-
-  useEffect(() => {
-    // Populate the arrays with data fetched from an API.
-    const loggedUserSearchType = true;
-    setUseAdvancedSearch(loggedUserSearchType);
-  }, []);
-
-  if (!user) {
-    return <div>Loading...</div>;
-  }
-
   const {
+    userId,
+    userName,
     bonusPoints,
     bytesUploaded,
     bytesDownloaded,
     requiredRatio,
     flTokens,
     hasUnlimitedInvites,
-  } = user;
+    pageId,
+  } = props;
 
-  // Placeholder for formatSize function
+  const dispatch = useDispatch();
+
+  const [useAdvancedSearch, setUseAdvancedSearch] = useState(false);
+
+  useEffect(() => {
+    // TODO Populate the arrays with data fetched from an API.
+    const loggedUserSearchType = true;
+    setUseAdvancedSearch(loggedUserSearchType);
+  }, []);
+
+  // TODO Placeholder for formatSize function
   const formatSize = (bytes) => `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 
   const addClass = (pageId, pages, className) =>
@@ -42,12 +39,12 @@ const UserMenu = (props) => {
       <div id="userinfo">
         <ul id="userinfo_username">
           <li id="nav_userinfo">
-            <a href={`/private/user/${user}`} className="username">
+            <Link to={`/private/user/${userId}`} className="username">
               {userName}
-            </a>
+            </Link>
           </li>
           <li id="nav_useredit">
-            <a href={`/private/user/edit/${userId}`}>Edit</a>
+            <Link to={`/private/user/edit/${userId}`}>Edit</Link>
           </li>
           <li id="nav_logout">
             <Link to="/logout">Logout</Link>
@@ -55,40 +52,40 @@ const UserMenu = (props) => {
         </ul>
         <ul id="userinfo_major">
           <li id="nav_upload">
-            <a href="/private/contribute" title="Contribute">
+            <Link to="/private/contribute" title="Contribute">
               Contribute
-            </a>
+            </Link>
           </li>
           <li id="nav_bonus">
-            <a href="/private/bonus" title={`Bonus (${bonusPoints})`}>
+            <Link to="/private/bonus" title={`Bonus (${bonusPoints})`}>
               Bonus ({bonusPoints})
-            </a>
+            </Link>
           </li>
           <li id="nav_invite">
             <Link to="/private/invite">Invite</Link>
           </li>
           <li id="nav_donate">
-            <a href="/private/donate">Donate</a>
+            <Link to="/private/donate">Donate</Link>
           </li>
           <li
             id="nav_forums"
             className={addClass(pageId, ["forums"], "active")}
           >
-            <a href="/private/forums">Forums</a>
+            <Link to="/private/forums">Forums</Link>
           </li>
           <li id="nav_irc" className={addClass(pageId, ["chat"], "active")}>
-            <a href="/private/wiki/action=article&name=irc">IRC</a>
+            <Link to="/private/wiki/action=article&name=irc">IRC</Link>
           </li>
         </ul>
         <ul id="userinfo_stats">
           <li id="stats_seeding">
-            <a href={`/private/communities/seeding/${userName}`}>Up:</a>
+            <Link to={`/private/communities/seeding/${userName}`}>Up:</Link>
             <span className="stat" title={formatSize(bytesUploaded)}>
               {formatSize(bytesUploaded)}
             </span>
           </li>
           <li id="stats_leeching">
-            <a href={`/private/communities/leeching/${userName}`}>Down:</a>
+            <Link to={`/private/communities/leeching/${userName}`}>Down:</Link>
             <span className="stat" title={formatSize(bytesDownloaded)}>
               {formatSize(bytesDownloaded)}
             </span>
@@ -101,13 +98,13 @@ const UserMenu = (props) => {
           </li>
           {requiredRatio && (
             <li id="stats_required">
-              <a href="/private/rules#ratio">Required:</a>
+              <Link to="/private/rules#ratio">Required:</Link>
               <span className="stat">{requiredRatio.toFixed(2)}</span>
             </li>
           )}
           {flTokens > 0 && (
             <li id="fl_tokens">
-              <a href="/private/wiki/tokens">Tokens:</a>
+              <Link to="/private/wiki/tokens">Tokens:</Link>
               <span className="stat">{flTokens}</span>
             </li>
           )}

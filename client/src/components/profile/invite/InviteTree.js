@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const renderTree = (node) => {
   return (
@@ -11,23 +11,23 @@ const renderTree = (node) => {
       <td>{node.uploaded}</td>
       <td>{node.downloaded}</td>
       <td>{node.ratio}</td>
-      {node.children && node.children.map(child => renderTree(child))}
+      {node.children && node.children.map((child) => renderTree(child))}
     </tr>
   );
 };
 
-const InviteTree = ({userID}) => {
+const InviteTree = ({ userID }) => {
   const [inviteTreeData, setInviteTreeData] = useState(null);
 
   useEffect(() => {
     const fetchInviteTree = async () => {
       try {
-        const response = await axios.get('/api/services/invite-tree', {
-          params: { userID: userID }
+        const response = await axios.get("/api/profile/invite-tree", {
+          params: { userID: userID },
         });
         setInviteTreeData(response.data.data);
       } catch (error) {
-        console.error('Failed to fetch invite tree data', error);
+        console.error("Failed to fetch invite tree data", error);
       }
     };
 
@@ -51,7 +51,8 @@ const InviteTree = ({userID}) => {
             </tr>
           </thead>
           <tbody>
-            {inviteTreeData && inviteTreeData.map((invitee) => renderTree(invitee))}
+            {inviteTreeData &&
+              inviteTreeData.map((invitee) => renderTree(invitee))}
           </tbody>
         </table>
       </div>

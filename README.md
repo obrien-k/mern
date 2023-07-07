@@ -4,7 +4,7 @@ Codename Stellar is a community organization platform with tooling designed for 
 
 ## Installation
 
-Requirements: Node  v16.17.0
+Requirements: Node v16.17.0
 
 In `./config`, create a `default.json` file like below:
 
@@ -18,7 +18,7 @@ In `./config`, create a `default.json` file like below:
 }
 ```
 
-After verifying your shell's running version of node with `node -v`, run `npm i -D` in the root directory, which installs the backend server with development dependencies. Once complete, do the same in the client directory to install the frontend. The command `npm run dev` will start the test environment. 
+After verifying your shell's running version of node with `node -v`, run `npm i -D` in the root directory, which installs the backend server with development dependencies. Once complete, do the same in the client directory to install the frontend. The command `npm run dev` will start the test environment.
 
 Access the API via `http://localhost:3000/api/auth` (or the hostname:port set, if customized), and the frontend will automatically load to your web browser once react-scripts loads.
 
@@ -40,7 +40,7 @@ Subscriptions are implemented albeit very broken, this component handles notific
 
 ### React
 
-Stellar's front end is based on react, which is in the `./client` directory. 
+Stellar's front end is based on react, which is in the `./client` directory.
 
 ```
 - /client
@@ -54,14 +54,18 @@ Stellar's front end is based on react, which is in the `./client` directory.
       - /pages
       - /profile
       - /sections
+        - /communities
+        - /contribute
+        - /forum
+      - /routing
       - /sidebar
       - /toast
     - /config
     - /hooks/useForumData
     - /reducers
     - /static
-    - /styles -- TODO: move to static dir
-    - /utils -- api request via axios
+      - /styles
+    - /utils
 ```
 
 #### React routing notes
@@ -76,9 +80,11 @@ Express powers Stellar's back-end, the routes for which can be found in the `./r
 - /routes
   - /api
     - /sections
+      - /communities
       - /forum
       - artist
-    - /services
+      - comments.js
+    - /profile
       - inviteTree
       - referralRoute
       - referralService
@@ -111,9 +117,9 @@ Express powers Stellar's back-end, the routes for which can be found in the `./r
     - BookmarkCommunity
     - BookmarkRequest
   - /comment
-    - Comment 
-    - CommentEdit 
-    - CommentEditTmp 
+    - Comment
+    - CommentEdit
+    - CommentEditTmp
   - /donation
     - BitcoinDonation
     - Donation

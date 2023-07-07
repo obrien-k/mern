@@ -1,22 +1,42 @@
-import React, { useState } from "react";
-import DoNotContributeList from "./DoNotContributeList";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { createContribution } from "../../../actions/communities";
+//import DoNotContributeList from "./DoNotContributeList";
 
 const ContributeForm = () => {
   const [title, setTitle] = useState("");
   const [tags, setTags] = useState("");
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
+  const [artist, setArtist] = useState("");
+  const [album, setAlbum] = useState("");
+  const [genre, setGenre] = useState("");
+  const [type, setType] = useState("music");
+
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Call the /api/communities endpoint here
-    // ...
+    let formData = { title, tags, image, description };
+    if (type === "music") {
+      formData = { ...formData, artist, album, genre };
+    }
+    dispatch(createContribution(formData));
   };
+
+  // clear form when not music
+  useEffect(() => {
+    if (type !== "music") {
+      setArtist("");
+      setAlbum("");
+      setGenre("");
+    }
+  }, [type]);
 
   return (
     <div id="content">
       <div className="box pad" style={{ margin: "0px auto", width: "700px" }}>
-        <DoNotContributeList />
+        <p>TODO DNC</p>
       </div>
       <div className="thin">
         <p style={{ textAlign: "center" }}>
@@ -33,15 +53,17 @@ const ContributeForm = () => {
         <form
           className="create_form"
           name="community"
-          action=""
           enctype="multipart/form-data"
           method="post"
-          id="upload_table"
           onSubmit={handleSubmit}
         >
           <div>
             <input type="hidden" name="submit" value="true" />
-            <input type="hidden" name="auth" value="49bfca1e8f1be12d93dde136ec364d0f" />
+            <input
+              type="hidden"
+              name="auth"
+              value="49bfca1e8f1be12d93dde136ec364d0f"
+            />
           </div>
           <table
             cellpadding="3"
@@ -52,6 +74,24 @@ const ContributeForm = () => {
           >
             <tbody>
               {/* Rest of the form goes here */}
+              <tr>
+                <td className="label">Type:</td>
+                <td>
+                  <select
+                    name="type"
+                    id="type"
+                    value={type}
+                    onChange={(e) => setType(e.target.value)}
+                  >
+                    <option value="music">Music</option>
+                    <option value="applications">Applications</option>
+                    <option value="ebooks">eBooks</option>
+                    <option value="audiobooks">Audiobooks</option>
+                    <option value="comedy">Comedy</option>
+                    <option value="comics">Comics</option>
+                  </select>
+                </td>
+              </tr>
               <tr>
                 <td className="label">Title:</td>
                 <td>
@@ -108,7 +148,49 @@ const ContributeForm = () => {
             </tbody>
           </table>
           <div id="dynamic_form">
-            {/* Other dynamic form elements can go here */}
+            {type === "music" && (
+              <>
+                <tr>
+                  <td className="label">Artist:</td>
+                  <td>
+                    <input
+                      type="text"
+                      id="artist"
+                      name="artist"
+                      size="60"
+                      value={artist}
+                      onChange={(e) => setArtist(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td className="label">Album:</td>
+                  <td>
+                    <input
+                      type="text"
+                      id="album"
+                      name="album"
+                      size="60"
+                      value={album}
+                      onChange={(e) => setAlbum(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td className="label">Genre:</td>
+                  <td>
+                    <input
+                      type="text"
+                      id="genre"
+                      name="genre"
+                      size="60"
+                      value={genre}
+                      onChange={(e) => setGenre(e.target.value)}
+                    />
+                  </td>
+                </tr>
+              </>
+            )}
           </div>
           <table
             cellpadding="3"

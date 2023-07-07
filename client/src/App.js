@@ -21,21 +21,10 @@ import store from "./store";
 import Toolbox from "./components/admin/Toolbox";
 
 const App = () => {
-  const [userId, setUserId] = useState(null);
-  const [userName, setUserName] = useState(null);
-
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-      // Extract user information from the token
-      const decodedToken = jwt_decode(token);
-      const userId = decodedToken.user.id;
-      const userName = decodedToken.user.username;
-      console.log(decodedToken.user);
-      setUserId(userId);
-      setUserName(userName);
     }
   }, []);
   return (
@@ -83,12 +72,8 @@ const App = () => {
               path="/private/*"
               element={
                 <PrivateRoute>
-                  <PrivateLayout
-                    pageTitle="Stellar"
-                    userId={userId}
-                    userName={userName}
-                  >
-                    <PrivateContent userId={userId} />
+                  <PrivateLayout pageTitle="Stellar">
+                    <PrivateContent />
                   </PrivateLayout>
                 </PrivateRoute>
               }

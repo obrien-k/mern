@@ -36,14 +36,8 @@ app.use("/api/announcements", require("./routes/api/announcements"));
 app.use("/api/subscriptions", require("./routes/api/subscriptions"));
 
 // Services routes
-app.use(
-  "/api/services/referral",
-  require("./routes/api/services/referralRoute")
-);
-app.use(
-  "/api/services/invite-tree",
-  require("./routes/api/services/inviteTree")
-);
+app.use("/api/profile/referral", require("./routes/api/profile/referralRoute"));
+app.use("/api/profile/invite-tree", require("./routes/api/profile/inviteTree"));
 
 // Communities routes
 app.use(
