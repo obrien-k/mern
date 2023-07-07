@@ -1,66 +1,79 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const forumSchema = new Schema({
-  forumCategory: {
-    type: Schema.Types.ObjectId,
-    ref: 'ForumCategory',
-    required: true
-  },
-  sort: {
-    type: Number,
-    required: true
-  },
-  name: {
-    type: String,
-    required: true,
-    default: ''
-  },
-  description: {
-    type: String,
-    default: ''
-  },
-  minClassRead: {
-    type: Number,
-    required: true,
-    default: 0
-  },
-  minClassWrite: {
-    type: Number,
-    required: true,
-    default: 0
-  },
-  minClassCreate: {
-    type: Number,
-    required: true,
-    default: 0
-  },
-  forumTopics: [
-    {
+const forumSchema = new Schema(
+  {
+    forumCategory: {
       type: Schema.Types.ObjectId,
-      ref: 'ForumTopic',
+      ref: "ForumCategory",
+      required: true,
     },
-  ],
-  forumPosts: {
-    type: Schema.Types.ObjectId,
-    ref: 'ForumPost',
+    sort: {
+      type: Number,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+      default: "",
+    },
+    description: {
+      type: String,
+      default: "",
+    },
+    minClassRead: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    minClassWrite: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    minClassCreate: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    forumTopics: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "ForumTopic",
+      },
+    ],
+    forumPosts: {
+      type: Schema.Types.ObjectId,
+      ref: "ForumPost",
+    },
+    numTopics: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    numPosts: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    autoLock: {
+      type: Boolean,
+      default: true,
+    },
+    autoLockWeeks: {
+      type: Number,
+      required: true,
+      default: 4,
+    },
   },
-  autoLock: {
-    type: Boolean,
-    default: true
-  },
-  autoLockWeeks: {
-    type: Number,
-    required: true,
-    default: 4
-  }
-}, { timestamps: true});
+  { timestamps: true }
+);
 
-forumSchema.virtual('forumTopicsWithRefs', {
-  ref: 'ForumTopic',
-  localField: '_id',
-  foreignField: 'forum',
+forumSchema.virtual("forumTopicsWithRefs", {
+  ref: "ForumTopic",
+  localField: "_id",
+  foreignField: "forum",
   justOne: false,
 });
 
-module.exports = Forum = mongoose.model('Forum', forumSchema);
+module.exports = Forum = mongoose.model("Forum", forumSchema);

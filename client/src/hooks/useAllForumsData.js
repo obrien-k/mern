@@ -18,27 +18,22 @@ const useAllForumsData = () => {
   const forumTopics = useSelector((state) => state.forum.forumTopics);
 
   useEffect(() => {
-    console.log("useAllForumsData: Fetching forums");
     dispatch(getAllForums());
     dispatch(getAllForumCategories());
   }, [dispatch]);
 
   useEffect(() => {
     if (forums && forums.length > 0) {
-      console.log("useAllForumsData: Forums fetched");
       setForumsFetched(true);
-      console.log("useAllForumsData: Fetching forums" + JSON.stringify(forums));
     }
   }, [forums]);
 
   useEffect(() => {
     const fetchForumTopics = async () => {
       if (!forumsFetched) {
-        console.log("useAllForumsData: Waiting for forums to be fetched");
         return;
       }
 
-      console.log("useAllForumsData: Fetching forum topics");
       const topicPromises = forums.map(async (forum) => {
         if (forum.forumTopics) {
           await dispatch(getAllForumTopics(forum._id));
@@ -55,8 +50,6 @@ const useAllForumsData = () => {
 
   useEffect(() => {
     if (forumTopics.length > 0 && forums.length > 0) {
-      console.log(forumTopics);
-      console.log("useAllForumsData: Combining forums and topics");
       const mapTopicsToForum = forums.map((forum) => {
         const topic = forumTopics.filter((topic) => topic.forum == forum._id);
         return {
