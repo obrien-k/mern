@@ -28,6 +28,26 @@ router.get(
   })
 );
 
+// @route   GET api/forums/:forumId/topics/:forumTopicId
+// @desc    Get all forum topics
+// @access  Private
+router.get(
+  "/:forumTopicId",
+  asyncHandler(async (req, res) => {
+    const { forumId, forumTopicId } = req.params;
+
+    try {
+      const topic = await ForumTopic.findById(forumTopicId).populate(
+        "forumPosts"
+      );
+      res.json(topic);
+    } catch (error) {
+      console.log("Error in route handler:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  })
+);
+
 // @route   GET api/forums/:forumId/topics/:forumTopicId/posts
 // @desc    Get all forum posts for a topic
 // @access  Private

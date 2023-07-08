@@ -1,10 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import ForumHeader from "./ForumHeader";
+import forum from "../../../reducers/forum";
+import { useForumTopicDataById } from "../../../hooks/useForumTopicDataById";
+import { useForumDataById } from "../../../hooks/useForumDataById";
 
 const ForumTopicPage = (props) => {
   const [forumPosts, setForumPosts] = useState([]);
   const { forumId, forumTopicId } = useParams();
+  const {
+    data: forumTopic,
+    isLoading,
+    errorMessage,
+  } = useForumTopicDataById(forumId, forumTopicId);
+  const {
+    data: forum,
+    isLoading: forumIsLoading,
+    errorMessage: forumErrorMessage,
+  } = useForumDataById(forumId);
+
   const [searchQuery, setSearchQuery] = useState("");
   const [searchUser, setSearchUser] = useState("");
   const [isPollVisible, setPollVisible] = useState(false);
@@ -53,17 +68,11 @@ const ForumTopicPage = (props) => {
 
   return (
     <div className="thin">
-      <h2>
-        <a href="forums.php">Forums</a> &gt;
-        <a href={`forums.php?action=viewforum&forumid=${forumId}`}>
-          Trash
-        </a>{" "}
-        &gt; tst
-      </h2>
+      <ForumHeader forum={forum} forumTopic={forumTopic} />
       <div className="linkbox">
         <div className="center">
           <a
-            href={`reports.php?action=report&type=thread&id=${forumTopicId}`}
+            href={`reports/${forumTopicId}`}
             className="brackets"
             onClick={handleReport}
           >

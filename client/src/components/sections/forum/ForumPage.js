@@ -1,11 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useForumDataById } from "../../../hooks/useForumDataById";
 import "./Forum.css";
+import ForumPageTopicInfo from "./ForumPageTopicInfo";
+import ForumHeader from "./ForumHeader";
+import { useForumTopicDataById } from "../../../hooks/useForumTopicDataById";
 
 const ForumPage = () => {
   const { forumId } = useParams();
   const { data: forum, isLoading, errorMessage } = useForumDataById(forumId);
+  const [selectedTopicId, setSelectedTopicId] = useState(null);
+  const selectedTopic = forum?.forumTopics?.find(
+    (topic) => topic._id === selectedTopicId
+  );
+
+  const handleReport = () => {
+    // TODO report functionality
+  };
+
+  const handleSearchToggle = () => {
+    // TODO search toggle functionality
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    // TODO search submit functionality
+  };
+
+  const [searchQuery, setSearchQuery] = useState("todo");
+  const [searchUser, setSearchUser] = useState("todo");
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -19,64 +42,46 @@ const ForumPage = () => {
     return <div>Forum not found</div>;
   }
 
-  console.dir(forum);
+  const handleTopicSelect = (topicId) => {
+    setSelectedTopicId(topicId);
+  };
+
   return (
     <div className="thin">
-      <h2>
-        <Link to="/private/forums">Forums</Link> &gt; {forum.name}
-      </h2>
-      <div className="linkbox">
-        <Link to={`/private/forums/${forum._id}/new`} className="brackets">
-          New thread
-        </Link>
-        {/* Add more links as needed */}
+      <div>
+        <ForumHeader
+          forum={forum}
+          forumTopic={selectedTopic}
+          handleReport={handleReport}
+          handleSearchToggle={handleSearchToggle}
+          handleSearchSubmit={handleSearchSubmit}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          searchUser={searchUser}
+          setSearchUser={setSearchUser}
+        />
       </div>
-      <table className="forum_index m_table" width="100%">
-        <tbody>
-          <tr className="colhead">
-            <td style={{ width: "2%" }}></td>
-            <td className="m_th_left">Latest</td>
-            <td className="m_th_right" style={{ width: "7%" }}>
-              Replies
-            </td>
-            <td style={{ width: "14%" }}>Author</td>
+      <div class="forum_index m_table">
+        <div class="forumRow colhead forumHeader">
+          <div class="forumCell forumStatus"></div>
+          <div class="forumCell forumLatest">Latest</div>
+          <div class="forumCell forumReplies">Replies</div>
+          <div class="forumCell forumAuthor">Author</div>
+        </div>
+        {forum.forumTopics && forum.forumTopics.length > 0 ? (
+          forum.forumTopics.map(
+            (topic) =>
+              topic.author && (
+                <ForumPageTopicInfo key={topic._id} topic={topic} />
+              )
+          )
+        ) : (
+          <tr>
+            <td colSpan="4">No threads to display in this forum!</td>
           </tr>
-          {forum.forumTopics && forum.forumTopics.length > 0 ? (
-            forum.forumTopics.map((topic) => (
-              <tr key={topic.id} className="rowb">
-                <td className="td_read read tooltip"></td>
-                <td className="td_latest">
-                  <span className="last_topic">
-                    <strong>
-                      <Link
-                        to={`/private/forums/${forum._id}/topics/${topic._id}`}
-                        className="tooltip"
-                      >
-                        {topic.title}
-                      </Link>
-                    </strong>
-                  </span>
-                  <span className="last_poster">
-                    by{" "}
-                    <Link to={`/private/user/${topic.authorId}`}>
-                      {topic.author}
-                    </Link>{" "}
-                    <span className="time tooltip">{topic.lastPostTime}</span>
-                  </span>
-                </td>
-                <td className="td_replies number_column m_td_right">
-                  {topic.numReplies}
-                </td>
-                {/* Add more columns as needed */}
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colspan="4">No threads to display in this forum!</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+        )}
+      </div>
+
       <div className="linkbox pager">{/* Add pager links here */}</div>
       <div className="linkbox">
         <Link to={`/private/forums/catchup/${forum._id}`} className="brackets">

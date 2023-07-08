@@ -1,13 +1,18 @@
-import { combineReducers } from 'redux';
-import alert from './alert';
-import auth from './auth';
-import forum from './forum';
-import communities from './communities';
-import permissions from './permissions';
+import { combineReducers } from "redux";
+import alert from "./alert";
+import auth from "./auth";
+import user from "./user";
+import permissions from "./permissions";
+import communities from "./communities";
+import artist from "./artist";
+import forum from "./forum";
+
 export default combineReducers({
   alert,
   auth,
-  forum,
+  user,
+  permissions,
   communities,
-  permissions
+  artist,
+  forum,
 });
