@@ -4,14 +4,14 @@ import useUserDataById from "../../../hooks/useUserDataById";
 import useForumPostsByTopicId from "../../../hooks/useForumPostsByTopicId";
 import Time from "../../layout/Time";
 
-const ForumPageTopicInfo = ({ topic }) => {
+const ForumCategoryForumInfo = ({ forum }) => {
   console.log(topic.author);
 
   const {
     user: author,
     isLoading: loadingUsers,
     errorMessage: error,
-  } = useUserDataById(topic.author);
+  } = useUserDataById(forum.author); //left off here, don't have forum author or recent topics
 
   const { forumPosts, loading } = useForumPostsByTopicId(
     topic.forum,
@@ -72,4 +72,4 @@ const ForumPageTopicInfo = ({ topic }) => {
   );
 };
 
-export default ForumPageTopicInfo;
+export default ForumCategoryForumInfo;

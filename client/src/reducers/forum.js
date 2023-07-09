@@ -10,6 +10,7 @@ import {
   FORUM_ERROR,
   CREATE_FORUM_POST,
   GET_ALL_FORUM_POSTS,
+  GET_FORUM_POSTS_BY_TOPIC_ID,
   GET_FORUM_POST_BY_ID,
   DELETE_FORUM_POST,
   CREATE_FORUM_TOPIC,
@@ -115,10 +116,16 @@ export default function (state = initialState, action) {
         posts: action.payload,
         loading: false,
       };
+    case GET_FORUM_POSTS_BY_TOPIC_ID:
+      return {
+        ...state,
+        forumPosts: action.payload,
+        loading: false,
+      };
     case GET_FORUM_POST_BY_ID:
       return {
         ...state,
-        post: action.payload,
+        forumPost: action.payload,
         loading: false,
       };
     case CREATE_FORUM_POST:

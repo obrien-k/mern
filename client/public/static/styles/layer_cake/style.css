@@ -1081,6 +1081,10 @@ ol {
   width: 100%;
 }
 
+.forumBody {
+  display: table-row-group;
+}
+
 .forumRow:nth-child(even) {
   background-color: #ddd;
 }

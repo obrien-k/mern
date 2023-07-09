@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import ForumHeader from "./ForumHeader";
+import PostBox from "../../layout/PostBox";
 import forum from "../../../reducers/forum";
 import { useForumTopicDataById } from "../../../hooks/useForumTopicDataById";
 import { useForumDataById } from "../../../hooks/useForumDataById";
@@ -69,77 +70,6 @@ const ForumTopicPage = (props) => {
   return (
     <div className="thin">
       <ForumHeader forum={forum} forumTopic={forumTopic} />
-      <div className="linkbox">
-        <div className="center">
-          <a
-            href={`reports/${forumTopicId}`}
-            className="brackets"
-            onClick={handleReport}
-          >
-            Report thread
-          </a>
-          <a href="#">Subscribe</a>
-          <a href="#" onClick={handleSearchToggle} className="brackets">
-            Search this thread
-          </a>
-        </div>
-        <div id="searchthread" className="hidden center">
-          <div style={{ display: "inline-block" }}>
-            <h3>Search this thread:</h3>
-            <form className="search_form" onSubmit={handleSearchSubmit}>
-              <input type="hidden" name="action" value="search" />
-              <input type="hidden" name="threadid" value={forumTopicId} />
-              <table
-                className="layout border"
-                cellPadding="6"
-                cellSpacing="1"
-                border="0"
-              >
-                <tbody>
-                  <tr>
-                    <td>
-                      <strong>Search for:</strong>
-                    </td>
-                    <td>
-                      <input
-                        type="search"
-                        id="searchbox"
-                        name="search"
-                        size="70"
-                        value={searchQuery}
-                        onChange={(event) => setSearchQuery(event.target.value)}
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <strong>Posted by:</strong>
-                    </td>
-                    <td>
-                      <input
-                        type="search"
-                        id="username"
-                        name="user"
-                        placeholder="Username"
-                        size="70"
-                        value={searchUser}
-                        onChange={(event) => setSearchUser(event.target.value)}
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colSpan="2" style={{ textAlign: "center" }}>
-                      <input type="submit" name="submit" value="Search" />
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </form>
-            <br />
-          </div>
-        </div>
-      </div>
-      <div className="pagination">{/* Pagination code goes here */}</div>
       <table className="layout border">
         <tbody>
           <tr>
@@ -239,6 +169,9 @@ const ForumTopicPage = (props) => {
           </table>
         </div>
       ))}
+      <div>
+        <PostBox />
+      </div>
     </div>
   );
 };

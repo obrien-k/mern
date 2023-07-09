@@ -49,12 +49,14 @@ const useAllForumsData = () => {
   }, [forums, forumsFetched, dispatch]);
 
   useEffect(() => {
-    if (forumTopics.length > 0 && forums.length > 0) {
+    if (forums.length > 0) {
       const mapTopicsToForum = forums.map((forum) => {
-        const topic = forumTopics.filter((topic) => topic.forum == forum._id);
+        const topic = forumTopics.filter(
+          (topic) => topic.forum === forum._id
+        )[0];
         return {
           ...forum,
-          mostRecentTopic: topic[0],
+          mostRecentTopic: topic || null, // fallback to null if there are no topics
         };
       });
 

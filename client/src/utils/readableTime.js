@@ -23,86 +23,76 @@ function secondsToUnits(seconds) {
   return res;
 }
 
-const readableTime = (timestamp) => {
+const timeAgo = (timestamp) => {
   if (timestamp === null) {
-    return false;
+    return "Never";
   }
   const now = Date.now();
   if (typeof timestamp === "number") {
-    return timestamp;
-  } else if (timestamp === "0000-00-00 00:00:00") {
-    return false;
-  } else {
+    return timeDiff(Math.floor(timestamp / 1000)); // Convert milliseconds to seconds
+  } else if (
+    timestamp instanceof Date ||
+    (typeof timestamp === "string" && !isNaN(Date.parse(timestamp)))
+  ) {
+    // ISO 8601 string or Date object
     const time = Date.parse(timestamp);
-    return Math.floor((now - time) / 1000); // returns in seconds
+    const seconds = Math.floor((now - time) / 1000); // Convert to seconds
+    return timeDiff(seconds); // Pass the time difference in seconds directly
+  } else {
+    return "Invalid date";
   }
 };
 
-const timeDiff = (
-  timestamp,
-  levels = 2,
-  span = true,
-  lowercase = false,
-  starttime = false
-) => {
-  starttime = starttime === false ? Date.now() : Date.parse(starttime);
-
-  if (!Number.isInteger(timestamp)) {
-    if (timestamp === "0000-00-00 00:00:00") {
-      return "Never";
-    }
-    timestamp = Date.parse(timestamp);
-  }
-  if (timestamp === 0) {
-    return "Never";
-  }
-  let time = Math.floor((starttime - timestamp) / 1000); // convert to seconds
-
-  // If the time is negative, then it expires in the future.
-  let HideAgo = false;
-  if (time < 0) {
-    time = -time;
-    HideAgo = true;
-  }
-
+const timeDiff = (seconds, levels = 2) => {
   // Convert seconds to other units
-  const units = secondsToUnits(time);
+  const units = secondsToUnits(seconds);
 
   // Construct the time diff string
   let returnStr = "";
   let level = 0;
   for (const [unit, value] of Object.entries(units)) {
     if (level >= levels) break;
-    returnStr += `${value} ${unit}${value > 1 ? "s" : ""} `;
-    level++;
+    if (value > 0) {
+      returnStr += `${value} ${unit}${value > 1 ? "s" : ""} `;
+      level++;
+    }
   }
 
-  if (HideAgo) {
+  if (seconds < 0) {
     returnStr += "from now";
-  } else if (returnStr !== "") {
-    returnStr += "ago";
-  } else {
+  } else if (returnStr === "") {
     returnStr = "just now";
-  }
-
-  // Convert to lowercase if needed
-  if (lowercase) {
-    returnStr = returnStr.toLowerCase();
-  }
-
-  // Add the HTML span, convert to lowercase, etc. according to the parameters
-  if (span) {
-    return `<span class="time tooltip" title="${formatDate(
-      new Date(timestamp)
-    )}">${returnStr}</span>`;
   } else {
-    return returnStr;
+    returnStr += "ago";
   }
+
+  return returnStr;
 };
 
 const convertHours = (hours, levels = 2, span = true) => {
   const seconds = hours * 3600;
-  return this.timeDiff(seconds * 1000, levels, span, true, false);
+  return timeDiff(seconds * 1000, levels, span, true, false);
+};
+
+const timePlus = (offset) => {
+  let time = new Date();
+  time.setSeconds(time.getSeconds() + offset);
+  return formatDate(time);
+};
+
+const timeMinus = (offset, fuzzy = false) => {
+  let time = new Date();
+  time.setSeconds(time.getSeconds() - offset);
+  if (fuzzy) {
+    let startOfDay = new Date(
+      time.getFullYear(),
+      time.getMonth(),
+      time.getDate()
+    );
+    return formatDate(startOfDay);
+  } else {
+    return formatDate(time);
+  }
 };
 
 const timeOffset = (offset = 0, fuzzy = false) => {
@@ -128,6 +118,26 @@ const sqlTime = (timestamp = false) => {
   }
 };
 
+const validDate = (dateString) => {
+  const [date, time] = dateString.split(" ");
+  const [year, month, day] = date.split("-");
+  const [hours, minutes, seconds] = time.split(":");
+  const isValid =
+    !isNaN(Date.parse(dateString)) &&
+    year !== "0000" &&
+    month >= 1 &&
+    month <= 12 &&
+    day >= 1 &&
+    day <= 31 &&
+    hours >= 0 &&
+    hours <= 23 &&
+    minutes >= 0 &&
+    minutes <= 59 &&
+    seconds >= 0 &&
+    seconds <= 59;
+  return isValid;
+};
+
 const isValidDate = (date) => {
   const timestamp = Date.parse(date);
   return isNaN(timestamp) ? false : true;
@@ -146,15 +156,18 @@ const isValidDateTime = (date_time, format = "YYYY-MM-DD HH:mm") => {
     throw new Error("Unsupported format.");
   }
   const [date, time] = date_time.split(" ");
-  return this.isValidDate(date) && this.isValidTime(time);
+  return isValidDate(date) && isValidTime(time);
 };
 
 export default {
-  readableTime,
+  timeAgo,
   timeDiff,
+  timeMinus,
+  timePlus,
   convertHours,
   timeOffset,
   sqlTime,
+  validDate,
   isValidDate,
   isValidTime,
   isValidDateTime,

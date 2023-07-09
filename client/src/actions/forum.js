@@ -11,6 +11,7 @@ import {
   CREATE_FORUM_POST,
   GET_ALL_FORUM_POSTS,
   GET_FORUM_POST_BY_ID,
+  GET_FORUM_POSTS_BY_TOPIC_ID,
   DELETE_FORUM_POST,
   CREATE_FORUM_TOPIC,
   GET_ALL_FORUM_TOPICS,
@@ -228,6 +229,30 @@ export const getAllForumPosts = () => async (dispatch) => {
     });
   }
 };
+
+export const getForumPostsByTopicId =
+  (forumId, forumTopicId) => async (dispatch) => {
+    try {
+      const res = await api.get(
+        `/forums/${forumId}/topics/${forumTopicId}/posts`
+      );
+      dispatch({
+        type: GET_FORUM_POSTS_BY_TOPIC_ID,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log("Error in action creator:", error); // Log the full error
+      const errorResponse = error.response || {};
+      dispatch({
+        type: FORUM_ERROR,
+        payload: {
+          msg: errorResponse.statusText || "Error message not available",
+          status: errorResponse.status || "Status code not available",
+          error: error.toString(), // Adding the full error as a string.
+        },
+      });
+    }
+  };
 
 export const getForumPostById = (id) => async (dispatch) => {
   try {
