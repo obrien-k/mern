@@ -1,34 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useForumDataById } from "../../../hooks/useForumDataById";
+import { useForumById } from "../../../hooks/useForumById";
 import "./Forum.css";
 import ForumPageTopicInfo from "./ForumPageTopicInfo";
 import ForumHeader from "./ForumHeader";
-import { useForumTopicDataById } from "../../../hooks/useForumTopicDataById";
+import ErrorBoundary from "../../layout/ErrorBoundary";
+import FallbackComponent from "../../layout/FallbackComponent";
+const logErrorToService = async (error, info) => {
+  const errorData = {
+    timestamp: new Date().toISOString(),
+    errorType: error.name,
+    errorMessage: error.message,
+    stackTrace: error.stack,
+    additionalInfo: info,
+  };
+  console.log(error, info);
+  console.log(
+    errorData +
+      "localized error data[ForumPage], start this todo (implement logstash or similar)"
+  );
+};
 
 const ForumPage = () => {
   const { forumId } = useParams();
-  const { data: forum, isLoading, errorMessage } = useForumDataById(forumId);
-  const [selectedTopicId, setSelectedTopicId] = useState(null);
-  const selectedTopic = forum?.forumTopics?.find(
-    (topic) => topic._id === selectedTopicId
-  );
-
-  const handleReport = () => {
-    // TODO report functionality
-  };
-
-  const handleSearchToggle = () => {
-    // TODO search toggle functionality
-  };
-
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    // TODO search submit functionality
-  };
-
-  const [searchQuery, setSearchQuery] = useState("todo");
-  const [searchUser, setSearchUser] = useState("todo");
+  const { data: forumsById, isLoading, errorMessage } = useForumById(forumId);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -38,28 +33,14 @@ const ForumPage = () => {
     return <div>Error: {JSON.stringify(errorMessage)}</div>;
   }
 
-  if (!forum) {
+  if (!forumsById) {
     return <div>Forum not found</div>;
   }
-
-  const handleTopicSelect = (topicId) => {
-    setSelectedTopicId(topicId);
-  };
 
   return (
     <div className="thin">
       <div>
-        <ForumHeader
-          forum={forum}
-          forumTopic={selectedTopic}
-          handleReport={handleReport}
-          handleSearchToggle={handleSearchToggle}
-          handleSearchSubmit={handleSearchSubmit}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          searchUser={searchUser}
-          setSearchUser={setSearchUser}
-        />
+        <ForumHeader forum={forumsById} />
       </div>
       <div class="forum_index m_table">
         <div class="forumRow colhead forumHeader">
@@ -68,11 +49,24 @@ const ForumPage = () => {
           <div class="forumCell forumReplies">Replies</div>
           <div class="forumCell forumAuthor">Author</div>
         </div>
-        {forum.forumTopics && forum.forumTopics.length > 0 ? (
-          forum.forumTopics.map(
+        {forumsById.forumTopics && forumsById.forumTopics.length > 0 ? (
+          forumsById.forumTopics.map(
             (topic) =>
               topic.author && (
-                <ForumPageTopicInfo key={topic._id} topic={topic} />
+                <ErrorBoundary
+                  FallbackComponent={FallbackComponent}
+                  onError={logErrorToService}
+                  onReset={() => {
+                    // TODO reset state so it doesn't happen again
+                  }}
+                >
+                  {" "}
+                  <ForumPageTopicInfo
+                    key={topic._id}
+                    forumId={forumsById._id}
+                    topic={topic}
+                  />
+                </ErrorBoundary>
               )
           )
         ) : (
@@ -84,7 +78,10 @@ const ForumPage = () => {
 
       <div className="linkbox pager">{/* Add pager links here */}</div>
       <div className="linkbox">
-        <Link to={`/private/forums/catchup/${forum._id}`} className="brackets">
+        <Link
+          to={`/private/forums/catchup/${forumsById._id}`}
+          className="brackets"
+        >
           Catch up
         </Link>
       </div>

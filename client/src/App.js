@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { Provider } from "react-redux";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  useNavigate,
+  BrowserRouter as Router,
+  Route,
+  Routes,
+} from "react-router-dom";
 import api from "./utils/api";
 
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Alert from "./components/layout/Alert";
-import jwt_decode from "jwt-decode";
 
 import PrivateRoute from "./components/routing/PrivateRoute";
 import PrivateLayout from "./components/layout/PrivateLayout";
@@ -18,7 +22,49 @@ import PublicLanding from "./components/layout/PublicLanding";
 import RecoveryPage from "./components/auth/Recovery";
 import ReferralForm from "./components/auth/ReferralForm";
 import store from "./store";
+
+import { UserContextProvider } from "./UserContext";
+import { useUserLoggedIn } from "./hooks/useIsUserLoggedIn";
+import jwt_decode from "jwt-decode";
+
 import Toolbox from "./components/admin/Toolbox";
+import { UserContext } from "./UserContext";
+
+const PrivateRouteWrapper = ({ children }) => {
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      // Token is present. Now we need to validate it
+      const decodedToken = jwt_decode(token);
+      const currentDate = new Date();
+      // JWT exp is in seconds
+      if (decodedToken.exp * 1000 > currentDate.getTime()) {
+        setIsUserLoggedIn(true);
+      } else {
+        setIsUserLoggedIn(false);
+        navigate("/login");
+      }
+    } else {
+      setIsUserLoggedIn(false);
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  return (
+    <UserContext.Provider value={[isUserLoggedIn, setIsUserLoggedIn]}>
+      {isUserLoggedIn ? children : null}
+    </UserContext.Provider>
+  );
+};
+
+const AuthenticatedRoute = (props) => (
+  <UserContextProvider>
+    <PrivateRouteWrapper {...props} />
+  </UserContextProvider>
+);
 
 const App = () => {
   useEffect(() => {
@@ -27,6 +73,7 @@ const App = () => {
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     }
   }, []);
+
   return (
     <Provider store={store}>
       <Router>
@@ -71,11 +118,11 @@ const App = () => {
             <Route
               path="/private/*"
               element={
-                <PrivateRoute>
+                <AuthenticatedRoute>
                   <PrivateLayout pageTitle="Stellar">
                     <PrivateContent />
                   </PrivateLayout>
-                </PrivateRoute>
+                </AuthenticatedRoute>
               }
             />
 

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { UserContext } from "../../UserContext";
+import { logout } from "../../actions/auth";
 
 const UserMenu = (props) => {
   const {
@@ -18,6 +20,10 @@ const UserMenu = (props) => {
   const dispatch = useDispatch();
 
   const [useAdvancedSearch, setUseAdvancedSearch] = useState(false);
+
+  function handleLogout() {
+    dispatch(logout());
+  }
 
   useEffect(() => {
     // TODO Populate the arrays with data fetched from an API.
@@ -47,7 +53,9 @@ const UserMenu = (props) => {
             <Link to={`/private/user/edit/${userId}`}>Edit</Link>
           </li>
           <li id="nav_logout">
-            <Link to="/logout">Logout</Link>
+            <Link to="/logout" onClick={handleLogout}>
+              Logout
+            </Link>
           </li>
         </ul>
         <ul id="userinfo_major">
@@ -71,7 +79,7 @@ const UserMenu = (props) => {
             id="nav_forums"
             className={addClass(pageId, ["forums"], "active")}
           >
-            <Link to="/private/forums">Forums</Link>
+            <Link to="/private/forums0">Forums</Link>
           </li>
           <li id="nav_irc" className={addClass(pageId, ["chat"], "active")}>
             <Link to="/private/wiki/action=article&name=irc">IRC</Link>

@@ -1,13 +1,14 @@
-import { createStore, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
-import logger from 'redux-logger';
-import rootReducer from './reducers';
-import setAuthToken from './utils/setAuthToken';
+import { createStore, applyMiddleware } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import thunk from "redux-thunk";
+import logger from "redux-logger";
+import rootReducer from "./reducers";
+import setAuthToken from "./utils/setAuthToken";
+import { getForumCategoryById } from "./actions/forum";
 
 const initialState = {};
 
-const middleware = [thunk, logger];
+const middleware = [thunk.withExtraArgument({ getForumCategoryById }), logger];
 
 const store = createStore(
   rootReducer,

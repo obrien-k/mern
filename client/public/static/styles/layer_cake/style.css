@@ -1105,6 +1105,18 @@ ol {
   width: 50%;
 }
 
+.forumColumnGroup {
+  display: table-column-group;
+}
+
+.forumCloumn {
+  display: table-column;
+}
+
+.forumName {
+  width: 20%;
+}
+
 .forumStatus {
   width: 2%;
 }
@@ -1145,12 +1157,3 @@ ol {
 }
 
 /*Forum header*/
-
-.forum_index {
-  display: table;
-  width: 100%;
-}
-
-.forumRow.forumHeader ~ .forumRow {
-  width: 100%;
-}

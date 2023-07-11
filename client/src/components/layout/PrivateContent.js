@@ -14,47 +14,46 @@ import FallbackComponent from "./FallbackComponent";
 import ContributeForm from "../sections/contribute/ContributeForm";
 import CommunitiesPage from "../sections/communities/CommunitiesPage";
 import CommunityPage from "../sections/communities/CommunityPage";
-import PermissionFormPage from "../admin/PermissionFormPage"; // VScode is throwing an error but seems fine (capitalization of file)
+import PermissionFormPage from "../admin/PermissionFormPage";
+import ForumHomePage from "../sections/forum/ForumHomePage";
+import ForumCategoryControlPanel from "../admin/ForumCategoryControlPanel";
+import ForumControlPanel from "../admin/ForumControlPanel";
 
-const logErrorToService = (error, info) => {
-  //TODO
+const logErrorToService = async (error, info) => {
+  const errorData = {
+    timestamp: new Date().toISOString(),
+    errorType: error.name,
+    errorMessage: error.message,
+    stackTrace: error.stack,
+    additionalInfo: info,
+  };
   console.log(error, info);
+  console.log(
+    errorData +
+      "localized error data, start this todo (implement logstash or similar)"
+  );
 };
 
-const PrivateContent = ({ userId, userName }) => {
+const PrivateContent = () => {
   return (
     <div id="content">
       <Routes>
-        <Route
-          path="user/invite-tree"
-          element={<InviteTree userId={userId} />}
-        />
+        <Route path="/private/user/invite-tree" element={<InviteTree />} />
         <Route
           path="staff/tools/permissions/new"
-          element={<PermissionFormPage userId={userId} />}
+          element={<PermissionFormPage />}
         />
         <Route
           path="staff/tools/permissions/:id/edit"
           element={<PermissionFormPage />}
         />
+        <Route path="staff/tools/permissions" element={<PermissionManager />} />
         <Route
-          path="staff/tools/permissions"
-          element={<PermissionManager userId={userId} />}
+          path="staff/tools/categories"
+          element={<ForumCategoryControlPanel />}
         />
-        <Route
-          path="staff/tools"
-          element={
-            <ErrorBoundary
-              FallbackComponent={FallbackComponent}
-              onError={logErrorToService}
-              onReset={() => {
-                // TODO reset state so it doesn't happen again
-              }}
-            >
-              <Toolbox userId={userId} />
-            </ErrorBoundary>
-          }
-        />
+        <Route path="staff/tools/forums" element={<ForumControlPanel />} />
+        <Route path="staff/tools" element={<Toolbox />} />
         <Route
           path="forums/:forumId/topics/:forumTopicId"
           element={
@@ -65,14 +64,11 @@ const PrivateContent = ({ userId, userName }) => {
                 // TODO reset state so it doesn't happen again
               }}
             >
-              <ForumTopicPage userId={userId} />
+              <ForumTopicPage />
             </ErrorBoundary>
           }
         />
-        <Route
-          path="forums/:forumId/new"
-          element={<NewTopicForm userId={userId} />}
-        />
+        <Route path="forums/:forumId/new" element={<NewTopicForm />} />
         <Route
           path="forums/:forumId"
           element={
@@ -84,6 +80,20 @@ const PrivateContent = ({ userId, userName }) => {
               }}
             >
               <ForumPage />
+            </ErrorBoundary>
+          }
+        />
+        <Route
+          path="forums0"
+          element={
+            <ErrorBoundary
+              FallbackComponent={FallbackComponent}
+              onError={logErrorToService}
+              onReset={() => {
+                // TODO reset state so it doesn't happen again
+              }}
+            >
+              <ForumHomePage />
             </ErrorBoundary>
           }
         />
@@ -112,7 +122,7 @@ const PrivateContent = ({ userId, userName }) => {
                 // TODO reset state so it doesn't happen again
               }}
             >
-              <CommunitiesPage userId={userId} />
+              <CommunitiesPage />
             </ErrorBoundary>
           }
         />
@@ -126,15 +136,12 @@ const PrivateContent = ({ userId, userName }) => {
                 // TODO reset state so it doesn't happen again
               }}
             >
-              <ContributeForm userId={userId} />
+              <ContributeForm />
             </ErrorBoundary>
           }
         />
-        <Route
-          path="invite"
-          element={<InviteForm userId={userId} userName={userName} />}
-        />
-        <Route path="*" element={<PrivateHomepage userId={userId} />} />
+        <Route path="invite" element={<InviteForm />} />
+        <Route path="*" element={<PrivateHomepage />} />
       </Routes>
     </div>
   );

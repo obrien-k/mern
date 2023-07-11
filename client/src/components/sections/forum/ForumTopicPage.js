@@ -4,22 +4,23 @@ import axios from "axios";
 import ForumHeader from "./ForumHeader";
 import PostBox from "../../layout/PostBox";
 import forum from "../../../reducers/forum";
-import { useForumTopicDataById } from "../../../hooks/useForumTopicDataById";
-import { useForumDataById } from "../../../hooks/useForumDataById";
+import { useForumTopicById } from "../../../hooks/useForumTopicById";
+import { useForumById } from "../../../hooks/useForumById";
 
 const ForumTopicPage = (props) => {
   const [forumPosts, setForumPosts] = useState([]);
   const { forumId, forumTopicId } = useParams();
+  const userId = props.userId;
   const {
     data: forumTopic,
     isLoading,
     errorMessage,
-  } = useForumTopicDataById(forumId, forumTopicId);
+  } = useForumTopicById(forumId, forumTopicId);
   const {
     data: forum,
     isLoading: forumIsLoading,
     errorMessage: forumErrorMessage,
-  } = useForumDataById(forumId);
+  } = useForumById(forumId);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [searchUser, setSearchUser] = useState("");
@@ -111,12 +112,14 @@ const ForumTopicPage = (props) => {
                   <div style={{ float: "left" }}>
                     <a
                       className="post_id"
-                      href={`forums.php?action=viewthread&threadid=${forumTopicId}&postid=${post._id}#post${post._id}`}
+                      href={`/private/forums/${forumId}/topics/${forumTopicId}/posts#${post._id}`}
                     >
                       #{post._id}
                     </a>
                     <strong>
-                      <a href={`user.php?id=${post.authorId}`}>{post.author}</a>
+                      <a href={`/private/users/${post.authorId}`}>
+                        {post.author}
+                      </a>
                     </strong>
                     <a target="_blank" href="donate.php">
                       <img
@@ -170,7 +173,11 @@ const ForumTopicPage = (props) => {
         </div>
       ))}
       <div>
-        <PostBox />
+        <PostBox
+          userId={userId}
+          forumId={forumId}
+          forumTopicId={forumTopicId}
+        />
       </div>
     </div>
   );

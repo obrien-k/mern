@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Forum.css";
+import ForumCategoryForumInfo from "./ForumCategoryForumInfo";
 
 const ForumCategoryList = ({ forums, forumCategories, loading, error }) => {
   if (loading) {
@@ -21,68 +22,31 @@ const ForumCategoryList = ({ forums, forumCategories, loading, error }) => {
   return (
     <div className="thin">
       <h2>Forums</h2>
+
       <div className="forum-list">
         {forumCategories.map((category) => (
           <div key={category._id}>
             <h3>{category.name}</h3>
-            <table className="forum-index">
-              <thead>
-                <tr className="colhead">
-                  <th></th>
-                  <th className="forum-name">Forum</th>
-                  <th>Last Post</th>
-                  <th className="number-column topics">Topics</th>
-                  <th className="number-column posts">Posts</th>
-                </tr>
-              </thead>
-              <tbody>
-                {forums
-                  .filter((forum) => forum.forumCategory._id === category._id)
-                  .map((forum) => (
-                    <tr key={forum._id} className="forum-row">
-                      <td className="read"></td>
-                      <td className="forum">
-                        <h4>
-                          <Link to={`/private/forums/${forum._id}`}>
-                            {forum.name}
-                          </Link>
-                        </h4>
-                      </td>
-                      <td className="latest">
-                        {forum.mostRecentTopic ? (
-                          <div>
-                            <span className="last_post">
-                              {/* Link to the last post */}
-                              <Link
-                                to={`/private/forums/${forum._id}/topics/${forum.mostRecentTopic._id}`}
-                              >
-                                {forum.mostRecentTopic.title}
-                              </Link>
-                            </span>
-                            <span className="last_poster">
-                              by{" "}
-                              <Link
-                                to={`/private/user/${forum.mostRecentTopic.author}`}
-                              >
-                                User
-                              </Link>
-                            </span>
-                          </div>
-                        ) : (
-                          <span>
-                            There are no topics here.{" "}
-                            <Link to={`/private/forums/${forum._id}/new`}>
-                              Create one!
-                            </Link>
-                          </span>
-                        )}
-                      </td>
-                      <td className="number-column">{forum.numTopics}</td>
-                      <td className="number-column">{forum.numPosts}</td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
+            <div className="forum_index m_table">
+              <div className="forumBody">
+                <div className="forumRow colhead forumHeader">
+                  <div className="forumCell forumStatus"></div>
+                  <div className="forumCell forumName">Forum</div>
+                  <div className="forumCell forumLatest">Last Post</div>
+                  <div className="forumCell forumTopics">Topics</div>
+                  <div className="forumCell forumPosts">Posts</div>
+                </div>
+
+                {forums.map((forum) => {
+                  if (forum.forumCategory._id === category._id) {
+                    return (
+                      <ForumCategoryForumInfo key={forum._id} forum={forum} />
+                    );
+                  }
+                  return null;
+                })}
+              </div>{" "}
+            </div>
           </div>
         ))}
       </div>

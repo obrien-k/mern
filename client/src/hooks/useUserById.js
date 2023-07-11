@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserById } from "../actions/user";
 
-const useUserDataById = (userId) => {
+const useUserById = (userId) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -16,4 +16,4 @@ const useUserDataById = (userId) => {
   return userState;
 };
 
-export default useUserDataById;
+export default useUserById;

@@ -1,7 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import useCreateForumPost from "../../hooks/useCreateForumPost";
 
-const PostBox = () => {
+const PostBox = ({ forumId, forumTopicId, userId }) => {
+  const [body, setBody] = useState("");
+  console.log(forumId, forumTopicId + "PostBox forumId forumTopicId");
+  const createPost = useCreateForumPost();
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    createPost(forumId, forumTopicId, body, userId);
+  };
+
   return (
     <div id="reply_box">
       <h3>Post reply</h3>
@@ -69,8 +79,7 @@ const PostBox = () => {
               className="send_form center"
               name="reply"
               id="quickpostform"
-              action=""
-              method="post"
+              onSubmit={handleSubmit}
             >
               <input type="hidden" name="action" value="reply" />
               <input
@@ -87,6 +96,8 @@ const PostBox = () => {
                     cols="90"
                     rows="8"
                     tabIndex="1"
+                    value={body}
+                    onChange={(event) => setBody(event.target.value)}
                   ></textarea>
                 </div>
                 <br />
