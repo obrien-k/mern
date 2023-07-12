@@ -12,22 +12,18 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Alert from "./components/layout/Alert";
 
-import PrivateRoute from "./components/routing/PrivateRoute";
-import PrivateLayout from "./components/layout/PrivateLayout";
-import PrivateContent from "./components/layout/PrivateContent";
-import PrivateHomepage from "./components/pages/PrivateHomepage";
+import PrivateLayout from "./components/pages/private/layout/PrivateLayout";
+import PrivateContent from "./components/pages/private/layout/PrivateContent";
+import PrivateHomepage from "./components/pages/private/PrivateHomepage";
 
-import PublicLayout from "./components/layout/PublicLayout";
-import PublicLanding from "./components/layout/PublicLanding";
+import PublicLayout from "./components/pages/public/layout/PublicLayout";
+import PublicLanding from "./components/pages/public/PublicLanding";
 import RecoveryPage from "./components/auth/Recovery";
 import ReferralForm from "./components/auth/ReferralForm";
 import store from "./store";
 
 import { UserContextProvider } from "./UserContext";
-import { useUserLoggedIn } from "./hooks/useIsUserLoggedIn";
 import jwt_decode from "jwt-decode";
-
-import Toolbox from "./components/admin/Toolbox";
 import { UserContext } from "./UserContext";
 
 const PrivateRouteWrapper = ({ children }) => {

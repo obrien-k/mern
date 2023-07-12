@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const PublicLanding = () => {
   const SHOW_PUBLIC_INDEX = true; // Replace with your logic
@@ -11,17 +11,19 @@ const PublicLanding = () => {
 
   return (
     <>
-      <div id="logo">
-        <img
-          src="static/styles/public/images/loginlogo.png"
-          alt="stellar"
-          title="stellar"
-        />
-      </div>
-
       <div className="main">
         <div className="poetry">
           The latest hotness, but we didn't start the fire.
+          <br />
+          <br />
+          <span className="important" style={{ color: "#FF0000" }}>
+            <strong>
+              Stellar is pre-alpha, if you're here by accident, expect data
+              loss!
+            </strong>
+          </span>
+          <br />
+          <br />
         </div>
       </div>
 
@@ -31,7 +33,7 @@ const PublicLanding = () => {
           {OPEN_REGISTRATION && (
             <Link
               to="/register"
-              title="Obtain an account by supplying a valid email address"
+              title="Obtain an account by supplying an invite code"
             >
               Register
             </Link>

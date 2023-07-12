@@ -39,9 +39,6 @@ const UserMenu = (props) => {
 
   return (
     <div>
-      <div id="logo">
-        <Link to="/private/">Home</Link>
-      </div>
       <div id="userinfo">
         <ul id="userinfo_username">
           <li id="nav_userinfo">

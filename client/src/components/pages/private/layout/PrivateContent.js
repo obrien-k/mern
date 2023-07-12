@@ -1,23 +1,30 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import ForumCategoryPage from "../sections/forum/ForumCategoryPage";
-import ForumPage from "../sections/forum/ForumPage";
-import ForumTopicPage from "../sections/forum/ForumTopicPage";
-import PrivateHomepage from "../pages/PrivateHomepage";
-import Toolbox from "../admin/Toolbox";
-import InviteForm from "../profile/invite/InviteForm";
-import InviteTree from "../profile/invite/InviteTree";
-import PermissionManager from "../admin/PermissionManager";
-import NewTopicForm from "../sections/forum/NewTopicForm";
-import ErrorBoundary from "./ErrorBoundary";
-import FallbackComponent from "./FallbackComponent";
-import ContributeForm from "../sections/contribute/ContributeForm";
-import CommunitiesPage from "../sections/communities/CommunitiesPage";
-import CommunityPage from "../sections/communities/CommunityPage";
-import PermissionFormPage from "../admin/PermissionFormPage";
-import ForumHomePage from "../sections/forum/ForumHomePage";
-import ForumCategoryControlPanel from "../admin/ForumCategoryControlPanel";
-import ForumControlPanel from "../admin/ForumControlPanel";
+import ErrorBoundary from "../../../layout/ErrorBoundary";
+import FallbackComponent from "../../../layout/FallbackComponent";
+
+import PrivateHomepage from "../../../pages/private/PrivateHomepage";
+import Toolbox from "../../../admin/Toolbox";
+import InviteForm from "../../../profile/invite/InviteForm";
+import InviteTree from "../../../profile/invite/InviteTree";
+
+// Communities
+import ContributeForm from "../../../sections/contribute/ContributeForm";
+import CommunitiesPage from "../../../sections/communities/CommunitiesPage";
+import CommunityPage from "../../../sections/communities/CommunityPage";
+
+// Forum
+import ForumHomePage from "../../../sections/forum/ForumHomePage";
+import ForumCategoryPage from "../../../sections/forum/ForumCategoryPage";
+import ForumPage from "../../../sections/forum/ForumPage";
+import ForumTopicPage from "../../../sections/forum/ForumTopicPage";
+import NewTopicForm from "../../../sections/forum/NewTopicForm";
+
+// Toolbox
+import PermissionManager from "../../../admin/PermissionManager";
+import PermissionFormPage from "../../../admin/PermissionFormPage";
+import ForumCategoryControlPanel from "../../../admin/ForumCategoryControlPanel";
+import ForumControlPanel from "../../../admin/ForumControlPanel";
 
 const logErrorToService = async (error, info) => {
   const errorData = {
