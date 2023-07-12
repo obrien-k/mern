@@ -1,27 +1,42 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const gravatar = require('gravatar');
-const bcrypt = require('bcryptjs');
-const { check, validationResult } = require('express-validator');
-const jwt = require('jsonwebtoken');
-const config = require('config');
-const User = require('../../models/User');
-const { asyncHandler } = require('../../middleware/asyncHandler');
+const gravatar = require("gravatar");
+const bcrypt = require("bcryptjs");
+const { check, validationResult } = require("express-validator");
+const jwt = require("jsonwebtoken");
+const config = require("config");
+const User = require("../../models/User");
+const { asyncHandler } = require("../../middleware/asyncHandler");
+
+// @route GET api/users/:id
+// @desc Get user by ID
+// @access Public
+router.get(
+  "/:id",
+  asyncHandler(async (req, res) => {
+    const userId = req.params.id;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    res.json(user);
+  })
+);
 
 // @route POST api/users
 // @desc Register user
 // @access Public
 router.post(
-  '/',
+  "/",
   [
-    check('username', 'Name is required')
-      .not()
-      .isEmpty(),
-    check('email', 'Please include a valid email').isEmail(),
+    check("username", "Name is required").not().isEmpty(),
+    check("email", "Please include a valid email").isEmail(),
     check(
-      'password',
-      'Please enter a password with 6 or more characters'
-    ).isLength({ min: 6 })
+      "password",
+      "Please enter a password with 6 or more characters"
+    ).isLength({ min: 6 }),
   ],
   asyncHandler(async (req, res) => {
     console.log(req.body);
@@ -35,21 +50,19 @@ router.post(
     let user = await User.findOne({ email });
 
     if (user) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: 'User already exists' }] });
+      return res.status(400).json({ errors: [{ msg: "User already exists" }] });
     }
     const avatar = gravatar.url(email, {
-      s: '200',
-      r: 'pg',
-      d: 'mm'
+      s: "200",
+      r: "pg",
+      d: "mm",
     });
 
     user = new User({
       username,
       email,
       avatar,
-      password
+      password,
     });
 
     const salt = await bcrypt.genSalt(10);
@@ -60,20 +73,20 @@ router.post(
 
     const payload = {
       user: {
-        id: user.id
-      }
+        id: user.id,
+      },
     };
 
     jwt.sign(
       payload,
-      config.get('jwtSecret'),
+      config.get("jwtSecret"),
       { expiresIn: 3600 },
       (err, token) => {
         if (err) throw err;
         res.json({ token });
       }
-    ); 
-  }
-));
+    );
+  })
+);
 
 module.exports = router;

@@ -1,86 +1,171 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useCreateForumTopic } from "../../../hooks/useCreateForumTopic";
 
-function NewTopicForm() {
-    const [title, setTitle] = useState('');
-    const [body, setBody] = useState('');
-    const [question, setQuestion] = useState('');
-    const [answers, setAnswers] = useState(['']);
-    const [subscribe, setSubscribe] = useState(false);
+const NewTopicForm = () => {
+  const { forumId } = useParams();
+  const { submitTopic } = useCreateForumTopic();
 
-    const handleAnswerChange = (index, value) => {
-        const newAnswers = [...answers];
-        newAnswers[index] = value;
-        setAnswers(newAnswers);
-    };
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [question, setQuestion] = useState("");
+  const [answers, setAnswers] = useState([""]);
+  const [preview, setPreview] = useState(false);
+  const [showPollQuestion, setShowPollQuestion] = useState(false);
+  const [showPollAnswers, setShowPollAnswers] = useState(false);
 
-    const addAnswerField = () => setAnswers([...answers, '']);
-    const removeAnswerField = () => setAnswers(answers.slice(0, -1));
+  const handleAddAnswer = () => {
+    setAnswers([...answers, ""]);
+  };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch('/api/forum/topics', { // replace with your endpoint
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    Title: title,
-                    Body: body,
-                    Question: question,
-                    Answers: answers.filter(answer => answer.trim() !== '')
-                })
-            });
+  const handleRemoveAnswer = () => {
+    const newAnswers = [...answers];
+    newAnswers.pop();
+    setAnswers(newAnswers);
+  };
 
-            const data = await response.json();
-            console.log(data);
+  const handleAnswerChange = (e, index) => {
+    const newAnswers = [...answers];
+    newAnswers[index] = e.target.value;
+    setAnswers(newAnswers);
+  };
 
-        } catch (error) {
-            console.error('Error submitting new topic:', error);
-        }
-    };
-
-    return (
-        <div className="new-topic-form">
-            <h2>New Topic</h2>
-
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="title">Title:</label>
-                    <input type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)} required />
-                </div>
-
-                <div>
-                    <label htmlFor="body">Body:</label>
-                    <textarea id="body" value={body} onChange={(e) => setBody(e.target.value)} required></textarea>
-                </div>
-
-                <div>
-                    <label htmlFor="question">Question:</label>
-                    <input type="text" id="question" value={question} onChange={(e) => setQuestion(e.target.value)} />
-                </div>
-
-                <div>
-                    {answers.map((answer, index) => (
-                        <div key={index}>
-                            <input type="text" value={answer} onChange={(e) => handleAnswerChange(index, e.target.value)} />
-                        </div>
-                    ))}
-                    <button type="button" onClick={addAnswerField}>+</button>
-                    <button type="button" onClick={removeAnswerField}>-</button>
-                </div>
-
-                <div>
-                    <input type="checkbox" id="subscribe" checked={subscribe} onChange={(e) => setSubscribe(e.target.checked)} />
-                    <label htmlFor="subscribe">Subscribe to topic</label>
-                </div>
-
-                <div>
-                    <button type="submit">Create Thread</button>
-                </div>
-            </form>
-        </div>
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    submitTopic(
+      title,
+      forumId,
+      body,
+      question,
+      answers.filter((answer) => answer.trim() !== "")
     );
-}
+  };
+
+  return (
+    <div id="content">
+      <div className="thin">
+        <h2>
+          <Link to="/private/forums">Forums</Link> &gt;{" "}
+          <Link to={`/private/forums/${forumId}`}>todo: Forum.name</Link> &gt;{" "}
+          <span>New Topic</span>
+        </h2>
+
+        {preview && (
+          <div className="box thin clear hidden">
+            {/* Preview content goes here */}
+          </div>
+        )}
+
+        <div className="box pad">
+          <form className="create_form" onSubmit={handleSubmit}>
+            <table className="layout">
+              <tbody>
+                <tr>
+                  <td className="label">Title:</td>
+                  <td>
+                    <input
+                      type="text"
+                      name="title"
+                      style={{ width: "98%" }}
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      required
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td className="label">Body:</td>
+                  <td>
+                    <textarea
+                      name="body"
+                      style={{ width: "98%" }}
+                      value={body}
+                      onChange={(e) => setBody(e.target.value)}
+                      required
+                    ></textarea>
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan="2" className="center">
+                    <strong>Poll Settings</strong>
+                    <a
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowPollQuestion(!showPollQuestion);
+                        setShowPollAnswers(!showPollAnswers);
+                      }}
+                      className="brackets"
+                    >
+                      View
+                    </a>
+                  </td>
+                </tr>
+                {showPollQuestion && (
+                  <tr>
+                    <td className="label">Poll Question:</td>
+                    <td>
+                      <input
+                        type="text"
+                        style={{ width: "98%" }}
+                        value={question}
+                        onChange={(e) => setQuestion(e.target.value)}
+                      />
+                    </td>
+                  </tr>
+                )}
+                {showPollAnswers && (
+                  <tr>
+                    <td className="label">Poll Answers:</td>
+                    <td>
+                      {answers.map((answer, index) => (
+                        <div key={index}>
+                          <input
+                            type="text"
+                            style={{ width: "90%" }}
+                            value={answer}
+                            onChange={(e) => handleAnswerChange(e, index)}
+                          />
+                        </div>
+                      ))}
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleAddAnswer();
+                        }}
+                        className="brackets"
+                      >
+                        +
+                      </a>
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleRemoveAnswer();
+                        }}
+                        className="brackets"
+                      >
+                        −
+                      </a>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+            <div className="center">
+              <input
+                type="button"
+                value="Preview"
+                onClick={() => setPreview(true)}
+              />
+              <input type="submit" value="Create thread" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default NewTopicForm;

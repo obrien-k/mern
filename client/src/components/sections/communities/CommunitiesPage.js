@@ -1,9 +1,9 @@
-import React from 'react';
-import { useAllCommunitiesData } from '../../../hooks/useAllCommunitiesData';
-import CommunitiesTable from './CommunitiesTable';
+import React from "react";
+import { useAllCommunities } from "../../../hooks/useAllCommunities";
+import CommunitiesTable from "./CommunitiesTable";
 
 const CommunitiesPage = () => {
-  const { transformedData, isLoading, errorMessage } = useAllCommunitiesData();
+  const { transformedData, isLoading, errorMessage } = useAllCommunities();
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -13,9 +13,14 @@ const CommunitiesPage = () => {
     return <div>Error: {JSON.stringify(errorMessage)}</div>;
   }
 
+  if (isLoading === false && transformedData.length > 0) {
+    console.log(transformedData);
+  }
   return (
     <div>
-      <div><CommunitiesTable communities={transformedData} /></div>
+      <div>
+        <CommunitiesTable communities={transformedData} />
+      </div>
     </div>
   );
 };

@@ -1,8 +1,24 @@
-import React, { useState } from 'react';
-import PermissionFormInput from "./PermissionFormInput";
-import PermissionFormClass from "./PermissionFormClass";
+import React, { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import {
+  createRank,
+  updateUserRank,
+  getRankPermissions,
+} from '../../actions/permissions';
+import { structuredPermissions } from '../../utils/structuredPermissions';
 
-const PermissionFormPage = ({ permissions }) => {
+import PermissionFormInput from './PermissionFormInput';
+import PermissionFormClass from './PermissionFormClass';
+
+const PermissionFormPage = ({
+  getRankPermissions,
+  createRank,
+  updateUserRank,
+  rankPermissions,
+  loading
+}) => {
   const [inputData, setInputData] = useState({
     permissionName: '',
     classLevel: '',
@@ -10,143 +26,125 @@ const PermissionFormPage = ({ permissions }) => {
     showOnStaffPage: false,
     staffPageGroup: 1,
     maxCollages: '',
-    additionalForums: '',
+    additionalForums: ''
   });
-
-  
 
   const [classData, setClassData] = useState({
-    sitePermissions: {
-      perm_site_leech: false,
-      perm_site_upload: false,
-      perm_site_vote: false,
-      perm_site_submit_requests: false,
-      perm_site_advanced_search: false,
-      perm_site_top10: false,
-      perm_site_communities_notify: false,
-      perm_site_collages_create: false,
-      perm_site_collages_manage: false,
-      perm_site_collages_delete: false,
-      perm_site_collages_subscribe: false,
-      perm_site_collages_personal: false,
-      perm_site_collages_renamepersonal: false,
-      perm_site_advanced_top10: false,
-      perm_site_album_votes: false,
-      perm_site_make_bookmarks: false,
-      perm_site_edit_wiki: false,
-      perm_site_can_invite_always: false,
-      perm_site_send_unlimited_invites: false,
-      perm_site_moderate_requests: false,
-      perm_site_delete_artist: false,
-      perm_site_debug: false,
-      perm_site_database_specifics: false,
-      perm_site_proxy_images: false,
-      perm_site_search_many: false,
-      perm_site_collages_recover: false,
-      perm_site_tag_aliases_read: false,
-      perm_site_user_stats: false,
-      perm_site_unlimit_ajax: false,
-      perm_site_disable_ip_history: false,
-      perm_zip_downloader: false,
-      perm_site_view_flow: false,
-      perm_site_view_full_log: false,
-      perm_site_view_torrent_snatchlist: false,
-      perm_site_recommend_own: false,
-      perm_site_manage_recommendations: false,
-      perm_site_delete_tag: false,
-    },
-    usersPermissions: {
-      perm_users_edit_usernames: false,
-      perm_users_edit_ratio: false,
-      perm_users_edit_own_ratio: false,
-      perm_users_edit_titles: false,
-      perm_users_edit_avatars: false,
-      perm_users_edit_invites: false,
-      perm_users_edit_watch_hours: false,
-      perm_users_edit_reset_keys: false,
-      perm_users_edit_profiles: false,
-      perm_users_view_friends: false,
-      perm_users_reset_own_keys: false,
-      perm_users_edit_password: false,
-      perm_users_promote_below: false,
-      perm_users_promote_to: false,
-      perm_users_give_donor: false,
-      perm_users_warn: false,
-      perm_users_disable_users: false,
-      perm_users_disable_posts: false,
-      perm_users_disable_any: false,
-      perm_users_delete_users: false,
-      perm_users_view_invites: false,
-      perm_users_view_seedleech: false,
-      perm_users_view_uploaded: false,
-      perm_users_view_keys: false,
-      perm_users_view_ips: false,
-      perm_users_view_email: false,
-      perm_users_invite_notes: false,
-      perm_users_override_paranoia: false,
-      perm_users_make_invisible: false,
-      perm_users_logout: false,
-      perm_users_mod: false,
-    },
-    communitiesPermissions: {
-      perm_communities_edit: false,
-      perm_communities_delete: false,
-      perm_communities_delete_fast: false,
-      perm_communities_freeleech: false,
-      perm_communities_search_fast: false,
-      perm_communities_add_artist: false,
-      perm_edit_unknowns: false,
-      perm_communities_edit_vanityhouse: false,
-      perm_artist_edit_vanityhouse: false,
-      perm_communities_hide_dnu: false,
-      perm_communities_fix_ghosts: false,
-   },
-    adminPermissions: {
-      perm_admin_manage_news: false,
-      perm_admin_manage_blog: false,
-      perm_admin_manage_contest: false,
-      perm_admin_manage_polls: false,
-      perm_admin_manage_forums: false,
-      perm_admin_manage_fls: false,
-      perm_admin_manage_user_fls: false,
-      perm_admin_manage_applicants: false,
-      perm_admin_manage_referrals: false,
-      perm_admin_manage_payments: false,
-      perm_admin_manage_navigation: false,
-      perm_admin_periodic_task_manage: false,
-      perm_admin_periodic_task_view: false,
-      perm_admin_rate_limit_manage: false,
-      perm_admin_rate_limit_view: false,
-      perm_admin_view_referrals: false,
-      perm_admin_reports: false,
-      perm_admin_bp_history: false,
-      perm_admin_advanced_user_search: false,
-      perm_admin_create_users: false,
-      perm_admin_donor_log: false,
-      perm_admin_manage_stylesheets: false,
-      perm_admin_manage_ipbans: false,
-      perm_admin_dnu: false,
-      perm_admin_clear_cache: false,
-      perm_admin_whitelist: false,
-      perm_admin_manage_permissions: false,
-      perm_admin_recovery: false,
-      perm_admin_schedule: false,
-      perm_admin_login_watch: false,
-      perm_admin_manage_wiki: false,
-      perm_admin_update_geoip: false,
-      perm_admin_staffpm_stats: false,
-    }
+    sitePermissions: {},
+    usersPermissions: {},
+    communitiesPermissions: {},
+    adminPermissions: {}
   });
+  
+  const { id } = useParams();
+  const isEditing = Boolean(id);
 
+  useEffect(() => {
+    // Fetch existing permissions if in edit mode
+    if (isEditing) {
+      getRankPermissions(id); // Dispatch an action to fetch permissions based on the ID
+    }
+  }, [id, isEditing, getRankPermissions]);
+
+  useEffect(() => {
+    const setNestedPermissions = (rawPermissions) => {
+      const nestedPermissions = structuredPermissions(rawPermissions);
+  
+      setClassData({
+        sitePermissions: nestedPermissions.sitePermissions || {},
+        usersPermissions: nestedPermissions.usersPermissions || {},
+        communitiesPermissions: nestedPermissions.communitiesPermissions || {},
+        adminPermissions: nestedPermissions.adminPermissions || {}
+      });
+    };
+    // If in edit mode, wait for rankPermissions to load
+    if (isEditing && !rankPermissions) {
+      return; // Keep showing loading until rankPermissions is loaded
+    }
+
+    if (isEditing && rankPermissions) {
+        if (rankPermissions) {
+          setNestedPermissions(rankPermissions.field3);
+          setInputData({
+            permissionName: rankPermissions.field2 || '',
+            classLevel: rankPermissions.field1 || '',
+            isSecondary: rankPermissions.isSecondary || false,
+            showOnStaffPage: rankPermissions.field6 || false,
+            staffPageGroup: rankPermissions.staffPageGroup || 1,
+            maxCollages: rankPermissions.maxCollages || '',
+            additionalForums: rankPermissions.additionalForums || ''
+          });
+        }      
+    } else {
+          const defaultPermissions = [
+            "site_leech", "site_upload", "site_vote", "site_submit_requests", "site_advanced_search",
+            "site_top10", "site_advanced_top10", "site_album_votes", "site_communities_notify",
+            "site_collages_create", "site_collages_manage", "site_collages_subscribe", "site_collages_personal",
+            "site_make_bookmarks", "site_edit_wiki", "site_can_invite_always", "site_send_unlimited_invites",
+            "site_moderate_requests", "site_delete_artist", "site_moderate_forums", "site_admin_forums",
+            "site_forums_double_post", "site_view_flow", "site_view_full_log", "site_view_community_snatchlist",
+            "site_recommend_own", "site_manage_recommendations", "site_delete_tag", "site_disable_ip_history",
+            "zip_downloader", "site_debug", "site_proxy_images", "site_search_many", "users_edit_usernames",
+            "users_edit_ratio", "users_edit_own_ratio", "users_edit_titles", "users_edit_avatars", "users_edit_invites",
+            "users_edit_watch_hours", "users_edit_reset_keys", "users_edit_profiles", "users_view_friends",
+            "users_reset_own_keys", "users_edit_password", "users_promote_below", "users_promote_to", "users_give_donor",
+            "users_warn", "users_disable_users", "users_disable_posts", "users_disable_any", "users_delete_users",
+            "users_view_invites", "users_view_seedleech", "users_view_uploaded", "users_view_keys", "users_view_ips",
+            "users_view_email", "users_invite_notes", "users_override_paranoia", "users_logout", "users_make_invisible",
+            "users_mod", "communities_edit", "communities_delete", "communities_delete_fast", "communities_freeleech",
+            "communities_search_fast", "communities_hide_dnu", "communities_fix_ghosts", "admin_manage_news",
+            "admin_manage_blog", "admin_manage_polls", "admin_manage_forums", "admin_manage_fls", "admin_reports",
+            "admin_advanced_user_search", "admin_create_users", "admin_donor_log", "admin_manage_ipbans", "admin_dnu",
+            "admin_clear_cache", "admin_whitelist", "admin_manage_permissions"
+          ].reduce((acc, permission) => {
+            acc[permission] = false;
+            return acc;
+          }, {});
+          setNestedPermissions(defaultPermissions);
+    }
+  }, [rankPermissions]);
+
+  if (isEditing && !rankPermissions) {
+    return <div>Loading...</div>;
+  }
+  
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Handle form submission here, e.g., make an API call to save the form data
-    console.log(inputData, classData);
-  };
 
+    const { sitePermissions, usersPermissions, communitiesPermissions, adminPermissions } = classData;
+
+    const payload = {
+      field1: inputData.classLevel,
+      field2: inputData.permissionName,
+      field6: inputData.showOnStaffPage,
+      field3: {
+        ...sitePermissions,
+        ...usersPermissions,
+        ...communitiesPermissions,
+        ...adminPermissions
+      }
+    };
+
+    if (payload.field1 && payload.field2) {
+      if (id) {
+        // Use the appropriate ID for updating an existing rank
+        updateUserRank(id, payload);
+      } else {
+        createRank(payload);
+      }
+    } else {
+      console.error('Class level and name are required fields.');
+    }
+  };
   return (
     <div>
+      <div className='linkbox'>
+        <Link to='/private/staff/tools/permissions' className='brackets'>Back to Permissions Manager</Link> <Link to='/private/staff/tools' className='brackets'>Back to Toolbox</Link>
+      </div>
       <form onSubmit={handleSubmit}>
         <PermissionFormInput inputData={inputData} setInputData={setInputData} />
         <PermissionFormClass classData={classData} setClassData={setClassData} />
@@ -156,4 +154,22 @@ const PermissionFormPage = ({ permissions }) => {
   );
 };
 
-export default PermissionFormPage;
+PermissionFormPage.propTypes = {
+getRankPermissions: PropTypes.func.isRequired,
+createRank: PropTypes.func.isRequired,
+updateUserRank: PropTypes.func.isRequired,
+rankPermissions: PropTypes.object,
+permissionToEdit: PropTypes.object
+};
+
+const mapStateToProps = state => ({
+  rankPermissions: state.permissions.rankPermissions, // assuming the reducer puts the fetched data in rankPermission
+});
+
+const mapDispatchToProps = dispatch => ({
+  getRankPermissions: (id) => dispatch(getRankPermissions(id)),
+  createRank: (rankData) => dispatch(createRank(rankData)),
+  updateUserRank: (id, rankData) => dispatch(updateUserRank(id, rankData)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PermissionFormPage);

@@ -50,7 +50,7 @@ const PermissionManager = () => {
     return (
         <div className='thin'>
             <div className='linkbox'>
-                <Link to='/private/staff/tools/permissions/new' className='brackets'>Create New Permission Class</Link> <Link to='/private/staff' className='brackets'>Back to Toolbox</Link>
+                <Link to='/private/staff/tools/permissions/new' className='brackets'>Create New Permission Class</Link> <Link to='/private/staff/tools' className='brackets'>Back to Toolbox</Link>
             </div>
             <table width="100%">
                 <thead>
@@ -69,7 +69,7 @@ const PermissionManager = () => {
                             <td>{permission.userCount}</td>
                             <td>
                                 <Link to={`/private/staff/tools/permissions/${permission._id}/edit`} className='brackets'>Edit</Link>
-                                <Link onClick={() => handleDelete(permission._id)} className='brackets'>Delete</Link>
+                                <span onClick={() => handleDelete(permission._id)} className='brackets'>Delete</span>
                             </td>
                         </tr>
                     ))}

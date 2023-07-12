@@ -11,21 +11,7 @@ const PermissionFormInput = ({ inputData, setInputData }) => {
     maxCollages,
     additionalForums
   } = inputData;
-
-  // Fetch available staff page groups from API
-  useEffect(() => {
-    const fetchStaffPageGroups = async () => {
-      try {
-        const response = await fetch('/api/tools/permissions');
-        const data = await response.json();
-        // TODO: handle updating the staffPageGroup options here.
-      } catch (error) {
-        console.error('Error fetching staff page groups:', error);
-      }
-    };
-    fetchStaffPageGroups();
-  }, []);
-
+console.log(JSON.stringify(inputData) + "permissionFormInput");
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
     setInputData(prevState => ({
@@ -43,8 +29,8 @@ const PermissionFormInput = ({ inputData, setInputData }) => {
             <td>
               <input
                 type="text"
-                name="name"
-                id="name"
+                name="permissionName"
+                id="permissionName"
                 value={permissionName}
                 onChange={handleChange}
               />
@@ -55,8 +41,8 @@ const PermissionFormInput = ({ inputData, setInputData }) => {
             <td>
               <input
                 type="text"
-                name="level"
-                id="level"
+                name="classLevel"
+                id="classLevel"
                 value={classLevel}
                 onChange={handleChange}
               />
@@ -67,7 +53,7 @@ const PermissionFormInput = ({ inputData, setInputData }) => {
             <td>
               <input
                 type="checkbox"
-                name="secondary"
+                name="isSecondary"
                 checked={isSecondary}
                 onChange={handleChange}
               />
@@ -78,7 +64,7 @@ const PermissionFormInput = ({ inputData, setInputData }) => {
             <td>
               <input
                 type="checkbox"
-                name="displaystaff"
+                name="showOnStaffPage"
                 checked={showOnStaffPage}
                 onChange={handleChange}
               />
@@ -88,8 +74,8 @@ const PermissionFormInput = ({ inputData, setInputData }) => {
             <td className="label">Staff page group</td>
             <td>
               <select
-                name="staffgroup"
-                id="staffgroup"
+                name="staffPageGroup"
+                id="staffPageGroup"
                 value={staffPageGroup}
                 onChange={handleChange}
               >
@@ -103,7 +89,7 @@ const PermissionFormInput = ({ inputData, setInputData }) => {
             <td>
               <input
                 type="text"
-                name="maxcollages"
+                name="maxCollages"
                 size="5"
                 value={maxCollages}
                 onChange={handleChange}
@@ -116,7 +102,7 @@ const PermissionFormInput = ({ inputData, setInputData }) => {
               <input
                 type="text"
                 size="30"
-                name="forums"
+                name="additionalForums"
                 value={additionalForums}
                 onChange={handleChange}
               />

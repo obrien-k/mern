@@ -25,7 +25,11 @@ const LoginWith2FA = ({ onRecoverySuccess }) => {
 
   const handleRecoveryStep2 = async () => {
     try {
-      const response = await axios.post("/api/recover/step2", { key, password, verifyPassword });
+      const response = await axios.post("/api/recover/step2", {
+        key,
+        password,
+        verifyPassword,
+      });
       if (response.data.success) {
         onRecoverySuccess();
       }
@@ -33,16 +37,16 @@ const LoginWith2FA = ({ onRecoverySuccess }) => {
       setError(err.message);
     }
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-    
+
     try {
       if (twoFARequired) {
         const response = await axios.post("/api/", {
-          act: '2fa',
-          '2fa': twoFACode,
+          act: "2fa",
+          "2fa": twoFACode,
         });
         // Handle success, redirect or whatever you want
       } else {
@@ -65,12 +69,6 @@ const LoginWith2FA = ({ onRecoverySuccess }) => {
   return (
     <div>
       {key ? (
-        <div className="main">
-          <div id="logo">
-            <a href="/">
-              <img src="/src/static/loginlogo.png" alt="stellar" title="stellar" />
-            </a>
-          </div>
         <div>
           <input
             type="password"
@@ -86,14 +84,7 @@ const LoginWith2FA = ({ onRecoverySuccess }) => {
           />
           <button onClick={handleRecoveryStep2}>Submit</button>
         </div>
-        </div>
       ) : twoFARequired ? (
-        <div className="main">
-        <div id="logo">
-          <a href="/">
-            <img src="/src/static/loginlogo.png" alt="stellar" title="stellar" />
-          </a>
-        </div>
         <div>
           <input
             type="text"
@@ -102,7 +93,6 @@ const LoginWith2FA = ({ onRecoverySuccess }) => {
             placeholder="2FA Code"
           />
           <button onClick={handleSubmit}>Submit 2FA Code</button>
-        </div>
         </div>
       ) : (
         <div>
@@ -117,7 +107,8 @@ const LoginWith2FA = ({ onRecoverySuccess }) => {
       )}
       {error && <div>{error}</div>}
     </div>
-  )};
+  );
+};
 
 const TwoFactorRecovery = ({ onTwoFactorRecoverySuccess }) => {
   const [recoveryKey, setRecoveryKey] = useState("");
@@ -150,7 +141,8 @@ const TwoFactorRecovery = ({ onTwoFactorRecoverySuccess }) => {
 
 const RecoveryPage = () => {
   const [recoverySuccess, setRecoverySuccess] = useState(false);
-  const [twoFactorRecoverySuccess, setTwoFactorRecoverySuccess] = useState(false);
+  const [twoFactorRecoverySuccess, setTwoFactorRecoverySuccess] =
+    useState(false);
 
   return (
     <div>
