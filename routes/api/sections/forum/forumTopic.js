@@ -10,44 +10,6 @@ const Forum = require("../../../../models/forum/Forum");
 const ForumPoll = require("../../../../models/forum/ForumPoll");
 const forumPost = require("./forumPost");
 
-// @route   GET api/forums/:forumId/topics
-// @desc    Get all forum topics
-// @access  Private
-router.get(
-  "/",
-  asyncHandler(async (req, res) => {
-    const { forumId } = req.params;
-
-    try {
-      const forum = await Forum.findById(forumId).populate("forumTopics");
-      res.json(forum.forumTopics);
-    } catch (error) {
-      console.log("Error in route handler:", error);
-      res.status(500).json({ error: "Internal server error" });
-    }
-  })
-);
-
-// @route   GET api/forums/:forumId/topics/:forumTopicId
-// @desc    Get all forum topics
-// @access  Private
-router.get(
-  "/:forumTopicId",
-  asyncHandler(async (req, res) => {
-    const { forumId, forumTopicId } = req.params;
-
-    try {
-      const topic = await ForumTopic.findById(forumTopicId).populate(
-        "forumPosts"
-      );
-      res.json(topic);
-    } catch (error) {
-      console.log("Error in route handler:", error);
-      res.status(500).json({ error: "Internal server error" });
-    }
-  })
-);
-
 // @route   GET api/forums/:forumId/topics/:forumTopicId/posts
 // @desc    Get all forum posts for a topic
 // @access  Private
@@ -59,6 +21,53 @@ router.use(
     next();
   },
   forumPost
+);
+
+// @route   GET api/forums/:forumId/topics
+// @desc    Get all forum topics
+// @access  Private
+router.get(
+  "/",
+  asyncHandler(async (req, res) => {
+    const { forumId } = req.params;
+
+    if (!forumId) {
+      throw { message: "ForumId parameter is missing", statusCode: 400 };
+    }
+    const forumTopics = await ForumTopic.findById(forumId);
+    res.json(forumTopics);
+  })
+);
+
+// @route   GET api/forums/topics/ids
+// @desc    Get all forum topic IDs
+// @access  Private
+router.get(
+  "/ids",
+  auth(),
+  asyncHandler(async (req, res) => {
+    const forumTopics = await ForumTopic.find({}, { _id: 1 }); // Find all forum topics, return only _id field
+    const forumTopicIds = forumTopics.map((topic) => topic._id); // Map to get an array of forum topic ids
+    res.json(forumTopicIds);
+  })
+);
+
+// @route   GET api/forums/:forumId/topics/:forumTopicId
+// @desc    Get all forum topics
+// @access  Private
+router.get(
+  "/:forumTopicId",
+  asyncHandler(async (req, res) => {
+    const { forumId, forumTopicId } = req.params;
+
+    const topic = await ForumTopic.findById(forumTopicId).populate(
+      "forumPosts"
+    );
+    res.json(topic);
+
+    console.log("Error in route handler:", error);
+    res.status(500).json({ error: "Internal server error" });
+  })
 );
 
 // @route   POST api/forums/:forumId/topics
@@ -108,7 +117,7 @@ router.post(
           featured: null,
           closed: false,
         });
-        const poll = await newPoll.save();
+        const poll = await newPoll.save({ session });
         pollId = poll._id;
       }
 
@@ -123,7 +132,7 @@ router.post(
       });
 
       // Save the new topic
-      const topic = await newTopic.save();
+      const topic = await newTopic.save({ session });
 
       // If there's a poll, update its TopicID
       if (pollId) {

@@ -1,7 +1,7 @@
 {
-  "name": "mern",
-  "version": "1.0.0",
-  "description": "",
+  "name": "stellar",
+  "version": "0.1.1",
+  "description": "An attempt to reproduce utopia, this is a mirage.",
   "main": "server.js",
   "scripts": {
     "start": "node server",
@@ -12,6 +12,7 @@
   "author": "Kyle O'Brien",
   "license": "MIT",
   "dependencies": {
+    "@sentry/node": "^7.57.0",
     "axios": "^1.4.0",
     "bcryptjs": "^2.4.3",
     "config": "^3.1.0",

@@ -1,33 +1,40 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const forumCategorySchema = new Schema({
   name: {
     type: String,
     required: true,
-    default: ''
+    default: "",
   },
   sort: {
     type: Number,
-    required: true
+    required: true,
   },
-  forums: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Forum'
-  }]
+  forums: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Forum",
+    },
+  ],
 });
 
-// Pre-save middleware for ForumCategory schema
-forumCategorySchema.pre('save', async function (next) {
-  const forumIds = this.Forums;
+forumCategorySchema.pre("save", async function (next) {
+  const forumIds = this.forums;
 
-  // Validate that the referenced Forums exist
-  const forumExists = await mongoose.model('forum').exists({ _id: { $in: forumIds } });
-  if (!forumExists) {
-    throw new Error('Invalid Forum IDs');
+  if (forumIds && forumIds.length > 0) {
+    const forumExists = await mongoose
+      .model("Forum")
+      .exists({ _id: { $in: forumIds } });
+    if (!forumExists) {
+      throw new Error("Invalid Forum IDs");
+    }
   }
 
   next();
 });
 
-module.exports = ForumCategory = mongoose.model('ForumCategory', forumCategorySchema);
+module.exports = ForumCategory = mongoose.model(
+  "ForumCategory",
+  forumCategorySchema
+);

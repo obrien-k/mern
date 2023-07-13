@@ -62,7 +62,7 @@ const forumSchema = new Schema(
     },
     autoLockWeeks: {
       type: Number,
-      required: true,
+      required: false,
       default: 4,
     },
   },

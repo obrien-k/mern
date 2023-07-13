@@ -4,3 +4,4 @@ config/default.json
 .DS_Store
 .eslintcache
 client/.eslintcache
+client/build

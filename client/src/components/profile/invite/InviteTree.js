@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
+import { UserContext } from "../../../UserContext";
 
 const renderTree = (node) => {
   return (
@@ -16,14 +17,15 @@ const renderTree = (node) => {
   );
 };
 
-const InviteTree = ({ userID }) => {
+const InviteTree = () => {
+  const { userId } = useContext(UserContext);
   const [inviteTreeData, setInviteTreeData] = useState(null);
 
   useEffect(() => {
     const fetchInviteTree = async () => {
       try {
         const response = await axios.get("/api/profile/invite-tree", {
-          params: { userID: userID },
+          params: { userId: userId },
         });
         setInviteTreeData(response.data.data);
       } catch (error) {

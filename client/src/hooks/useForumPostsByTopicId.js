@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getForumPostsByTopicId } from "../actions/forum";
 
@@ -12,8 +12,10 @@ const useForumPostsByTopicId = (forumId, forumTopicId) => {
   const forumPosts = useSelector((state) => state.forum.forumPosts);
   const loading = useSelector((state) => state.forum.loading);
 
+  const memoizedForumPosts = useMemo(() => forumPosts, [forumPosts]);
+
   return {
-    forumPosts,
+    forumPosts: memoizedForumPosts,
     loading,
   };
 };

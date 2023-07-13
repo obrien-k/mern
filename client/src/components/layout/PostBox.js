@@ -1,15 +1,30 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { getForumTopicById } from "../../actions/forum";
 import useCreateForumPost from "../../hooks/useCreateForumPost";
+import useIsUserLoggedIn from "../../hooks/useIsUserLoggedIn";
 
-const PostBox = ({ forumId, forumTopicId, userId }) => {
+const PostBox = ({ forumId, forumTopicId }) => {
+  const navigate = useNavigate();
+
   const [body, setBody] = useState("");
-  console.log(forumId, forumTopicId + "PostBox forumId forumTopicId");
+  const { user } = useIsUserLoggedIn();
+  const dispatch = useDispatch();
   const createPost = useCreateForumPost();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    createPost(forumId, forumTopicId, body, userId);
+    try {
+      const newPost = await createPost(forumId, forumTopicId, body, user._id);
+      if (newPost) {
+        navigate(`/private/forums/${forumId}/topics/${forumTopicId}`);
+      } else {
+        // handle case where post creation failed
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
