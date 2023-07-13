@@ -31,6 +31,12 @@ import {
 } from "./types";
 import api from "../utils/api";
 
+export const CLEAR_ERRORS = "CLEAR_ERRORS";
+
+export const clearErrors = () => ({
+  type: CLEAR_ERRORS,
+});
+
 // Forums
 export const getAllForums = () => async (dispatch) => {
   try {
@@ -42,14 +48,14 @@ export const getAllForums = () => async (dispatch) => {
       payload: res.data,
     });
   } catch (error) {
-    console.log("Error in action creator:", error); // Log the full error
+    console.log("Error in action creator:", error);
     const errorResponse = error.response || {};
     dispatch({
       type: FORUM_ERROR,
       payload: {
         msg: errorResponse.statusText || "Error message not available",
         status: errorResponse.status || "Status code not available",
-        error: error.toString(), // Adding the full error as a string.
+        error: error.toString(),
       },
     });
   }
@@ -89,14 +95,14 @@ export const getForumById = (id) => async (dispatch) => {
       payload: res.data,
     });
   } catch (error) {
-    console.log("Error in action creator:", error); // Log the full error
+    console.log("Error in action creator:", error);
     const errorResponse = error.response || {};
     dispatch({
       type: GET_FORUM_BY_ID_ERROR,
       payload: {
         msg: errorResponse.statusText || "Error message not available",
         status: errorResponse.status || "Status code not available",
-        error: error.toString(), // Adding the full error as a string.
+        error: error.toString(),
       },
     });
   }
@@ -298,7 +304,7 @@ export const getAllForumTopics = (forumId) => async (dispatch) => {
   dispatch({ type: LOADING_TOPICS });
   try {
     const res = await api.get(`/forums/${forumId}/topics`);
-    const forumTopics = res.data || []; // If no topics are returned, set it to an empty array
+    const forumTopics = res.data || [];
     dispatch({
       type: GET_ALL_FORUM_TOPICS,
       payload: forumTopics,
@@ -404,7 +410,6 @@ export const createForumPost =
   (forumId, forumTopicId, body, userId) => async (dispatch) => {
     try {
       const url = `/forums/${forumId}/topics/${forumTopicId}/posts`;
-      console.log(url); // add this line
       const res = await api.post(
         `/forums/${forumId}/topics/${forumTopicId}/posts`,
         { body, userId }
@@ -432,14 +437,14 @@ export const getAllForumPosts = () => async (dispatch) => {
       payload: res.data,
     });
   } catch (error) {
-    console.log("Error in action creator:", error); // Log the full error
+    console.log("Error in action creator:", error);
     const errorResponse = error.response || {};
     dispatch({
       type: FORUM_ERROR,
       payload: {
         msg: errorResponse.statusText || "Error message not available",
         status: errorResponse.status || "Status code not available",
-        error: error.toString(), // Adding the full error as a string.
+        error: error.toString(),
       },
     });
   }
@@ -456,14 +461,14 @@ export const getForumPostsByTopicId =
         payload: res.data,
       });
     } catch (error) {
-      console.log("Error in action creator:", error); // Log the full error
+      console.log("Error in action creator:", error);
       const errorResponse = error.response || {};
       dispatch({
         type: FORUM_ERROR,
         payload: {
           msg: errorResponse.statusText || "Error message not available",
           status: errorResponse.status || "Status code not available",
-          error: error.toString(), // Adding the full error as a string.
+          error: error.toString(),
         },
       });
     }
@@ -477,7 +482,7 @@ export const getForumPostById = (id) => async (dispatch) => {
       payload: res.data,
     });
   } catch (error) {
-    console.log("Error in action creator:", error); // Log the full error
+    console.log("Error in action creator:", error);
     const errorResponse = error.response || {};
     dispatch({
       type: FORUM_ERROR,

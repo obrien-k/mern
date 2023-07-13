@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
+const mongoose = require("mongoose");
 const { check, validationResult } = require("express-validator");
 const { asyncHandler } = require("../../../../middleware/asyncHandler");
 const auth = require("../../../../middleware/auth");
@@ -8,42 +9,52 @@ const ForumTopic = require("../../../../models/forum/ForumTopic");
 const ForumPost = require("../../../../models/forum/ForumPost");
 const User = require("../../../../models/User");
 
-// @route   POST api/forums/posts
+// @route   api/forums/:forumId/topics/:forumTopicId/posts
 // @desc    Create a new forum post
 // @access  Private
 router.post(
   "/",
-  [
-    auth(),
-    [
-      check("body", "Body is required").not().isEmpty(),
-      check("topicId", "Topic ID is required").not().isEmpty(),
-    ],
-  ],
+  [auth(), [check("body", "Body is required").not().isEmpty()]],
   asyncHandler(async (req, res) => {
-    const { topicId } = req.body;
+    const forumId = req.params.forumId;
+    const forumTopicId = req.params.forumTopicId;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const user = await User.findById(req.user.id).select("-password");
-    const forumTopic = await ForumTopic.findById(topicId);
+    const user = await User.findById(req.body.userId).select("-password");
+    const forumTopic = await ForumTopic.findById(forumTopicId);
     if (!forumTopic) {
       return res.status(404).json({ msg: "Forum topic not found" });
     }
+    // Start a session for the transaction
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    try {
+      const newForumPost = new ForumPost({
+        body: req.body.body,
+        forumTopic: forumTopicId,
+        author: req.body.userId,
+      });
 
-    const newForumPost = new ForumPost({
-      body: req.body.body,
-      forumTopic: topicId,
-      author: req.user.id,
-    });
+      const forumPost = await newForumPost.save({ session });
+      forumTopic.forumPosts.push(forumPost._id);
+      await forumTopic.save({ session });
 
-    const forumPost = await newForumPost.save();
+      // Commit the transaction
+      await session.commitTransaction();
+      session.endSession();
 
-    forumTopic.numPosts += 1;
-    await forumTopic.save();
+      res.status(201).json(forumPost);
+    } catch (error) {
+      // If anything goes wrong, abort the transaction
+      await session.abortTransaction();
+      session.endSession();
 
-    res.json(forumPost);
+      // Send error response
+      console.error("Failed to create topic and initial post:", error);
+      res.status(500).send("Server Error");
+    }
   })
 );
 

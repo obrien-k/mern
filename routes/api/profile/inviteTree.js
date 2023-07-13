@@ -1,10 +1,10 @@
-const express = require('express');
-const InviteTree = require('../../../models/profile/InviteTree');
+const express = require("express");
+const InviteTree = require("../../../models/profile/InviteTree");
 const router = express.Router();
 
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   const userId = req.query.userId; // Get the user ID from the query parameters
 
   try {
@@ -14,37 +14,37 @@ router.get('/', async (req, res) => {
     // Aggregate the data
     const inviteTreeData = await InviteTree.aggregate([
       {
-        $match: { UserID: objectId }
+        $match: { UserID: objectId },
       },
       {
         $lookup: {
-          from: 'users', // Assuming the collection for user data is called 'users'
-          localField: 'UserID',
-          foreignField: '_id', // Assuming the primary key in the users collection is '_id'
-          as: 'userDetails'
-        }
+          from: "users", // Assuming the collection for user data is called 'users'
+          localField: "UserID",
+          foreignField: "_id", // Assuming the primary key in the users collection is '_id'
+          as: "userDetails",
+        },
       },
       {
         $lookup: {
-          from: 'invites',
-          let: { inviterId: '$InviterID' },
+          from: "invites",
+          let: { inviterId: "$InviterID" },
           pipeline: [
             {
               $match: {
                 $expr: {
                   $and: [
-                    { $eq: ['$InviterID', '$$inviterId'] },
-                    { $ne: ['$Email', null] } // Exclude pending invites without an email
-                  ]
-                }
-              }
-            }
+                    { $eq: ["$InviterID", "$$inviterId"] },
+                    { $ne: ["$Email", null] }, // Exclude pending invites without an email
+                  ],
+                },
+              },
+            },
           ],
-          as: 'sentInvitations'
-        }
+          as: "sentInvitations",
+        },
       },
       {
-        $unwind: '$userDetails'
+        $unwind: "$userDetails",
       },
       {
         $project: {
@@ -52,18 +52,18 @@ router.get('/', async (req, res) => {
           TreeID: 1,
           TreeLevel: 1,
           InviterID: 1,
-          username: '$userDetails.username',
-          email: '$userDetails.email',
-          joined: '$userDetails.joined',
-          lastSeen: '$userDetails.lastSeen',
-          uploaded: '$userDetails.uploaded',
-          downloaded: '$userDetails.downloaded',
-          ratio: '$userDetails.ratio'
-        }
+          username: "$userDetails.username",
+          email: "$userDetails.email",
+          joined: "$userDetails.joined",
+          lastSeen: "$userDetails.lastSeen",
+          uploaded: "$userDetails.uploaded",
+          downloaded: "$userDetails.downloaded",
+          ratio: "$userDetails.ratio",
+        },
       },
       {
-        $sort: { TreePosition: 1 }
-      }
+        $sort: { TreePosition: 1 },
+      },
     ]);
 
     // Constructing the hierarchical tree and calculate statistics
@@ -78,7 +78,7 @@ router.get('/', async (req, res) => {
       topLevelDownload: 0,
       disabledCount: 0,
       donorCount: 0,
-      paranoidCount: 0
+      paranoidCount: 0,
     };
 
     let positionMap = new Map();
@@ -86,7 +86,11 @@ router.get('/', async (req, res) => {
     // Function to convert size into human-readable format (bytes to MB, GB, etc.)
     function formatSize(size) {
       const i = size === 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
-      return (size / Math.pow(1024, i)).toFixed(2) * 1 + ' ' + ['B', 'KB', 'MB', 'GB', 'TB'][i];
+      return (
+        (size / Math.pow(1024, i)).toFixed(2) * 1 +
+        " " +
+        ["B", "KB", "MB", "GB", "TB"][i]
+      );
     }
 
     inviteTreeData.forEach((entry) => {
@@ -106,7 +110,7 @@ router.get('/', async (req, res) => {
         ratio: entry.ratio,
         isDonor: entry.Donor,
         isEnabled: entry.Enabled,
-        children: []
+        children: [],
       };
 
       if (entry.isEnabled === false) {
@@ -118,7 +122,10 @@ router.get('/', async (req, res) => {
       }
 
       // If currentLevel is one more than parent, it is a direct child, else it's a sibling or higher
-      if (currentLevel > 1 && currentLevel === positionMap.get(parentPosition).treeLevel + 1) {
+      if (
+        currentLevel > 1 &&
+        currentLevel === positionMap.get(parentPosition).treeLevel + 1
+      ) {
         positionMap.get(parentPosition).children.push(treeNode);
       } else {
         treeData.push(treeNode);
@@ -136,7 +143,8 @@ router.get('/', async (req, res) => {
       stats.totalDownload += entry.downloaded;
     });
 
-    stats.totalDepth = inviteTreeData.length > 0 ? inviteTreeData[0].TreeLevel : 0;
+    stats.totalDepth =
+      inviteTreeData.length > 0 ? inviteTreeData[0].TreeLevel : 0;
 
     // Returning the structured tree data along with the calculated statistics
     res.json({
@@ -147,14 +155,13 @@ router.get('/', async (req, res) => {
         totalUpload: formatSize(stats.totalUpload),
         totalDownload: formatSize(stats.totalDownload),
         topLevelUpload: formatSize(stats.topLevelUpload),
-        topLevelDownload: formatSize(stats.topLevelDownload)
-      }
+        topLevelDownload: formatSize(stats.topLevelDownload),
+      },
     });
-
   } catch (error) {
     res.json({
       success: false,
-      message: 'An error occurred while retrieving invite tree data.',
+      message: "An error occurred while retrieving invite tree data.",
     });
   }
 });

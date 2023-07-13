@@ -1,4 +1,5 @@
 import {
+  CLEAR_ERRORS,
   GET_ALL_FORUMS,
   GET_FORUM_BY_ID,
   GET_FORUM_IDS,
@@ -41,13 +42,18 @@ const initialState = {
   loadingForums: true,
   loadingCategories: true,
   loadingTopics: true,
-  error: {},
+  error: null,
 };
 
 export default function (state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
     case LOADING_FORUMS:
       return {
         ...state,

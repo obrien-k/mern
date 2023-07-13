@@ -3,25 +3,28 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import ForumHeader from "./ForumHeader";
 import PostBox from "../../layout/PostBox";
-import forum from "../../../reducers/forum";
 import { useForumTopicById } from "../../../hooks/useForumTopicById";
 import { useForumById } from "../../../hooks/useForumById";
+import useForumPostsByTopicId from "../../../hooks/useForumPostsByTopicId";
 
-const ForumTopicPage = (props) => {
-  const [forumPosts, setForumPosts] = useState([]);
+const ForumTopicPage = () => {
   const { forumId, forumTopicId } = useParams();
-  const userId = props.userId;
+
   const {
     data: forumTopic,
     isLoading,
     errorMessage,
   } = useForumTopicById(forumId, forumTopicId);
+
   const {
     data: forum,
     isLoading: forumIsLoading,
     errorMessage: forumErrorMessage,
   } = useForumById(forumId);
 
+  const { forumPosts } = useForumPostsByTopicId(forumId, forumTopicId);
+
+  console.log(forumId, forumTopicId + "ForumTopicPage line28");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchUser, setSearchUser] = useState("");
   const [isPollVisible, setPollVisible] = useState(false);
@@ -29,20 +32,6 @@ const ForumTopicPage = (props) => {
   const [isFeatured, setFeatured] = useState(false);
   const [isPollHidden, setPollHidden] = useState(false);
   const [isStickyPostVisible, setStickyPostVisible] = useState(false);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `/api/forums/${forumId}/topics/${forumTopicId}/posts`
-        );
-        setForumPosts(response.data);
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-      }
-    };
-    fetchData();
-  }, [forumId, forumTopicId]);
 
   const handleReport = () => {
     // Handle report functionality
@@ -173,11 +162,7 @@ const ForumTopicPage = (props) => {
         </div>
       ))}
       <div>
-        <PostBox
-          userId={userId}
-          forumId={forumId}
-          forumTopicId={forumTopicId}
-        />
+        <PostBox forumId={forumId} forumTopicId={forumTopicId} />
       </div>
     </div>
   );

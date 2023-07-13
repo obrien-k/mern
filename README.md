@@ -34,7 +34,7 @@ In the code, one might notice the filename structure using "referral" and that t
 
 ## Subscriptions
 
-Subscriptions are implemented albeit very broken, this component handles notifications for subscribed communities, threads, etc. It has been deactivated via line 2 in `./client/src/components/layout/PrivateFooter.js`.
+Subscriptions are pseudo-coded and not really working, this component should handle notifications for subscribed communities, threads, etc. It has been deactivated via line 2 in `./client/src/components/pages/private/layout/PrivateFooter.js`.
 
 ## Codebase structure
 

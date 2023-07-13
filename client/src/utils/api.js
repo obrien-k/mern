@@ -1,13 +1,14 @@
-import axios from 'axios';
-import store from '../store';
-import { LOGOUT } from '../actions/types';
+import axios from "axios";
+import store from "../store";
+import { LOGOUT } from "../actions/types";
+import setAuthToken from "./setAuthToken";
 
 // Create an instance of axios
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: "/api",
   headers: {
-    'Content-Type': 'application/json'
-  }
+    "Content-Type": "application/json",
+  },
 });
 
 api.CancelToken = axios.CancelToken;

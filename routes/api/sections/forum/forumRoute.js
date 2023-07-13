@@ -17,8 +17,20 @@ router.get(
       .populate("forumCategory")
       .populate("forumTopics")
       .populate("forumPosts");
-    console.log(forums);
     res.json(forums);
+  })
+);
+
+// @route   GET api/forums/ids
+// @desc    Get all forum IDs
+// @access  Private
+router.get(
+  "/ids",
+  auth(),
+  asyncHandler(async (req, res) => {
+    const forums = await Forum.find({}, { _id: 1 }); // Find all forums, return only _id field
+    const forumIds = forums.map((forum) => forum._id); // Map to get an array of forum ids
+    res.json(forumIds);
   })
 );
 
@@ -28,6 +40,8 @@ router.get(
 router.use(
   "/:forumId/topics",
   (req, res, next) => {
+    req.forumId = req.params.forumId;
+    req.forumTopicId = req.params.forumTopicId;
     next();
   },
   forumTopic
@@ -56,28 +70,28 @@ router.post(
   auth(),
   asyncHandler(async (req, res) => {
     const {
-      CategoryID,
-      Sort,
-      Name,
-      Description,
-      MinClassRead,
-      MinClassWrite,
-      MinClassCreate,
-      AutoLock,
-      AutoLockWeeks,
+      forumCategory,
+      sort,
+      name,
+      description,
+      minClassRead,
+      minClassWrite,
+      minClassCreate,
+      autoLock,
+      autoLockWeeks,
     } = req.body;
 
     // Creating a new forum
     const newForum = new Forum({
-      CategoryID,
-      Sort,
-      Name,
-      Description,
-      MinClassRead,
-      MinClassWrite,
-      MinClassCreate,
-      AutoLock,
-      AutoLockWeeks,
+      forumCategory,
+      sort,
+      name,
+      description,
+      minClassRead,
+      minClassWrite,
+      minClassCreate,
+      autoLock,
+      autoLockWeeks,
     });
 
     const forum = await newForum.save();
