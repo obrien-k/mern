@@ -42,10 +42,6 @@ const forumSchema = new Schema(
         ref: "ForumTopic",
       },
     ],
-    forumPosts: {
-      type: Schema.Types.ObjectId,
-      ref: "ForumPost",
-    },
     numTopics: {
       type: Number,
       required: true,
