@@ -4,14 +4,14 @@ import useUserById from "../../../hooks/useUserById";
 import Time from "../../layout/Time";
 
 const ForumCategoryForumInfo = ({ forum }) => {
-  console.log(forum.mostRecentTopic?.author);
-  console.log(forum.mostRecentTopic);
+  console.log(forum.lastTopic?.author);
+  console.log(forum.lastTopic);
   console.log(forum);
   const {
     user: author,
     isLoading: loadingUsers,
     errorMessage: error,
-  } = useUserById(forum.mostRecentTopic?.author);
+  } = useUserById(forum.lastPost?.author);
 
   if (loadingUsers) {
     return <div>Loading author...</div>;
@@ -21,7 +21,7 @@ const ForumCategoryForumInfo = ({ forum }) => {
     return <div>Error: {error}</div>;
   }
 
-  const lastPostTime = forum.mostRecentTopic?.timestamp;
+  const lastPostTime = forum.lastPost?.timestamp;
 
   return (
     <div className="forumRow">
@@ -32,15 +32,15 @@ const ForumCategoryForumInfo = ({ forum }) => {
         </h4>
       </div>
       <div className="forumCell forumLatest">
-        {forum.mostRecentTopic ? (
+        {forum.lastTopic ? (
           <>
             <span style={{ float: "left" }} className="last_topic">
               <strong>
                 <Link
-                  to={`/private/forums/${forum._id}/topics/${forum.mostRecentTopic._id}`}
+                  to={`/private/forums/${forum._id}/topics/${forum.lastTopic._id}`}
                   className="tooltip"
                 >
-                  {forum.mostRecentTopic.title}
+                  {forum.lastTopic.title}
                 </Link>
               </strong>
             </span>

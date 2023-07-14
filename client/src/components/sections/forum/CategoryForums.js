@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
 import { useForumCategoryById } from "../../../hooks/useForumCategoryById";
 import ForumRow from "./ForumRow";
 import { useForumById } from "../../../hooks/useForumById";

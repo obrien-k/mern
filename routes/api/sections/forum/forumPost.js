@@ -5,6 +5,7 @@ const { check, validationResult } = require("express-validator");
 const { asyncHandler } = require("../../../../middleware/asyncHandler");
 const auth = require("../../../../middleware/auth");
 
+const Forum = require("../../../../models/forum/Forum");
 const ForumTopic = require("../../../../models/forum/ForumTopic");
 const ForumPost = require("../../../../models/forum/ForumPost");
 const User = require("../../../../models/User");
@@ -24,9 +25,14 @@ router.post(
     }
     const user = await User.findById(req.body.userId).select("-password");
     const forumTopic = await ForumTopic.findById(forumTopicId);
+    const forum = await Forum.findById(forumId);
     if (!forumTopic) {
       return res.status(404).json({ msg: "Forum topic not found" });
     }
+    if (!forum) {
+      return res.status(404).json({ msg: "Forum not found" });
+    }
+
     // Start a session for the transaction
     const session = await mongoose.startSession();
     session.startTransaction();
@@ -40,7 +46,18 @@ router.post(
       const forumPost = await newForumPost.save({ session });
       forumTopic.forumPosts.push(forumPost._id);
       await forumTopic.save({ session });
-
+      const updateForumLast = {
+        $set: {
+          lastTopic: forumTopicId,
+          lastPost: forumPost._id,
+        },
+      };
+      await Forum.updateOne(
+        { _id: forumId },
+        updateForumLast,
+        { upsert: true },
+        { session }
+      );
       // Commit the transaction
       await session.commitTransaction();
       session.endSession();

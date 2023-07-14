@@ -153,7 +153,10 @@ export default function (state = initialState, action) {
     case GET_ALL_FORUM_TOPICS:
       return {
         ...state,
-        forumTopics: action.payload,
+        forumTopics: {
+          ...state.forumTopics,
+          [action.payload.forumId]: action.payload.forumTopics,
+        },
         loadingTopics: false,
       };
     case GET_FORUM_TOPIC_BY_ID:
@@ -171,16 +174,21 @@ export default function (state = initialState, action) {
         forumTopicIds: action.payload,
         loadingTopics: false,
       };
-    case CREATE_FORUM_TOPIC:
+    case CREATE_FORUM_TOPIC: {
+      const { forumId, ...newTopic } = action.payload;
       return {
         ...state,
-        topics: [action.payload, ...state.topics],
+        forumTopics: {
+          ...state.forumTopics,
+          [forumId]: [newTopic, ...(state.forumTopics[forumId] || [])],
+        },
         loadingTopics: false,
       };
+    }
     case UPDATE_FORUM_TOPIC:
       return {
         ...state,
-        topics: state.topics.map((topic) =>
+        forumTopics: state.forumTopics.map((topic) =>
           topic._id === payload.id ? action.payload : topic
         ),
         loadingTopics: false,
@@ -188,13 +196,15 @@ export default function (state = initialState, action) {
     case DELETE_FORUM_TOPIC:
       return {
         ...state,
-        topics: state.topics.filter((topic) => topic._id !== action.payload),
+        forumTopics: state.forumTopics.filter(
+          (topic) => topic._id !== action.payload
+        ),
         loadingTopics: false,
       };
     case GET_ALL_FORUM_POSTS:
       return {
         ...state,
-        posts: action.payload,
+        forumPosts: action.payload,
         loading: false,
       };
     case GET_FORUM_POSTS_BY_TOPIC_ID:
@@ -218,7 +228,9 @@ export default function (state = initialState, action) {
     case DELETE_FORUM_POST:
       return {
         ...state,
-        posts: state.posts.filter((post) => post._id !== action.payload),
+        forumPosts: state.forumPosts.filter(
+          (post) => post._id !== action.payload
+        ),
         loading: false,
       };
     case FORUM_ERROR:

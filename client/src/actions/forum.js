@@ -287,7 +287,10 @@ export const createForumTopic =
       });
       dispatch({
         type: CREATE_FORUM_TOPIC,
-        payload: res.data,
+        payload: {
+          forumId,
+          topic: res.data,
+        },
       });
     } catch (error) {
       dispatch({
@@ -307,7 +310,7 @@ export const getAllForumTopics = (forumId) => async (dispatch) => {
     const forumTopics = res.data || [];
     dispatch({
       type: GET_ALL_FORUM_TOPICS,
-      payload: forumTopics,
+      payload: { forumId, forumTopics },
     });
   } catch (error) {
     console.log("Error in action creator:", error);

@@ -65,6 +65,14 @@ const forumSchema = new Schema(
       required: false,
       default: 4,
     },
+    lastPost: {
+      type: Schema.Types.ObjectId,
+      ref: "ForumPost",
+    },
+    lastTopic: {
+      type: Schema.Types.ObjectId,
+      ref: "ForumTopic",
+    },
   },
   { timestamps: true }
 );
