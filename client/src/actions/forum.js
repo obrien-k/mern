@@ -28,6 +28,7 @@ import {
   LOADING_FORUMS,
   LOADING_CATEGORIES,
   LOADING_TOPICS,
+  LOADING_POSTS,
 } from "./types";
 import api from "../utils/api";
 
@@ -433,6 +434,7 @@ export const createForumPost =
   };
 
 export const getAllForumPosts = (forumId) => async (dispatch) => {
+  dispatch({ type: LOADING_POSTS });
   try {
     const res = await api.get(`/forums/${forumId}posts`);
     dispatch({
@@ -455,6 +457,7 @@ export const getAllForumPosts = (forumId) => async (dispatch) => {
 
 export const getForumPostsByTopicId =
   (forumId, forumTopicId) => async (dispatch) => {
+    dispatch({ type: LOADING_POSTS });
     try {
       const res = await api.get(
         `/forums/${forumId}/topics/${forumTopicId}/posts`
@@ -479,6 +482,7 @@ export const getForumPostsByTopicId =
 
 export const getForumPostById =
   (forumId, forumTopicId, forumPostId) => async (dispatch) => {
+    dispatch({ type: LOADING_POSTS });
     try {
       const res = await api.get(
         `/forums/${forumId}/topics/${forumTopicId}posts/${forumPostId}`

@@ -31,16 +31,30 @@ const useAllForums = () => {
   const forums = useSelector(selectForums);
   const forumTopics = useSelector(selectForumTopics);
   const forumPosts = useSelector(selectForumPosts);
+  const loadingCategories = useSelector(
+    (state) => state.forum.loadingCategories
+  );
+  const loadingForums = useSelector((state) => state.forum.loadingForums);
+  const loadingTopics = useSelector((state) => state.forum.loadingTopics);
+
   const error = useSelector(selectForumError);
 
   useEffect(() => {
-    if (forumCategories.length === 0) {
+    if (forumCategories.length === 0 && !loadingCategories) {
       dispatch(getAllForumCategories());
     }
-    if (forums.length === 0) {
+    if (forums.length === 0 && !loadingForums) {
       dispatch(getAllForums());
     }
-    if (Object.keys(forumTopics).length === 0) {
+  }, [forumCategories, forums, loadingCategories, loadingForums, dispatch]);
+
+  useEffect(() => {
+    if (
+      !loadingForums &&
+      forums.length > 0 &&
+      Object.keys(forumTopics).length === 0 &&
+      !loadingTopics
+    ) {
       forums.forEach((forum) => {
         dispatch(getAllForumTopics(forum._id));
       });
@@ -53,7 +67,7 @@ const useAllForums = () => {
         );
       }
     });
-  }, [forumCategories, forums, forumTopics, dispatch]);
+  }, [loadingForums, forums, forumTopics, loadingTopics, dispatch]);
 
   const forumsWithLastTopicAndPost = useMemo(() => {
     return forums.map((forum) => {

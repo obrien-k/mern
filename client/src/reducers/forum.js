@@ -25,6 +25,7 @@ import {
   LOADING_FORUMS,
   LOADING_CATEGORIES,
   LOADING_TOPICS,
+  LOADING_POSTS,
 } from "../actions/types";
 
 const initialState = {
@@ -39,9 +40,10 @@ const initialState = {
   forumTopicIds: [],
   forumPost: null,
   forumTopic: null,
-  loadingForums: true,
-  loadingCategories: true,
-  loadingTopics: true,
+  loadingForums: false,
+  loadingCategories: false,
+  loadingTopics: false,
+  loadingPosts: false,
   error: null,
 };
 
@@ -65,6 +67,11 @@ export default function (state = initialState, action) {
         loadingCategories: true,
       };
     case LOADING_TOPICS:
+      return {
+        ...state,
+        loadingTopics: true,
+      };
+    case LOADING_POSTS:
       return {
         ...state,
         loadingTopics: true,
@@ -205,7 +212,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         forumPosts: action.payload,
-        loading: false,
+        loadingPosts: false,
       };
     case GET_FORUM_POSTS_BY_TOPIC_ID:
       const newPosts = action.payload.reduce((acc, post) => {
@@ -215,7 +222,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         forumPosts: { ...state.forumPosts, ...newPosts },
-        loading: false,
+        loadingPosts: false,
       };
 
     case GET_FORUM_POST_BY_ID:
@@ -225,7 +232,7 @@ export default function (state = initialState, action) {
           ...state.forumPosts,
           [payload._id]: payload,
         },
-        loading: false,
+        loadingPosts: false,
       };
 
     case CREATE_FORUM_POST:
@@ -235,14 +242,14 @@ export default function (state = initialState, action) {
           ...state.forumPostsById,
           [action.payload._id]: action.payload,
         },
-        loading: false,
+        loadingPosts: false,
       };
     case DELETE_FORUM_POST:
       const { [action.payload]: _, ...remainingPosts } = state.forumPosts;
       return {
         ...state,
         forumPosts: remainingPosts,
-        loading: false,
+        loadingPosts: false,
       };
 
     case FORUM_ERROR:

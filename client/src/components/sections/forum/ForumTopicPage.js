@@ -95,7 +95,7 @@ const ForumTopicPage = () => {
       {isStickyPostVisible && (
         <div className="box pad">{/* Sticky post content goes here */}</div>
       )}
-      {forumPosts.map((post) => (
+      {Object.values(forumPosts).map((post) => (
         <ErrorBoundary
           FallbackComponent={FallbackComponent}
           onError={console.log(
@@ -113,6 +113,7 @@ const ForumTopicPage = () => {
           />
         </ErrorBoundary>
       ))}
+
       <div>
         <PostBox forumId={forumId} forumTopicId={forumTopicId} />
       </div>
