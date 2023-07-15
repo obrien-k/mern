@@ -14,12 +14,14 @@ const useForumPostsByTopicId = (forumId, forumTopicId) => {
   );
   console.log("forumPosts:", forumPosts);
   const loading = useSelector((state) => state.forum.loading);
+  const error = useSelector((state) => state.forum.error);
 
   const memoizedForumPosts = useMemo(() => forumPosts, [forumPosts]);
 
   return {
     forumPosts: memoizedForumPosts,
     loading,
+    error,
   };
 };
 

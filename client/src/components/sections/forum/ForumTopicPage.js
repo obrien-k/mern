@@ -9,6 +9,7 @@ import useForumPostsByTopicId from "../../../hooks/useForumPostsByTopicId";
 import ForumTopicPost from "./ForumTopicPost";
 import ErrorBoundary from "../../layout/ErrorBoundary";
 import FallbackComponent from "../../layout/FallbackComponent";
+import Spinner from "../../layout/Spinner";
 
 const ForumTopicPage = () => {
   const { forumId, forumTopicId } = useParams();
@@ -25,7 +26,10 @@ const ForumTopicPage = () => {
     errorMessage: forumErrorMessage,
   } = useForumById(forumId);
 
-  const { forumPosts } = useForumPostsByTopicId(forumId, forumTopicId);
+  const { forumPosts, loading, error } = useForumPostsByTopicId(
+    forumId,
+    forumTopicId
+  );
 
   console.log(forumId, forumTopicId + "ForumTopicPage line28");
   const [searchQuery, setSearchQuery] = useState("");
@@ -35,6 +39,14 @@ const ForumTopicPage = () => {
   const [isFeatured, setFeatured] = useState(false);
   const [isPollHidden, setPollHidden] = useState(false);
   const [isStickyPostVisible, setStickyPostVisible] = useState(false);
+
+  if (isLoading || forumIsLoading || loading) {
+    return <Spinner />;
+  }
+
+  if (errorMessage || forumErrorMessage || error) {
+    return <p>{errorMessage || forumErrorMessage}</p>;
+  }
 
   const handleReport = () => {
     // Handle report functionality
@@ -92,27 +104,26 @@ const ForumTopicPage = () => {
           </div>
         </div>
       )}
-      {isStickyPostVisible && (
-        <div className="box pad">{/* Sticky post content goes here */}</div>
-      )}
-      {Object.values(forumPosts).map((post) => (
-        <ErrorBoundary
-          FallbackComponent={FallbackComponent}
-          onError={console.log(
-            "Error in ForumTopicPage.js ForumTopicPost component"
-          )}
-          onReset={() => {
-            console.log("Resetting the error boundary by not");
-          }}
-        >
-          <ForumTopicPost
-            key={post._id}
-            post={post}
-            forumId={forumId}
-            forumTopicId={forumTopicId}
-          />
-        </ErrorBoundary>
-      ))}
+      {isStickyPostVisible && <div className="box pad">Sticky content</div>}
+      {forumPosts &&
+        Object.values(forumPosts).map((post) => (
+          <ErrorBoundary
+            FallbackComponent={FallbackComponent}
+            onError={console.log(
+              "Error in ForumTopicPage.js ForumTopicPost component"
+            )}
+            onReset={() => {
+              console.log("Resetting the error boundary by not");
+            }}
+          >
+            <ForumTopicPost
+              key={post._id}
+              post={post}
+              forumId={forumId}
+              forumTopicId={forumTopicId}
+            />
+          </ErrorBoundary>
+        ))}
 
       <div>
         <PostBox forumId={forumId} forumTopicId={forumTopicId} />
