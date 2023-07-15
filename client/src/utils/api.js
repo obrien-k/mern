@@ -31,4 +31,56 @@ api.interceptors.response.use(
   }
 );
 
+export const getCsrfToken = async () => {
+  const response = await axios.get("/api/csrf-token");
+  return response.data.csrfToken;
+};
+
+api.get = async (url, config = {}) => {
+  return await api.request({ url, method: "GET", ...config });
+};
+
+api.post = async (url, data = {}, config = {}) => {
+  const csrfToken = await getCsrfToken();
+  return await api.request({
+    url,
+    data,
+    method: "POST",
+    headers: { "X-CSRF-Token": csrfToken },
+    ...config,
+  });
+};
+
+api.put = async (url, data = {}, config = {}) => {
+  const csrfToken = await getCsrfToken();
+  return await api.request({
+    url,
+    data,
+    method: "PUT",
+    headers: { "X-CSRF-Token": csrfToken },
+    ...config,
+  });
+};
+
+api.patch = async (url, data = {}, config = {}) => {
+  const csrfToken = await getCsrfToken();
+  return await api.request({
+    url,
+    data,
+    method: "PATCH",
+    headers: { "X-CSRF-Token": csrfToken },
+    ...config,
+  });
+};
+
+api.delete = async (url, config = {}) => {
+  const csrfToken = await getCsrfToken();
+  return await api.request({
+    url,
+    method: "DELETE",
+    headers: { "X-CSRF-Token": csrfToken },
+    ...config,
+  });
+};
+
 export default api;

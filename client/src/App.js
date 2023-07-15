@@ -26,50 +26,7 @@ import { UserContextProvider } from "./UserContext";
 import jwt_decode from "jwt-decode";
 import { UserContext } from "./UserContext";
 
-const PrivateRouteWrapper = ({ children }) => {
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      // Token is present. Now we need to validate it
-      const decodedToken = jwt_decode(token);
-      const currentDate = new Date();
-      // JWT exp is in seconds
-      if (decodedToken.exp * 1000 > currentDate.getTime()) {
-        setIsUserLoggedIn(true);
-      } else {
-        setIsUserLoggedIn(false);
-        navigate("/login");
-      }
-    } else {
-      setIsUserLoggedIn(false);
-      navigate("/login");
-    }
-  }, [navigate]);
-
-  return (
-    <UserContext.Provider value={[isUserLoggedIn, setIsUserLoggedIn]}>
-      {isUserLoggedIn ? children : null}
-    </UserContext.Provider>
-  );
-};
-
-const AuthenticatedRoute = (props) => (
-  <UserContextProvider>
-    <PrivateRouteWrapper {...props} />
-  </UserContextProvider>
-);
-
 const App = () => {
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    }
-  }, []);
-
   return (
     <Provider store={store}>
       <Router>
@@ -114,11 +71,9 @@ const App = () => {
             <Route
               path="/private/*"
               element={
-                <AuthenticatedRoute>
-                  <PrivateLayout pageTitle="Stellar">
-                    <PrivateContent />
-                  </PrivateLayout>
-                </AuthenticatedRoute>
+                <PrivateLayout pageTitle="Stellar">
+                  <PrivateContent />
+                </PrivateLayout>
               }
             />
 

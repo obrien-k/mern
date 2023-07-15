@@ -10,7 +10,6 @@ import {
 } from "../actions/types";
 
 const initialState = {
-  token: localStorage.getItem("token"),
   isAuthenticated: null,
   loading: true,
   user: null,
@@ -40,7 +39,6 @@ function authReducer(state = initialState, action) {
     case LOGOUT:
       return {
         ...state,
-        token: null,
         isAuthenticated: false,
         loading: false,
         user: null,

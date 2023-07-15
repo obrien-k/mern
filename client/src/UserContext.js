@@ -1,29 +1,36 @@
 import React, { createContext, useState, useEffect } from "react";
-import jwt_decode from "jwt-decode";
+import api from "./utils/api";
 
 export const UserContext = createContext();
 
 export const UserContextProvider = ({ children }) => {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  const [myProfile, setMyProfile] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const decodedToken = jwt_decode(token);
-      const currentDate = new Date();
-
-      if (decodedToken.exp * 1000 > currentDate.getTime()) {
-        setIsUserLoggedIn(true);
-      } else {
+    const checkAuthStatus = async () => {
+      try {
+        const response = await api.get("/auth/status");
+        if (response.data.isAuthenticated) {
+          const profileResponse = await api.get(
+            `/api/profile/users/${response.data.user.id}`
+          );
+          setMyProfile(profileResponse.data);
+        }
+        setIsUserLoggedIn(response.data.isAuthenticated);
+      } catch (error) {
         setIsUserLoggedIn(false);
+        setMyProfile(null);
       }
-    } else {
-      setIsUserLoggedIn(false);
-    }
+    };
+
+    checkAuthStatus();
   }, []);
 
   return (
-    <UserContext.Provider value={[isUserLoggedIn, setIsUserLoggedIn]}>
+    <UserContext.Provider
+      value={{ isUserLoggedIn, myProfile, setIsUserLoggedIn, setMyProfile }}
+    >
       {children}
     </UserContext.Provider>
   );

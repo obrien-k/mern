@@ -1,27 +1,32 @@
-import jwt_decode from "jwt-decode";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import api from "../utils/api";
 
 const useIsUserLoggedIn = () => {
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const [userProfile, setUserProfile] = useState(null);
+  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const decodedToken = jwt_decode(token);
-      const currentDate = new Date();
-      if (decodedToken.exp * 1000 > currentDate.getTime()) {
-        setIsUserLoggedIn(true);
-      } else {
-        setIsUserLoggedIn(false);
+    const checkAuthStatus = async () => {
+      try {
+        const response = await api.get("/auth/status");
+        if (response.data.isAuthenticated) {
+          const profileResponse = await api.get(
+            `/api/profile/users/${response.data.user.id}`
+          );
+          setUserProfile(profileResponse.data);
+        }
+      } catch (error) {
+        setUserProfile(null);
       }
-    } else {
-      setIsUserLoggedIn(false);
-    }
-  }, [isAuthenticated]); // Trigger a re-render when isAuthenticated state changes
+    };
 
-  return { isUserLoggedIn, user };
+    if (!userProfile) {
+      checkAuthStatus();
+    }
+  }, [userProfile]);
+
+  return { isUserLoggedIn: Boolean(userProfile), userProfile, user };
 };
 
 export default useIsUserLoggedIn;
