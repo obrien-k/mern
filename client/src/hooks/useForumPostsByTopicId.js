@@ -9,7 +9,9 @@ const useForumPostsByTopicId = (forumId, forumTopicId) => {
     dispatch(getForumPostsByTopicId(forumId, forumTopicId));
   }, [dispatch, forumId, forumTopicId]);
 
-  const forumPosts = useSelector((state) => state.forum.forumPosts);
+  const forumPosts = useSelector(
+    (state) => state.forum.forumPosts[forumTopicId]
+  );
   console.log("forumPosts:", forumPosts);
   const loading = useSelector((state) => state.forum.loading);
 

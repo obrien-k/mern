@@ -80,6 +80,10 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    profile: {
+      type: Schema.Types.ObjectId,
+      ref: "Profile",
+    },
     canLeech: { type: Boolean, default: true },
     adminComment: String,
     banDate: Date,
@@ -98,5 +102,13 @@ const UserSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+UserSchema.virtual("effectiveAvatar").get(function () {
+  return (
+    this.avatar ||
+    this.profile.personal.avatar ||
+    "/static/common/avatars/default.jpg"
+  );
+});
 
 module.exports = User = mongoose.model("User", UserSchema);

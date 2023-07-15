@@ -94,6 +94,7 @@ export const UPDATE_USER = "UPDATE_USER";
 export const DELETE_USER = "DELETE_USER";
 export const GET_USER_BY_ID_SUCCESS = "GET_USER_BY_ID_SUCCESS";
 export const GET_USER_BY_ID_ERROR = "GET_USER_BY_ID_ERROR";
+export const CREATE_USER = "CREATE_USER";
 // Profile
 export const GET_MY_PROFILE = "GET_MY_PROFILE";
 export const GET_USER_PROFILE_BY_ID = "GET_USER_PROFILE_BY_ID";

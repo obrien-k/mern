@@ -19,13 +19,13 @@ router.get(
   "/:id",
   asyncHandler(async (req, res) => {
     const userId = req.params.id;
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).populate("profile").exec();
 
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
 
-    res.json(user);
+    res.json(user.toObject({ virtuals: true }));
   })
 );
 

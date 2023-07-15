@@ -27,6 +27,7 @@ import PermissionManager from "../../../admin/PermissionManager";
 import PermissionFormPage from "../../../admin/PermissionFormPage";
 import ForumCategoryControlPanel from "../../../admin/ForumCategoryControlPanel";
 import ForumControlPanel from "../../../admin/ForumControlPanel";
+import NewUserForm from "../../../admin/NewUserForm";
 
 const logErrorToService = async (error, info) => {
   const errorData = {
@@ -62,6 +63,7 @@ const PrivateContent = () => {
           }
         />
         <Route path="user/invite-tree" element={<InviteTree />} />
+        <Route path="staff/tools/user/new" element={<NewUserForm />} />
         <Route
           path="staff/tools/permissions/new"
           element={<PermissionFormPage />}

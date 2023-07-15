@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
 const mongoose = require("mongoose");
+const { MongoServerError } = require("mongodb");
 const { check, validationResult } = require("express-validator");
 const { asyncHandler } = require("../../../../middleware/asyncHandler");
 const auth = require("../../../../middleware/auth");
@@ -35,54 +36,59 @@ router.post(
 
     // Start a session for the transaction
     const session = await mongoose.startSession();
-    session.startTransaction();
-    try {
-      const newForumPost = new ForumPost({
-        body: req.body.body,
-        forumTopic: forumTopicId,
-        author: req.body.userId,
-      });
+    let retries = 5; // set maximum number of retries
 
-      const forumPost = await newForumPost.save({ session });
-      forumTopic.forumPosts.push(forumPost._id);
-      // Update the lastPost field in the ForumTopic document
-      await forumTopic.updateOne(
-        { _id: forumTopicId },
-        {
-          $set: {
-            lastPost: forumPost._id,
+    while (retries) {
+      try {
+        session.startTransaction();
+        const newForumPost = new ForumPost({
+          body: req.body.body,
+          forumTopic: forumTopicId,
+          author: req.body.userId,
+        });
+
+        const forumPost = await newForumPost.save({ session });
+        forumTopic.forumPosts.push(forumPost._id);
+        // Update the lastPost field in the ForumTopic document
+        forumTopic.lastPost = forumPost._id;
+        await forumTopic.save({ session });
+        // Update the lastTopic field in the Forum document
+        await Forum.updateOne(
+          { _id: forumId },
+          {
+            $set: {
+              lastTopic: forumTopicId,
+            },
           },
-        },
-        { upsert: true, session: session }
-      );
-      await forumTopic.save({ session });
-      // Update the lastTopic field in the Forum document
-      await Forum.updateOne(
-        { _id: forumId },
-        {
-          $set: {
-            lastTopic: forumTopicId,
-          },
-        },
-        {
-          upsert: true,
-          session: session,
+          {
+            upsert: true,
+            session: session,
+          }
+        );
+
+        // Commit the transaction
+        await session.commitTransaction();
+        session.endSession();
+
+        res.status(201).json(forumPost);
+        break; // break out of the loop if successful
+      } catch (error) {
+        console.error("Failed to create topic and initial post:", error);
+        // If anything goes wrong, abort the transaction and retry
+        await session.abortTransaction();
+
+        if (error instanceof MongoServerError && error.code === 112) {
+          // WriteConflict error code
+          retries -= 1; // decrease retries count
+          if (retries === 0) {
+            session.endSession();
+            return res.status(500).send("Server Error"); // send error response if no retries left
+          }
+        } else {
+          session.endSession();
+          return res.status(500).send("Server Error"); // rethrow if it's not a WriteConflict error
         }
-      );
-
-      // Commit the transaction
-      await session.commitTransaction();
-      session.endSession();
-
-      res.status(201).json(forumPost);
-    } catch (error) {
-      // If anything goes wrong, abort the transaction
-      await session.abortTransaction();
-      session.endSession();
-
-      // Send error response
-      console.error("Failed to create topic and initial post:", error);
-      res.status(500).send("Server Error");
+      }
     }
   })
 );
@@ -100,7 +106,7 @@ router.get(
 
     const forumPosts = await ForumPost.find({
       forumTopic: forumTopicId,
-    }).sort({ AddedTime: -1 });
+    }).sort({ createdAt: -1 });
     res.json(forumPosts);
   })
 );

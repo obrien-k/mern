@@ -239,7 +239,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         forumPosts: {
-          ...state.forumPostsById,
+          ...state.forumPosts,
           [action.payload._id]: action.payload,
         },
         loadingPosts: false,

@@ -1,16 +1,13 @@
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const User = require("../models/User");
-const cookieParser = require("cookie-parser"); // Import this package
 
 module.exports = function (requiredPermission) {
   return async (req, res, next) => {
-    console.log("Value of requiredPermission:", requiredPermission); // Log the value
+    console.log("Value of requiredPermission:", requiredPermission);
 
-    // Use cookie-parser package to parse the cookies
-    const cookies = cookieParser()(req, res, () => {});
     // Get the token from cookies
-    const token = cookies.token;
+    const token = req.cookies.token;
 
     // Check if no token
     if (!token) {
@@ -24,15 +21,13 @@ module.exports = function (requiredPermission) {
 
       // Check if requiredPermission is not defined
       if (!requiredPermission) {
-        console.log("No permission required"); // Log here to check if we enter this block
-        next(); // No permissions required, proceed to next middleware
+        console.log("No permission required");
+        next();
       } else {
         const userId = req.user.id;
-        // Find the user in the database and populate the userRank field
         const user = await User.findById(userId).populate("userRank");
-        // Check if user is found and if user's rank has the required permissions
         if (user && user.userRank && user.userRank.field3[requiredPermission]) {
-          next(); // Proceed to the endpoint
+          next();
         } else {
           res.status(403).send("Permission Denied");
         }
