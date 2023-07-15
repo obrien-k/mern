@@ -34,7 +34,7 @@ const initialState = {
   forumCategories: [],
   forumCategoryIds: [],
   forumCategoriesById: {},
-  forumPosts: [],
+  forumPosts: {},
   forumTopics: {},
   forumTopicIds: [],
   forumPost: null,
@@ -208,31 +208,43 @@ export default function (state = initialState, action) {
         loading: false,
       };
     case GET_FORUM_POSTS_BY_TOPIC_ID:
+      const newPosts = action.payload.reduce((acc, post) => {
+        acc[post._id] = post;
+        return acc;
+      }, {});
       return {
         ...state,
-        forumPosts: action.payload,
+        forumPosts: { ...state.forumPosts, ...newPosts },
         loading: false,
       };
+
     case GET_FORUM_POST_BY_ID:
       return {
         ...state,
-        forumPost: action.payload,
+        forumPosts: {
+          ...state.forumPosts,
+          [payload._id]: payload,
+        },
         loading: false,
       };
+
     case CREATE_FORUM_POST:
       return {
         ...state,
-        forumPosts: [action.payload, ...state.forumPosts],
+        forumPosts: {
+          ...state.forumPostsById,
+          [action.payload._id]: action.payload,
+        },
         loading: false,
       };
     case DELETE_FORUM_POST:
+      const { [action.payload]: _, ...remainingPosts } = state.forumPosts;
       return {
         ...state,
-        forumPosts: state.forumPosts.filter(
-          (post) => post._id !== action.payload
-        ),
+        forumPosts: remainingPosts,
         loading: false,
       };
+
     case FORUM_ERROR:
       return {
         ...state,

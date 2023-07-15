@@ -22,11 +22,16 @@ const ForumPageTopicInfo = ({ forumId, topic }) => {
     return <div>Loading...</div>;
   }
 
-  const lastPostTime = forumPosts.reduce((latest, post) => {
-    return new Date(post.createdAt) > new Date(latest)
-      ? post.createdAt
-      : latest;
-  }, new Date(0));
+  let lastPostTime = new Date(0);
+
+  if (forumPosts) {
+    const postsArray = Object.values(forumPosts);
+    lastPostTime = postsArray.reduce((latest, post) => {
+      return new Date(post.createdAt) > new Date(latest)
+        ? post.createdAt
+        : latest;
+    }, new Date(0));
+  }
 
   if (error) {
     return <div>Error: {error}</div>;

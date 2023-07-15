@@ -39,6 +39,8 @@ export const getUserById = (id) => async (dispatch) => {
 
   try {
     const res = await api.get(`/users/${id}`);
+    console.log(id + "getUserById action");
+    console.log(res.data + "getUserById action");
     dispatch({
       type: GET_USER_BY_ID_SUCCESS,
       payload: res.data,

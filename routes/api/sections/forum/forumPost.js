@@ -45,19 +45,31 @@ router.post(
 
       const forumPost = await newForumPost.save({ session });
       forumTopic.forumPosts.push(forumPost._id);
-      await forumTopic.save({ session });
-      const updateForumLast = {
-        $set: {
-          lastTopic: forumTopicId,
-          lastPost: forumPost._id,
+      // Update the lastPost field in the ForumTopic document
+      await forumTopic.updateOne(
+        { _id: forumTopicId },
+        {
+          $set: {
+            lastPost: forumPost._id,
+          },
         },
-      };
+        { upsert: true, session: session }
+      );
+      await forumTopic.save({ session });
+      // Update the lastTopic field in the Forum document
       await Forum.updateOne(
         { _id: forumId },
-        updateForumLast,
-        { upsert: true },
-        { session }
+        {
+          $set: {
+            lastTopic: forumTopicId,
+          },
+        },
+        {
+          upsert: true,
+          session: session,
+        }
       );
+
       // Commit the transaction
       await session.commitTransaction();
       session.endSession();
@@ -93,7 +105,7 @@ router.get(
   })
 );
 
-// @route   GET api/forums/posts/:id
+// @route   GET api/forums/:forumId/topics/:forumTopicId/posts/:id
 // @desc    Get forum post by ID
 // @access  Private
 router.get(
@@ -101,7 +113,7 @@ router.get(
   asyncHandler(async (req, res) => {
     // We populate the AuthorID field to reference the ID for the last post author
     // check here if getting other posts breaks!
-    const post = await ForumPost.findById(req.params.id).populate("AuthorID");
+    const post = await ForumPost.findById(req.params.id).populate("author");
 
     if (!post) {
       return res.status(404).json({ msg: "Post not found" });

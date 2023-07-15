@@ -7,6 +7,8 @@ import { useForumTopicById } from "../../../hooks/useForumTopicById";
 import { useForumById } from "../../../hooks/useForumById";
 import useForumPostsByTopicId from "../../../hooks/useForumPostsByTopicId";
 import ForumTopicPost from "./ForumTopicPost";
+import ErrorBoundary from "../../layout/ErrorBoundary";
+import FallbackComponent from "../../layout/FallbackComponent";
 
 const ForumTopicPage = () => {
   const { forumId, forumTopicId } = useParams();
@@ -94,12 +96,22 @@ const ForumTopicPage = () => {
         <div className="box pad">{/* Sticky post content goes here */}</div>
       )}
       {forumPosts.map((post) => (
-        <ForumTopicPost
-          key={post._id}
-          post={post}
-          forumId={forumId}
-          forumTopicId={forumTopicId}
-        />
+        <ErrorBoundary
+          FallbackComponent={FallbackComponent}
+          onError={console.log(
+            "Error in ForumTopicPage.js ForumTopicPost component"
+          )}
+          onReset={() => {
+            console.log("Resetting the error boundary by not");
+          }}
+        >
+          <ForumTopicPost
+            key={post._id}
+            post={post}
+            forumId={forumId}
+            forumTopicId={forumTopicId}
+          />
+        </ErrorBoundary>
       ))}
       <div>
         <PostBox forumId={forumId} forumTopicId={forumTopicId} />

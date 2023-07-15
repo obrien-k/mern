@@ -10,8 +10,7 @@ import {
 } from "../actions/types";
 
 const initialState = {
-  users: [],
-  user: null,
+  users: {},
   loadingUsers: false,
   error: {},
 };
@@ -28,19 +27,20 @@ export default function (state = initialState, action) {
     case GET_ALL_USERS:
       return {
         ...state,
-        users: action.payload,
+        users: action.payload.reduce((obj, user) => {
+          obj[user._id] = user;
+          return obj;
+        }, {}),
         loadingUsers: false,
       };
     case GET_USER_BY_ID_SUCCESS:
-      return { ...state, user: action.payload, loadingUsers: false };
-    case GET_USER_BY_ID_ERROR:
-      return { ...state, error: action.payload, loadingUsers: false };
-    case GET_USER_BY_ID:
       return {
         ...state,
-        user: action.payload,
+        users: { ...state.users, [action.payload._id]: action.payload },
         loadingUsers: false,
       };
+    case GET_USER_BY_ID_ERROR:
+      return { ...state, error: action.payload, loadingUsers: false };
     case USERS_ERROR:
       return {
         ...state,

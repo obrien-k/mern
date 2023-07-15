@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import useUserById from "../../../hooks/useUserById";
+import Time from "../../layout/Time";
+import Spinner from "../../layout/Spinner";
 
 const ForumTopicPost = ({ post, forumId, forumTopicId }) => {
   const { _id: id, author: authorId, body, createdAt } = post;
@@ -12,13 +14,23 @@ const ForumTopicPost = ({ post, forumId, forumTopicId }) => {
   } = useUserById(authorId);
 
   if (loadingUsers) {
-    return <div>Loading author...</div>;
+    return (
+      <div>
+        <Spinner />
+      </div>
+    );
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return (
+      <div>
+        Error loading author with ID {authorId}: {error}
+      </div>
+    );
   }
+
   console.log(post + "ForumTopicPost.js");
+  console.log(author);
   return (
     <div className="forum_post" id={`post${id}`}>
       <table className="forum_post wrap_overflow box vertical_margin">
@@ -34,18 +46,20 @@ const ForumTopicPost = ({ post, forumId, forumTopicId }) => {
                 </Link>
                 <strong>
                   <Link to={`/private/users/${authorId}`}>
-                    {author.username}
+                    {author?.username}
                   </Link>
                 </strong>
-                <Link target="_blank" to="/private/donate">
-                  <img
-                    className="donor_icon tooltip"
-                    src="static/common/symbols/donor_6.png"
-                    alt="Donor"
-                  />
-                </Link>{" "}
-                <strong>({author.userRank})</strong>
-                <span className="time tooltip">{createdAt}</span> -{" "}
+                {author?.isDonor ? (
+                  <Link target="_blank" to="/private/donate">
+                    <img
+                      className="donor_icon tooltip"
+                      src="static/common/symbols/donor_6.png"
+                      alt="Donor"
+                    />
+                  </Link>
+                ) : null}
+                <strong>({author?.userRole})</strong>
+                <Time timestamp={createdAt} /> -{" "}
                 <Link to="#quickpost" className="brackets">
                   Quote
                 </Link>{" "}
@@ -68,8 +82,8 @@ const ForumTopicPost = ({ post, forumId, forumTopicId }) => {
                 <div>
                   <img
                     className="avatar_0"
-                    src={author.avatar}
-                    alt={`${author.username}'s avatar`}
+                    src={author?.avatar}
+                    alt={`${author?.username}'s avatar`}
                     width="150"
                   />
                 </div>
