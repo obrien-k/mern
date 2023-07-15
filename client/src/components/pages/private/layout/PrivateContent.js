@@ -8,6 +8,9 @@ import Toolbox from "../../../admin/Toolbox";
 import InviteForm from "../../../profile/invite/InviteForm";
 import InviteTree from "../../../profile/invite/InviteTree";
 
+// User
+import UserProfile from "../../../profile/UserProfile";
+
 // Communities
 import ContributeForm from "../../../sections/contribute/ContributeForm";
 import CommunitiesPage from "../../../sections/communities/CommunitiesPage";
@@ -44,7 +47,21 @@ const PrivateContent = () => {
   return (
     <div id="content">
       <Routes>
-        <Route path="/private/user/invite-tree" element={<InviteTree />} />
+        <Route
+          path="user/:id"
+          element={
+            <ErrorBoundary
+              FallbackComponent={FallbackComponent}
+              onError={logErrorToService}
+              onReset={() => {
+                // TODO reset state so it doesn't happen again
+              }}
+            >
+              <UserProfile />
+            </ErrorBoundary>
+          }
+        />
+        <Route path="user/invite-tree" element={<InviteTree />} />
         <Route
           path="staff/tools/permissions/new"
           element={<PermissionFormPage />}

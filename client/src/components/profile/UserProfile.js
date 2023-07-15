@@ -1,31 +1,69 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserProfileById } from "../../actions/profile";
+import Sidebar from "./Sidebar";
+import MainColumn from "./MainColumn";
 
-const UserProfile = ({ userRank }) => {
-  const [hasPermissions, setHasPermissions] = useState(false);
+function UserProfile() {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const { userProfile, loadingUserProfiles, userProfileError } = useSelector(
+    (state) => {
+      const userId = id;
+      const profiles = state.profile.userProfile;
+      const userProfile = Object.values(profiles).find(
+        (profile) => profile.user === userId
+      );
+
+      return {
+        userProfile,
+        loadingUserProfiles: state.profile.loadingUserProfile,
+        userProfileError: state.profile.userProfileError,
+      };
+    }
+  );
 
   useEffect(() => {
-    const fetchUserPermissions = async () => {
-      try {
-        const response = await axios.get(`/api/permissions/${userRank}`);
-        const { permissions } = response.data;
-        // Determine if user has permissions based on the response
-        setHasPermissions(permissions); // Set the state value accordingly
-      } catch (error) {
-        console.error('Error retrieving user permissions:', error);
-      }
-    };
+    dispatch(getUserProfileById(id));
+  }, [dispatch, id]);
 
-    fetchUserPermissions();
-  }, [userRank]);
+  if (loadingUserProfiles || !userProfile) {
+    return <div>Loading profile...</div>;
+  }
 
-  // Render the UserProfile component with other options
-  return (
-    <div>
-      {/* Render other options */}
-      {hasPermissions && <a href="/permissions">Permissions</a>}
+  if (userProfileError)
+    return (
+      <div className="thin">
+        <div className="header">
+          <h2>
+            <strong>{userProfileError}</strong>
+          </h2>
+        </div>
+      </div>
+    );
+
+  return userProfile ? (
+    <div className="thin">
+      <div className="header">
+        <h2>
+          <strong>
+            <Link to={`/private/user/${userProfile._id}`}>
+              {userProfile.username}
+            </Link>
+          </strong>
+        </h2>
+      </div>
+      <div className="linkbox">
+        <Link to={`/user/edit/${userProfile._id}`} className="brackets">
+          Settings
+        </Link>
+      </div>
+      <Sidebar profile={userProfile} />
+      <MainColumn profile={userProfile} />
     </div>
-  );
-};
+  ) : null;
+}
 
 export default UserProfile;

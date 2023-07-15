@@ -1,11 +1,15 @@
 const express = require("express");
 const router = express.Router();
+const mongoose = require("mongoose");
 const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
 const { check, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const User = require("../../models/User");
+const Profile = require("../../models/profile/Profile");
+const Personal = require("../../models/profile/settings/Personal");
+const SiteAppearance = require("../../models/profile/settings/SiteAppearance");
 const { asyncHandler } = require("../../middleware/asyncHandler");
 
 // @route GET api/users/:id
@@ -25,9 +29,6 @@ router.get(
   })
 );
 
-// @route POST api/users
-// @desc Register user
-// @access Public
 router.post(
   "/",
   [
@@ -52,40 +53,72 @@ router.post(
     if (user) {
       return res.status(400).json({ errors: [{ msg: "User already exists" }] });
     }
+
     const avatar = gravatar.url(email, {
       s: "200",
       r: "pg",
       d: "mm",
     });
 
-    user = new User({
-      username,
-      email,
-      avatar,
-      password,
-    });
+    // Start session
+    const session = await mongoose.startSession();
+    session.startTransaction();
 
-    const salt = await bcrypt.genSalt(10);
+    try {
+      user = new User({
+        username,
+        email,
+        avatar,
+        password,
+      });
 
-    user.password = await bcrypt.hash(password, salt);
+      const salt = await bcrypt.genSalt(10);
 
-    await user.save();
+      user.password = await bcrypt.hash(password, salt);
 
-    const payload = {
-      user: {
-        id: user.id,
-      },
-    };
+      await user.save({ session });
 
-    jwt.sign(
-      payload,
-      config.get("jwtSecret"),
-      { expiresIn: 3600 },
-      (err, token) => {
-        if (err) throw err;
-        res.json({ token });
-      }
-    );
+      // create new personal info with default values
+      const newPersonal = new Personal();
+      const personalDoc = await newPersonal.save({ session });
+
+      // create new siteAppearance with default values
+      const newSiteAppearance = new SiteAppearance();
+      const siteAppearanceDoc = await newSiteAppearance.save({ session });
+
+      // create new profile
+      const profile = new Profile({
+        user: user._id,
+        personal: personalDoc._id,
+        siteAppearance: siteAppearanceDoc._id,
+      });
+
+      const profileDoc = await profile.save({ session });
+
+      // Commit transaction if everything is okay
+      await session.commitTransaction();
+      session.endSession();
+
+      const payload = {
+        user: {
+          id: user.id,
+        },
+      };
+
+      jwt.sign(
+        payload,
+        config.get("jwtSecret"),
+        { expiresIn: 3600 },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token, profile: profileDoc });
+        }
+      );
+    } catch (error) {
+      await session.abortTransaction();
+      session.endSession();
+      throw error;
+    }
   })
 );
 
