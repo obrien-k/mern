@@ -5,6 +5,7 @@ const { check, validationResult } = require("express-validator");
 const { asyncHandler } = require("../../../../middleware/asyncHandler");
 const auth = require("../../../../middleware/auth");
 
+const Forum = require("../../../../models/forum/Forum");
 const ForumTopic = require("../../../../models/forum/ForumTopic");
 const ForumPost = require("../../../../models/forum/ForumPost");
 const User = require("../../../../models/User");
@@ -24,9 +25,14 @@ router.post(
     }
     const user = await User.findById(req.body.userId).select("-password");
     const forumTopic = await ForumTopic.findById(forumTopicId);
+    const forum = await Forum.findById(forumId);
     if (!forumTopic) {
       return res.status(404).json({ msg: "Forum topic not found" });
     }
+    if (!forum) {
+      return res.status(404).json({ msg: "Forum not found" });
+    }
+
     // Start a session for the transaction
     const session = await mongoose.startSession();
     session.startTransaction();
@@ -39,7 +45,30 @@ router.post(
 
       const forumPost = await newForumPost.save({ session });
       forumTopic.forumPosts.push(forumPost._id);
+      // Update the lastPost field in the ForumTopic document
+      await forumTopic.updateOne(
+        { _id: forumTopicId },
+        {
+          $set: {
+            lastPost: forumPost._id,
+          },
+        },
+        { upsert: true, session: session }
+      );
       await forumTopic.save({ session });
+      // Update the lastTopic field in the Forum document
+      await Forum.updateOne(
+        { _id: forumId },
+        {
+          $set: {
+            lastTopic: forumTopicId,
+          },
+        },
+        {
+          upsert: true,
+          session: session,
+        }
+      );
 
       // Commit the transaction
       await session.commitTransaction();
@@ -76,7 +105,7 @@ router.get(
   })
 );
 
-// @route   GET api/forums/posts/:id
+// @route   GET api/forums/:forumId/topics/:forumTopicId/posts/:id
 // @desc    Get forum post by ID
 // @access  Private
 router.get(
@@ -84,7 +113,7 @@ router.get(
   asyncHandler(async (req, res) => {
     // We populate the AuthorID field to reference the ID for the last post author
     // check here if getting other posts breaks!
-    const post = await ForumPost.findById(req.params.id).populate("AuthorID");
+    const post = await ForumPost.findById(req.params.id).populate("author");
 
     if (!post) {
       return res.status(404).json({ msg: "Post not found" });

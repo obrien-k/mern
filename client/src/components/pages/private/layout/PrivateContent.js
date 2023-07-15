@@ -14,7 +14,6 @@ import CommunitiesPage from "../../../sections/communities/CommunitiesPage";
 import CommunityPage from "../../../sections/communities/CommunityPage";
 
 // Forum
-import ForumHomePage from "../../../sections/forum/ForumHomePage";
 import ForumCategoryPage from "../../../sections/forum/ForumCategoryPage";
 import ForumPage from "../../../sections/forum/ForumPage";
 import ForumTopicPage from "../../../sections/forum/ForumTopicPage";
@@ -87,20 +86,6 @@ const PrivateContent = () => {
               }}
             >
               <ForumPage />
-            </ErrorBoundary>
-          }
-        />
-        <Route
-          path="forums0"
-          element={
-            <ErrorBoundary
-              FallbackComponent={FallbackComponent}
-              onError={logErrorToService}
-              onReset={() => {
-                // TODO reset state so it doesn't happen again
-              }}
-            >
-              <ForumHomePage />
             </ErrorBoundary>
           }
         />

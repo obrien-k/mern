@@ -1,68 +1,88 @@
-import { useEffect, useState } from "react";
+//useAllForums.js
+import { useEffect, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
 import {
   getAllForums,
   getAllForumCategories,
   getAllForumTopics,
+  getForumPostById,
 } from "../actions/forum";
 
-const selectAllForumCategories = createSelector(
-  (state) => state.forum.forumCategories,
-  (forumCategories) => forumCategories
-);
+const selectForumCategories = (state) => state.forum.forumCategories;
+const selectForums = (state) => state.forum.forums;
+const selectForumTopics = (state) => state.forum.forumTopics;
+const selectForumPosts = (state) => state.forum.forumPosts;
+const selectForumError = (state) => state.forum.error;
 
-const selectAllForums = createSelector(
-  (state) => state.forum.forums,
-  (forums) => forums
-);
-
-const selectAllForumTopics = createSelector(
-  (state) => state.forum.forumTopics,
-  (forumTopics) => forumTopics
-);
-
-// Memoized selector to get all forums with their most recent topic
-const selectForumsWithTopics = createSelector(
-  selectAllForums,
-  selectAllForumTopics,
-  (forums, forumTopics) =>
-    forums.map((forum) => {
-      const topicsForThisForum = forumTopics[forum._id];
-      const mostRecentTopic = topicsForThisForum ? topicsForThisForum[0] : null;
-      return {
-        ...forum,
-        mostRecentTopic,
-      };
-    })
-);
+function getLastTopic(forum, forumTopics) {
+  // Get the topics of the forum
+  const topics = forumTopics[forum._id];
+  console.log("topics", topics);
+  // Find the topic that matches forum.lastTopic
+  const lastTopic = topics?.find((topic) => topic._id === forum.lastTopic);
+  console.log("lastTopic", lastTopic);
+  return lastTopic;
+}
 
 const useAllForums = () => {
   const dispatch = useDispatch();
-  const forumCategories = useSelector(selectAllForumCategories);
-  const forums = useSelector(selectAllForums);
-  const forumTopics = useSelector(selectAllForumTopics);
-  const forumsWithTopics = useSelector(selectForumsWithTopics);
+  const forumCategories = useSelector(selectForumCategories);
+  const forums = useSelector(selectForums);
+  const forumTopics = useSelector(selectForumTopics);
+  const forumPosts = useSelector(selectForumPosts);
+  const loadingCategories = useSelector(
+    (state) => state.forum.loadingCategories
+  );
+  const loadingForums = useSelector((state) => state.forum.loadingForums);
+  const loadingTopics = useSelector((state) => state.forum.loadingTopics);
 
-  const { error } = useSelector((state) => ({ error: state.forum.error }));
+  const error = useSelector(selectForumError);
 
   useEffect(() => {
-    if (forumCategories.length === 0) {
+    if (forumCategories.length === 0 && !loadingCategories) {
       dispatch(getAllForumCategories());
     }
-    if (forums.length === 0) {
-      dispatch(getAllForums()).then(() => {
-        forums.forEach((forum) => {
-          dispatch(getAllForumTopics(forum._id));
-        });
+    if (forums.length === 0 && !loadingForums) {
+      dispatch(getAllForums());
+    }
+  }, [forumCategories, forums, loadingCategories, loadingForums, dispatch]);
+
+  useEffect(() => {
+    if (
+      !loadingForums &&
+      forums.length > 0 &&
+      Object.keys(forumTopics).length === 0 &&
+      !loadingTopics
+    ) {
+      forums.forEach((forum) => {
+        dispatch(getAllForumTopics(forum._id));
       });
     }
-  }, [forumCategories, forums, dispatch]);
+    forums.forEach((forum) => {
+      const lastTopic = getLastTopic(forum, forumTopics);
+      if (lastTopic && lastTopic.lastPost) {
+        dispatch(
+          getForumPostById(forum._id, lastTopic._id, lastTopic.lastPost)
+        );
+      }
+    });
+  }, [loadingForums, forums, forumTopics, loadingTopics, dispatch]);
+
+  const forumsWithLastTopicAndPost = useMemo(() => {
+    return forums.map((forum) => {
+      const lastTopic = getLastTopic(forum, forumTopics);
+      const lastPostForTopic = lastTopic
+        ? forumPosts[lastTopic.lastPost]
+        : null;
+      return { ...forum, lastTopic, lastPost: lastPostForTopic };
+    });
+  }, [forums, forumTopics, forumPosts]);
 
   return {
-    data: { forums: forumsWithTopics, forumCategories, forumTopics },
+    data: { forums: forumsWithLastTopicAndPost, forumCategories, forumTopics },
     isLoading:
-      forumsWithTopics.length === 0 ||
+      forumsWithLastTopicAndPost.length === 0 ||
       forumCategories.length === 0 ||
       forumTopics.length === 0,
     errorMessage: error,

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import {
   useNavigate,
@@ -15,7 +15,6 @@ import Alert from "./components/layout/Alert";
 
 import PrivateLayout from "./components/pages/private/layout/PrivateLayout";
 import PrivateContent from "./components/pages/private/layout/PrivateContent";
-import PrivateHomepage from "./components/pages/private/PrivateHomepage";
 
 import PublicLayout from "./components/pages/public/layout/PublicLayout";
 import PublicLanding from "./components/pages/public/PublicLanding";

@@ -15,8 +15,7 @@ router.get(
     const forums = await Forum.find()
       .sort({ Sort: 1 })
       .populate("forumCategory")
-      .populate("forumTopics")
-      .populate("forumPosts");
+      .populate("forumTopics");
     res.json(forums);
   })
 );

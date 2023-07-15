@@ -25,6 +25,7 @@ import {
   LOADING_FORUMS,
   LOADING_CATEGORIES,
   LOADING_TOPICS,
+  LOADING_POSTS,
 } from "../actions/types";
 
 const initialState = {
@@ -34,14 +35,15 @@ const initialState = {
   forumCategories: [],
   forumCategoryIds: [],
   forumCategoriesById: {},
-  forumPosts: [],
+  forumPosts: {},
   forumTopics: {},
   forumTopicIds: [],
   forumPost: null,
   forumTopic: null,
-  loadingForums: true,
-  loadingCategories: true,
-  loadingTopics: true,
+  loadingForums: false,
+  loadingCategories: false,
+  loadingTopics: false,
+  loadingPosts: false,
   error: null,
 };
 
@@ -65,6 +67,11 @@ export default function (state = initialState, action) {
         loadingCategories: true,
       };
     case LOADING_TOPICS:
+      return {
+        ...state,
+        loadingTopics: true,
+      };
+    case LOADING_POSTS:
       return {
         ...state,
         loadingTopics: true,
@@ -153,7 +160,10 @@ export default function (state = initialState, action) {
     case GET_ALL_FORUM_TOPICS:
       return {
         ...state,
-        forumTopics: action.payload,
+        forumTopics: {
+          ...state.forumTopics,
+          [action.payload.forumId]: action.payload.forumTopics,
+        },
         loadingTopics: false,
       };
     case GET_FORUM_TOPIC_BY_ID:
@@ -171,16 +181,21 @@ export default function (state = initialState, action) {
         forumTopicIds: action.payload,
         loadingTopics: false,
       };
-    case CREATE_FORUM_TOPIC:
+    case CREATE_FORUM_TOPIC: {
+      const { forumId, ...newTopic } = action.payload;
       return {
         ...state,
-        topics: [action.payload, ...state.topics],
+        forumTopics: {
+          ...state.forumTopics,
+          [forumId]: [newTopic, ...(state.forumTopics[forumId] || [])],
+        },
         loadingTopics: false,
       };
+    }
     case UPDATE_FORUM_TOPIC:
       return {
         ...state,
-        topics: state.topics.map((topic) =>
+        forumTopics: state.forumTopics.map((topic) =>
           topic._id === payload.id ? action.payload : topic
         ),
         loadingTopics: false,
@@ -188,39 +203,55 @@ export default function (state = initialState, action) {
     case DELETE_FORUM_TOPIC:
       return {
         ...state,
-        topics: state.topics.filter((topic) => topic._id !== action.payload),
+        forumTopics: state.forumTopics.filter(
+          (topic) => topic._id !== action.payload
+        ),
         loadingTopics: false,
       };
     case GET_ALL_FORUM_POSTS:
       return {
         ...state,
-        posts: action.payload,
-        loading: false,
+        forumPosts: action.payload,
+        loadingPosts: false,
       };
     case GET_FORUM_POSTS_BY_TOPIC_ID:
+      const newPosts = action.payload.reduce((acc, post) => {
+        acc[post._id] = post;
+        return acc;
+      }, {});
       return {
         ...state,
-        forumPosts: action.payload,
-        loading: false,
+        forumPosts: { ...state.forumPosts, ...newPosts },
+        loadingPosts: false,
       };
+
     case GET_FORUM_POST_BY_ID:
       return {
         ...state,
-        forumPost: action.payload,
-        loading: false,
+        forumPosts: {
+          ...state.forumPosts,
+          [payload._id]: payload,
+        },
+        loadingPosts: false,
       };
+
     case CREATE_FORUM_POST:
       return {
         ...state,
-        forumPosts: [action.payload, ...state.forumPosts],
-        loading: false,
+        forumPosts: {
+          ...state.forumPostsById,
+          [action.payload._id]: action.payload,
+        },
+        loadingPosts: false,
       };
     case DELETE_FORUM_POST:
+      const { [action.payload]: _, ...remainingPosts } = state.forumPosts;
       return {
         ...state,
-        posts: state.posts.filter((post) => post._id !== action.payload),
-        loading: false,
+        forumPosts: remainingPosts,
+        loadingPosts: false,
       };
+
     case FORUM_ERROR:
       return {
         ...state,

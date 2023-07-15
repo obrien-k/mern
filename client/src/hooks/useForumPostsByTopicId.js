@@ -10,6 +10,7 @@ const useForumPostsByTopicId = (forumId, forumTopicId) => {
   }, [dispatch, forumId, forumTopicId]);
 
   const forumPosts = useSelector((state) => state.forum.forumPosts);
+  console.log("forumPosts:", forumPosts);
   const loading = useSelector((state) => state.forum.loading);
 
   const memoizedForumPosts = useMemo(() => forumPosts, [forumPosts]);

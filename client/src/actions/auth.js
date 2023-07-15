@@ -1,5 +1,6 @@
 import api from "../utils/api";
 import { setAlert } from "./alert";
+import setAuthToken from "../utils/setAuthToken";
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -95,6 +96,8 @@ export const logout = () => {
 
   // Remove the authorization header from axios
   delete api.defaults.headers.common["Authorization"];
+
+  setAuthToken(null);
 
   return { type: LOGOUT };
 };

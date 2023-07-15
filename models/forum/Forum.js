@@ -42,10 +42,6 @@ const forumSchema = new Schema(
         ref: "ForumTopic",
       },
     ],
-    forumPosts: {
-      type: Schema.Types.ObjectId,
-      ref: "ForumPost",
-    },
     numTopics: {
       type: Number,
       required: true,
@@ -64,6 +60,10 @@ const forumSchema = new Schema(
       type: Number,
       required: false,
       default: 4,
+    },
+    lastTopic: {
+      type: Schema.Types.ObjectId,
+      ref: "ForumTopic",
     },
   },
   { timestamps: true }

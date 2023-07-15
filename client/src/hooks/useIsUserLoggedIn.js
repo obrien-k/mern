@@ -1,12 +1,10 @@
 import jwt_decode from "jwt-decode";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getUserById } from "../actions/user";
+import { useSelector } from "react-redux";
 
 const useIsUserLoggedIn = () => {
-  const dispatch = useDispatch();
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
-  const userState = useSelector((state) => state.user);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -15,19 +13,15 @@ const useIsUserLoggedIn = () => {
       const currentDate = new Date();
       if (decodedToken.exp * 1000 > currentDate.getTime()) {
         setIsUserLoggedIn(true);
-        if (!userState.user) {
-          // if there's a valid token and user is not loaded yet, load the user
-          dispatch(getUserById(decodedToken.user._id));
-        }
       } else {
         setIsUserLoggedIn(false);
       }
     } else {
       setIsUserLoggedIn(false);
     }
-  }, [dispatch, userState.user]);
+  }, [isAuthenticated]); // Trigger a re-render when isAuthenticated state changes
 
-  return { isUserLoggedIn, user: userState.user, error: userState.error };
+  return { isUserLoggedIn, user };
 };
 
 export default useIsUserLoggedIn;

@@ -31,10 +31,15 @@ router.get(
   asyncHandler(async (req, res) => {
     const { forumId } = req.params;
 
-    if (!forumId) {
-      throw { message: "ForumId parameter is missing", statusCode: 400 };
+    if (!forumId || !mongoose.Types.ObjectId.isValid(forumId)) {
+      throw {
+        message: "Invalid or missing forumId parameter",
+        statusCode: 400,
+      };
     }
-    const forumTopics = await ForumTopic.findById(forumId);
+
+    const forumTopics = await ForumTopic.find({ forum: forumId });
+
     res.json(forumTopics);
   })
 );
@@ -166,19 +171,7 @@ router.post(
       await session.commitTransaction();
       session.endSession();
 
-      const userAgent = req.headers["user-agent"];
-      if (
-        userAgent &&
-        (userAgent.includes("Chrome") ||
-          userAgent.includes("Firefox") ||
-          userAgent.includes("Safari"))
-      ) {
-        // Browser request, redirect to new topic's page
-        res.redirect(`/private/forums/${forum}/topics/${topic._id}`);
-      } else {
-        // API request, respond with JSON
-        res.status(201).json(topic);
-      }
+      res.status(200).json(topic);
     } catch (error) {
       // If anything goes wrong, abort the transaction
       await session.abortTransaction();

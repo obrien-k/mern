@@ -98,7 +98,7 @@ export const useAllCommunities = () => {
   useEffect(() => {
     if (error && Object.keys(error).length !== 0) {
       console.error("Error fetching communities:", error);
-      // Handle the error according to your application's requirements.
+      // todo Handle the error
     }
   }, [error]);
 

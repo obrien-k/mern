@@ -1,21 +1,14 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { createSelector } from "reselect";
 import { getForumById } from "../actions/forum";
 
-const selectForumById = createSelector(
-  (state, forumId) => state.forum.forumsById[forumId],
-  (forum) => forum
-);
+const selectForumById = (state, forumId) =>
+  state.forum.forums.find((forum) => forum._id === forumId);
 
 export const useForumById = (forumId) => {
   const dispatch = useDispatch();
-  console.log("Requested forumId:", forumId);
-  const forum = useSelector((state) => {
-    console.log("Current state.forumsById:", state.forum.forumsById);
-    return selectForumById(state, forumId);
-  });
 
+  const forum = useSelector((state) => selectForumById(state, forumId));
   const { error } = useSelector((state) => ({
     error: state.forum.error,
   }));
