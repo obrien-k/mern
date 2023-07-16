@@ -6,7 +6,6 @@ const personalSchema = new Schema({
     type: String,
     required: false,
     match: /^(ftp|http|https):\/\/[^ "]+$/,
-    default: "https://i.imgur.com/7jX6Z8c.png",
   },
   avatarMouseoverText: {
     type: String,

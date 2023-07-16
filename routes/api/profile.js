@@ -125,7 +125,10 @@ router.post(
 // @access  Public
 router.get("/", async (req, res) => {
   try {
-    const profiles = await Profile.find().populate("user", ["name", "avatar"]);
+    const profiles = await Profile.find().populate("user", [
+      "username",
+      "avatar",
+    ]);
     res.json(profiles);
   } catch (err) {
     console.error(err.message);
@@ -139,7 +142,7 @@ router.get("/", async (req, res) => {
 router.get("/user/:user_id", async (req, res) => {
   try {
     const profile = await Profile.findOne({
-      id: req.params.user_id,
+      user: req.params.user_id,
     })
       .populate("siteAppearance")
       .populate("personal");

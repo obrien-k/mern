@@ -31,7 +31,7 @@ const ForumTopicPage = () => {
     forumTopicId
   );
 
-  console.log(forumId, forumTopicId + "ForumTopicPage line28");
+  console.log(JSON.stringify(forumTopic) + "ForumTopicPage line28");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchUser, setSearchUser] = useState("");
   const [isPollVisible, setPollVisible] = useState(false);
@@ -45,7 +45,11 @@ const ForumTopicPage = () => {
   }
 
   if (errorMessage || forumErrorMessage || error) {
-    return <p>{errorMessage || forumErrorMessage}</p>;
+    return (
+      <div>
+        Error: {JSON.stringify(errorMessage || forumErrorMessage || error)}
+      </div>
+    );
   }
 
   const handleReport = () => {

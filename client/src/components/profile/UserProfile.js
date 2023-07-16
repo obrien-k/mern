@@ -9,40 +9,31 @@ import MainColumn from "./MainColumn";
 function UserProfile() {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { userProfile, loadingUserProfiles, userProfileError } = useSelector(
-    (state) => {
-      const userId = id;
-      const profiles = state.profile.userProfile;
-      const userProfile = Object.values(profiles).find(
-        (profile) => profile.user === userId
-      );
-
-      return {
-        userProfile,
-        loadingUserProfiles: state.profile.loadingUserProfile,
-        userProfileError: state.profile.userProfileError,
-      };
-    }
-  );
 
   useEffect(() => {
     dispatch(getUserProfileById(id));
   }, [dispatch, id]);
 
-  if (loadingUserProfiles || !userProfile) {
+  const userProfile = useSelector((state) => {
+    const profiles = state.profile.userProfile;
+    return Object.values(profiles).find((profile) => profile.user === id);
+  });
+
+  const loadingUserProfile = useSelector(
+    (state) => state.profile.loadingUserProfile
+  );
+  const userProfileError = useSelector(
+    (state) => state.profile.userProfileError
+  );
+
+  if (loadingUserProfile) {
     return <div>Loading profile...</div>;
   }
-
-  if (userProfileError)
-    return (
-      <div className="thin">
-        <div className="header">
-          <h2>
-            <strong>{userProfileError}</strong>
-          </h2>
-        </div>
-      </div>
-    );
+  if (userProfileError && Object.keys(userProfileError).length > 0) {
+    const errorMessage =
+      userProfileError || "An error occurred while fetching data";
+    return <div>Error: {errorMessage}</div>;
+  }
 
   return userProfile ? (
     <div className="thin">
@@ -63,7 +54,13 @@ function UserProfile() {
       <Sidebar profile={userProfile} />
       <MainColumn profile={userProfile} />
     </div>
-  ) : null;
+  ) : (
+    <div className="thin">
+      <div className="header">
+        <h2>Error: User not found</h2>
+      </div>
+    </div>
+  );
 }
 
 export default UserProfile;

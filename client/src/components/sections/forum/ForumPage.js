@@ -70,9 +70,11 @@ const ForumPage = () => {
               )
           )
         ) : (
-          <tr>
-            <td colSpan="4">No threads to display in this forum!</td>
-          </tr>
+          <div className="forumRow">
+            <div className="forumCell" colSpan="4">
+              No threads to display in this forum!
+            </div>
+          </div>
         )}
       </div>
 

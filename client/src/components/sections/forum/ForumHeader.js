@@ -1,9 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const ForumHeader = ({ forum, forumTopic, forumPost }) => {
   const isForumTopic = forumTopic && Object.keys(forumTopic).length > 0;
-  const isForumPost = forumPost && Object.keys(forumPost).length > 0;
-
+  const isForumPost = forumPost && Object.keys(forumPost).length > 0; // todo check for new topic form, odd behavior
+  console.log(forumTopic);
   const forumName = isForumTopic ? (
     <Link to={`/private/forums/${forum._id}`}>{forum.name}</Link>
   ) : (

@@ -22,10 +22,6 @@ import RecoveryPage from "./components/auth/Recovery";
 import ReferralForm from "./components/auth/ReferralForm";
 import store from "./store";
 
-import { UserContextProvider } from "./UserContext";
-import jwt_decode from "jwt-decode";
-import { UserContext } from "./UserContext";
-
 const App = () => {
   return (
     <Provider store={store}>
