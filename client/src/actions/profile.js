@@ -5,6 +5,10 @@ import {
   GET_USER_PROFILE_BY_ID,
   LOADING_USER_PROFILE,
   USER_PROFILE_ERROR,
+  DELETE_MY_PROFILE,
+  DELETE_PROFILE_ERROR,
+  UPDATE_MY_PROFILE,
+  UPDATE_PROFILE_ERROR,
 } from "./types";
 import api from "../utils/api";
 
@@ -44,6 +48,47 @@ export const getUserProfileById = (id) => async (dispatch) => {
     const errorResponse = error.response || {};
     dispatch({
       type: USER_PROFILE_ERROR,
+      payload: {
+        msg: errorResponse.statusText || "Error message not available",
+        status: errorResponse.status || "Status code not available",
+        error: error.toString(),
+      },
+    });
+  }
+};
+
+// Delete profile
+export const deleteMyProfile = () => async (dispatch) => {
+  try {
+    await api.delete("/profile");
+
+    dispatch({ type: DELETE_MY_PROFILE });
+  } catch (error) {
+    const errorResponse = error.response || {};
+    dispatch({
+      type: DELETE_PROFILE_ERROR,
+      payload: {
+        msg: errorResponse.statusText || "Error message not available",
+        status: errorResponse.status || "Status code not available",
+        error: error.toString(),
+      },
+    });
+  }
+};
+
+// Update profile
+export const updateMyProfile = (profileData) => async (dispatch) => {
+  try {
+    const res = await api.put("/profile/me", profileData);
+
+    dispatch({
+      type: UPDATE_MY_PROFILE,
+      payload: res.data,
+    });
+  } catch (error) {
+    const errorResponse = error.response || {};
+    dispatch({
+      type: UPDATE_PROFILE_ERROR,
       payload: {
         msg: errorResponse.statusText || "Error message not available",
         status: errorResponse.status || "Status code not available",

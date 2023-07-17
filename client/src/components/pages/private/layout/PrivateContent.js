@@ -10,6 +10,7 @@ import InviteTree from "../../../profile/invite/InviteTree";
 
 // User
 import UserProfile from "../../../profile/UserProfile";
+import Settings from "../../../profile/settings/Settings";
 
 // Communities
 import ContributeForm from "../../../sections/contribute/ContributeForm";
@@ -48,6 +49,20 @@ const PrivateContent = () => {
   return (
     <div id="content">
       <Routes>
+        <Route
+          path="user/edit/:id"
+          element={
+            <ErrorBoundary
+              FallbackComponent={FallbackComponent}
+              onError={logErrorToService}
+              onReset={() => {
+                // TODO reset state so it doesn't happen again
+              }}
+            >
+              <Settings />
+            </ErrorBoundary>
+          }
+        />
         <Route
           path="user/:id"
           element={

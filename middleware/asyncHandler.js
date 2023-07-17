@@ -16,14 +16,35 @@ exports.asyncHandler = (fn) => (req, res, next) => {
       }
     })
     .catch((error) => {
-      // Check if the error has a custom message or status code
-      const message = error.message || "Server error";
-      const status = error.statusCode || 500;
-
       // Log the error for debugging purposes
       console.error("Error:", error);
 
+      // Set default status code and message
+      let statusCode = 500;
+      let message = "Server error";
+
+      // Specific error handling
+      if (error.statusCode) {
+        statusCode = error.statusCode;
+      }
+
+      if (error.message) {
+        message = error.message;
+      }
+
+      if (error.name === "ValidationError") {
+        // It's a Mongoose validation error
+        statusCode = 400;
+        message = Object.values(error.errors)
+          .map((e) => e.message)
+          .join(", ");
+      } else if (error.name === "CastError") {
+        // It's an invalid ID error
+        statusCode = 400;
+        message = "Invalid ID";
+      }
+
       // Send the error response with the appropriate status code and message
-      res.status(status).json({ error: message });
+      res.status(statusCode).json({ error: message });
     });
 };

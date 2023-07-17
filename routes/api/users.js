@@ -7,6 +7,7 @@ const { check, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const User = require("../../models/User");
+const UserRank = require("../../models/UserRank");
 const Profile = require("../../models/profile/Profile");
 const Personal = require("../../models/profile/settings/Personal");
 const SiteAppearance = require("../../models/profile/settings/SiteAppearance");
@@ -19,7 +20,10 @@ router.get(
   "/:id",
   asyncHandler(async (req, res) => {
     const userId = req.params.id;
-    const user = await User.findById(userId).populate("profile").exec();
+    const user = await User.findById(userId)
+      .populate("profile")
+      .populate("userRank", "field2")
+      .exec();
 
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
@@ -60,6 +64,13 @@ router.post(
       d: "mm",
     });
 
+    // assign default user rank
+    const defaultRank = await UserRank.findOne({ field1: 100 });
+
+    if (!defaultRank) {
+      throw new Error("Default rank not found");
+    }
+
     // Start session
     const session = await mongoose.startSession();
     session.startTransaction();
@@ -70,6 +81,7 @@ router.post(
         email,
         avatar,
         password,
+        userRank: defaultRank._id,
       });
 
       const salt = await bcrypt.genSalt(10);
@@ -77,6 +89,7 @@ router.post(
       user.password = await bcrypt.hash(password, salt);
 
       await user.save({ session });
+      //todo handle when username already exists
 
       // create new personal info with default values
       const newPersonal = new Personal();

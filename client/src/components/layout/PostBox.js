@@ -1,22 +1,33 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
 import { getForumTopicById } from "../../actions/forum";
 import useCreateForumPost from "../../hooks/useCreateForumPost";
 import useIsUserLoggedIn from "../../hooks/useIsUserLoggedIn";
 
 const PostBox = ({ forumId, forumTopicId }) => {
   const navigate = useNavigate();
-
-  const [body, setBody] = useState("");
   const { user } = useIsUserLoggedIn();
   const dispatch = useDispatch();
   const createPost = useCreateForumPost();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  // Initialize useForm hook
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  // Your submit function is now directly receiving the form data
+  const onSubmit = async (data) => {
     try {
-      const newPost = await createPost(forumId, forumTopicId, body, user._id);
+      const newPost = await createPost(
+        forumId,
+        forumTopicId,
+        data.body,
+        user._id
+      );
       if (newPost) {
         navigate(`/private/forums/${forumId}/topics/${forumTopicId}`);
       } else {
@@ -94,7 +105,7 @@ const PostBox = ({ forumId, forumTopicId }) => {
               className="send_form center"
               name="reply"
               id="quickpostform"
-              onSubmit={handleSubmit}
+              onSubmit={handleSubmit(onSubmit)}
             >
               <input type="hidden" name="action" value="reply" />
               <input
@@ -106,14 +117,13 @@ const PostBox = ({ forumId, forumTopicId }) => {
               <div id="quickreplytext">
                 <div id="textarea_wrap_0" className="field_div textarea_wrap">
                   <textarea
-                    name="body"
+                    {...register("body", { required: true })}
                     id="quickpost"
                     cols="90"
                     rows="8"
                     tabIndex="1"
-                    value={body}
-                    onChange={(event) => setBody(event.target.value)}
                   ></textarea>
+                  {errors.body && <p>This field is required</p>}
                 </div>
                 <br />
               </div>

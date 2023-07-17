@@ -5,6 +5,10 @@ import {
   LOADING_MY_PROFILE,
   LOADING_USER_PROFILE,
   USER_PROFILE_ERROR,
+  DELETE_MY_PROFILE,
+  DELETE_PROFILE_ERROR,
+  UPDATE_MY_PROFILE,
+  UPDATE_PROFILE_ERROR,
 } from "../actions/types";
 
 const initialState = {
@@ -14,6 +18,10 @@ const initialState = {
   userProfile: {},
   loadingUserProfile: false,
   userProfileError: null,
+  deleteProfile: false,
+  deleteProfileError: null,
+  updateProfile: false,
+  updateProfileError: null,
 };
 
 export default function (state = initialState, action) {
@@ -56,6 +64,28 @@ export default function (state = initialState, action) {
         ...state,
         userProfileError: payload,
         loadingUserProfile: false,
+      };
+    case DELETE_MY_PROFILE:
+      return {
+        ...state,
+        myProfile: null,
+        deleteProfile: true,
+      };
+    case DELETE_PROFILE_ERROR:
+      return {
+        ...state,
+        deleteProfileError: payload,
+      };
+    case UPDATE_MY_PROFILE:
+      return {
+        ...state,
+        myProfile: payload,
+        updateProfile: true,
+      };
+    case UPDATE_PROFILE_ERROR:
+      return {
+        ...state,
+        updateProfileError: payload,
       };
     default:
       return state;
