@@ -56,7 +56,13 @@ router.get(
     const forum = await Forum.findById(req.params.id)
       .populate("forumTopics")
       .populate("forumPosts");
-    console.log(forum);
+
+    if (!forum) {
+      const error = new Error("Forum not found");
+      error.statusCode = 404;
+      throw error;
+    }
+
     res.json(forum);
   })
 );

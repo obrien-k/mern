@@ -2,7 +2,10 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
 const Sentry = require("@sentry/node");
+const cookieParser = require("cookie-parser");
+const { doubleCsrf } = require("csrf-csrf");
 require("dotenv").config();
+const isProduction = process.env.NODE_ENV === "production";
 
 // Init app
 const app = express();
@@ -33,10 +36,38 @@ app.use(Sentry.Handlers.tracingHandler());
 */
 //Init Middleware
 app.use(express.json({ extended: false }));
+app.use(cookieParser());
 app.use(cors());
 
 // Connect Database
 connectDB();
+
+const cookiePrefix = isProduction ? "__Host-" : "";
+const secureCookie = isProduction ? true : false;
+
+const doubleCsrfUtilities = doubleCsrf({
+  getSecret: () => "Secret",
+  cookieName: `${cookiePrefix}psifi.x-csrf-token`,
+  cookieOptions: {
+    httpOnly: true,
+    sameSite: "lax",
+    path: "/",
+    secure: secureCookie,
+  },
+  size: 64,
+  ignoredMethods: ["GET", "HEAD", "OPTIONS"],
+  getTokenFromRequest: (req) => req.headers["x-csrf-token"],
+});
+
+const { doubleCsrfProtection, generateToken } = doubleCsrfUtilities;
+
+// CSRF Token generation route
+app.get("/api/csrf-token", (req, res) => {
+  const csrfToken = generateToken(res, req);
+  res.json({ csrfToken });
+});
+
+app.use(doubleCsrfProtection);
 
 // Define routes
 app.get("/", (req, res) => res.send("API Running"));

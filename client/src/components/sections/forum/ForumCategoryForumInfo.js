@@ -13,11 +13,15 @@ const ForumCategoryForumInfo = ({ forum }) => {
         </h4>
       </ForumCell>
       <ForumCell className="forumLatest">
-        <ForumLatest
-          forum={forum}
-          lastTopic={forum.lastTopic}
-          lastPost={forum.lastPost}
-        />
+        {forum.lastTopic && forum.lastPost ? (
+          <ForumLatest
+            forum={forum}
+            lastTopic={forum.lastTopic}
+            lastPost={forum.lastPost}
+          />
+        ) : (
+          <ForumLatest className="forumLatest" forum={forum} />
+        )}
       </ForumCell>
       <ForumCell className="forumTopics">
         {forum.numTopics ? forum.numTopics : 0}

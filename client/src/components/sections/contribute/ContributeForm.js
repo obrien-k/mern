@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createContribution } from "../../../actions/communities";
 import {
@@ -161,6 +162,10 @@ const ContributeForm = () => {
                       ))}
                     </select>
                   )}
+                  <div className="small" style={{ float: "right" }}>
+                    Can't find your community?{" "}
+                    <Link to="/private/requests">Submit a request!</Link>
+                  </div>
                 </td>
               </tr>
               <tr>
@@ -181,6 +186,10 @@ const ContributeForm = () => {
                       ))}
                     </select>
                   )}
+                  <div className="small" style={{ float: "right" }}>
+                    Can't find your group?{" "}
+                    <Link to="/private/requests">Submit a request!</Link>
+                  </div>
                 </td>
               </tr>
               <tr>

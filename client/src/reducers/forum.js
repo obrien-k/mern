@@ -215,14 +215,13 @@ export default function (state = initialState, action) {
         loadingPosts: false,
       };
     case GET_FORUM_POSTS_BY_TOPIC_ID:
-      const newPosts = action.payload.reduce((acc, post) => {
-        acc[post._id] = post;
-        return acc;
-      }, {});
       return {
         ...state,
-        forumPosts: { ...state.forumPosts, ...newPosts },
-        loadingPosts: false,
+        loading: false,
+        forumPosts: {
+          ...state.forumPosts,
+          [action.forumTopicId]: action.payload,
+        },
       };
 
     case GET_FORUM_POST_BY_ID:
@@ -236,14 +235,16 @@ export default function (state = initialState, action) {
       };
 
     case CREATE_FORUM_POST:
+      const { forumTopicId, post } = action.payload;
       return {
         ...state,
         forumPosts: {
-          ...state.forumPostsById,
-          [action.payload._id]: action.payload,
+          ...state.forumPosts,
+          [forumTopicId]: [...state.forumPosts[forumTopicId], post],
         },
         loadingPosts: false,
       };
+
     case DELETE_FORUM_POST:
       const { [action.payload]: _, ...remainingPosts } = state.forumPosts;
       return {

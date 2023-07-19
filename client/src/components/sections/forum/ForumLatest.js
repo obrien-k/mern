@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Time from "../../layout/Time";
 import AuthorLink from "./AuthorLink";
+// todo get lastPost from useForumPostById and implement that hook
 
 const ForumLatest = ({ forum, lastTopic, lastPost }) => {
   if (!lastTopic) {
@@ -12,7 +13,7 @@ const ForumLatest = ({ forum, lastTopic, lastPost }) => {
     );
   }
   console.log(lastTopic);
-  console.log(lastPost + "ForumLatest.js");
+  console.log(JSON.stringify(lastPost) + "ForumLatest.js");
   return (
     <>
       <span style={{ float: "left" }} className="last_topic">
@@ -26,7 +27,7 @@ const ForumLatest = ({ forum, lastTopic, lastPost }) => {
         </strong>
       </span>
       <span style={{ float: "right" }} className="last_poster">
-        by <AuthorLink userId={lastPost?.author} />
+        by <AuthorLink userId={lastPost?.author._id} />
         <Time timestamp={lastPost?.timestamp} />
       </span>
     </>

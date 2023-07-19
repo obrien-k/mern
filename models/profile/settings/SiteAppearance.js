@@ -13,7 +13,7 @@ const siteAppearanceSchema = new Schema({
   },
   styledTooltips: {
     type: Boolean,
-    required: true,
+    required: false,
     default: true,
   },
 });

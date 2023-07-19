@@ -22,7 +22,7 @@ const PrivateHeader = (props) => {
       <div id="logo">
         <Link to="/private/">
           <img
-            src="/static/styles/kuro/images/logo.png"
+            src="/static/styles/layer_cake/images/logo-new.png"
             alt="stellar"
             title="stellar"
           />

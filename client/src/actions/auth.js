@@ -1,6 +1,5 @@
 import api from "../utils/api";
 import { setAlert } from "./alert";
-import setAuthToken from "../utils/setAuthToken";
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -64,12 +63,6 @@ export const login = (email, password) => async (dispatch) => {
   try {
     const res = await api.post("/auth", body);
 
-    // Store token in local storage
-    localStorage.setItem("token", res.data.token);
-
-    // Set default authorization header for axios
-    api.defaults.headers.common["Authorization"] = `Bearer ${res.data.token}`;
-
     dispatch({
       type: LOGIN_SUCCESS,
       payload: res.data,
@@ -90,14 +83,15 @@ export const login = (email, password) => async (dispatch) => {
 };
 
 // Logout
-export const logout = () => {
-  // Remove token from local storage
-  localStorage.removeItem("token");
+export const logout = () => async (dispatch) => {
+  try {
+    await api.get("/auth/logout");
 
-  // Remove the authorization header from axios
-  delete api.defaults.headers.common["Authorization"];
+    // Remove the authorization header from axios
+    delete api.defaults.headers.common["Authorization"];
 
-  setAuthToken(null);
-
-  return { type: LOGOUT };
+    dispatch({ type: LOGOUT });
+  } catch (err) {
+    console.error("Error during logout", err);
+  }
 };

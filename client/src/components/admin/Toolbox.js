@@ -169,36 +169,38 @@ const Toolbox = ({ userId }) => {
               <tbody>
                 <tr>
                   <td>
-                    <Link to="/private/tools/create_user">Create user</Link>
+                    <Link to="/private/staff/tools/user/new">Create user</Link>
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <Link to="tools.php?action=special_users">
+                    <Link to="/private/staff/tools/user/special">
                       Special users
                     </Link>
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <Link to="tools.php?action=user_flow">User flow</Link>
+                    <Link to="/private/staff/tools/user/flow">User flow</Link>
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <Link to="tools.php?action=registration_log">
+                    <Link to="/private/staff/tools/user/log">
                       Registration log
                     </Link>
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <Link to="tools.php?action=invite_pool">Invite pool</Link>
+                    <Link to="/private/staff/tools/user/invite-pool">
+                      Invite pool
+                    </Link>
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <Link to="tools.php?action=manipulate_tree">
+                    <Link to="/private/staff/tools/user/invite-tree">
                       Manage invite tree
                     </Link>
                   </td>

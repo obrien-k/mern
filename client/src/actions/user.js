@@ -3,6 +3,7 @@ import {
   GET_USER_BY_ID,
   GET_USER_BY_ID_SUCCESS,
   GET_USER_BY_ID_ERROR,
+  CREATE_USER,
   USERS_ERROR,
   LOADING_USERS,
   UPDATE_USER,
@@ -52,6 +53,28 @@ export const getUserById = (id) => async (dispatch) => {
       payload: {
         msg: errorResponse.statusText || "Error message not available",
         status: errorResponse.status || "Status code not available",
+        error: error.toString(),
+      },
+    });
+  }
+};
+
+// Create User
+export const createUser = (formData) => async (dispatch) => {
+  dispatch({ type: LOADING_USERS });
+
+  try {
+    const res = await api.post("/users", formData);
+    dispatch({
+      type: CREATE_USER,
+      payload: res.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USERS_ERROR,
+      payload: {
+        msg: error.response.statusText || "Error message not available",
+        status: error.response.status || "Status code not available",
         error: error.toString(),
       },
     });

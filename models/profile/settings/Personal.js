@@ -5,6 +5,7 @@ const personalSchema = new Schema({
   avatar: {
     type: String,
     required: false,
+    match: /^(ftp|http|https):\/\/[^ "]+$/,
   },
   avatarMouseoverText: {
     type: String,

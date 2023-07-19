@@ -1,18 +1,18 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const stylesheetSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
-  content: {
+  cssUrl: {
     type: String,
-    required: true
+    required: true,
   },
   created_at: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
-module.exports = Stylesheet = mongoose.model('Stylesheet', stylesheetSchema);
+module.exports = Stylesheet = mongoose.model("Stylesheet", stylesheetSchema);

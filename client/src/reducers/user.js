@@ -6,6 +6,7 @@ import {
   USERS_ERROR,
   LOADING_USERS,
   UPDATE_USER,
+  CREATE_USER,
   DELETE_USER,
 } from "../actions/types";
 
@@ -41,6 +42,18 @@ export default function (state = initialState, action) {
       };
     case GET_USER_BY_ID_ERROR:
       return { ...state, error: action.payload, loadingUsers: false };
+    case CREATE_USER:
+      console.log("CREATE_USER reducer");
+      console.log(action.payload);
+      console.log(action.payload.profile.user);
+      return {
+        ...state,
+        users: {
+          ...state.users,
+          [action.payload.profile.user]: action.payload,
+        },
+        loadingUsers: false,
+      };
     case USERS_ERROR:
       return {
         ...state,

@@ -8,6 +8,10 @@ import Toolbox from "../../../admin/Toolbox";
 import InviteForm from "../../../profile/invite/InviteForm";
 import InviteTree from "../../../profile/invite/InviteTree";
 
+// User
+import UserProfile from "../../../profile/UserProfile";
+import Settings from "../../../profile/settings/Settings";
+
 // Communities
 import ContributeForm from "../../../sections/contribute/ContributeForm";
 import CommunitiesPage from "../../../sections/communities/CommunitiesPage";
@@ -24,6 +28,7 @@ import PermissionManager from "../../../admin/PermissionManager";
 import PermissionFormPage from "../../../admin/PermissionFormPage";
 import ForumCategoryControlPanel from "../../../admin/ForumCategoryControlPanel";
 import ForumControlPanel from "../../../admin/ForumControlPanel";
+import NewUserForm from "../../../admin/NewUserForm";
 
 const logErrorToService = async (error, info) => {
   const errorData = {
@@ -44,7 +49,36 @@ const PrivateContent = () => {
   return (
     <div id="content">
       <Routes>
-        <Route path="/private/user/invite-tree" element={<InviteTree />} />
+        <Route
+          path="user/edit/:id"
+          element={
+            <ErrorBoundary
+              FallbackComponent={FallbackComponent}
+              onError={logErrorToService}
+              onReset={() => {
+                // TODO reset state so it doesn't happen again
+              }}
+            >
+              <Settings />
+            </ErrorBoundary>
+          }
+        />
+        <Route
+          path="user/:id"
+          element={
+            <ErrorBoundary
+              FallbackComponent={FallbackComponent}
+              onError={logErrorToService}
+              onReset={() => {
+                // TODO reset state so it doesn't happen again
+              }}
+            >
+              <UserProfile />
+            </ErrorBoundary>
+          }
+        />
+        <Route path="user/invite-tree" element={<InviteTree />} />
+        <Route path="staff/tools/user/new" element={<NewUserForm />} />
         <Route
           path="staff/tools/permissions/new"
           element={<PermissionFormPage />}

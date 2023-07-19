@@ -69,9 +69,6 @@ router.get(
       "forumPosts"
     );
     res.json(topic);
-
-    console.log("Error in route handler:", error);
-    res.status(500).json({ error: "Internal server error" });
   })
 );
 

@@ -414,13 +414,14 @@ export const createForumPost =
   (forumId, forumTopicId, body, userId) => async (dispatch) => {
     try {
       const url = `/forums/${forumId}/topics/${forumTopicId}/posts`;
-      const res = await api.post(
-        `/forums/${forumId}/topics/${forumTopicId}/posts`,
-        { body, userId }
-      );
+      const res = await api.post(url, { body, userId });
+
       dispatch({
         type: CREATE_FORUM_POST,
-        payload: res.data,
+        payload: {
+          post: res.data,
+          forumTopicId,
+        },
       });
     } catch (error) {
       dispatch({
@@ -464,6 +465,7 @@ export const getForumPostsByTopicId =
       );
       dispatch({
         type: GET_FORUM_POSTS_BY_TOPIC_ID,
+        forumTopicId,
         payload: res.data,
       });
     } catch (error) {
@@ -485,7 +487,7 @@ export const getForumPostById =
     dispatch({ type: LOADING_POSTS });
     try {
       const res = await api.get(
-        `/forums/${forumId}/topics/${forumTopicId}posts/${forumPostId}`
+        `/forums/${forumId}/topics/${forumTopicId}/posts/${forumPostId}`
       );
       dispatch({
         type: GET_FORUM_POST_BY_ID,
