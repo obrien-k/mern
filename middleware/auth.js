@@ -26,7 +26,11 @@ module.exports = function (requiredPermission) {
       } else {
         const userId = req.user.id;
         const user = await User.findById(userId).populate("userRank");
+        console.log(user);
         if (user && user.userRank && user.userRank.field3[requiredPermission]) {
+          req.user.permissions = user.userRank.field3;
+          console.log(req.user.permissions) +
+            console.log("permissions on user ");
           next();
         } else {
           res.status(403).send("Permission Denied");

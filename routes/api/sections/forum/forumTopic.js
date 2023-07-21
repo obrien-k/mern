@@ -155,6 +155,7 @@ router.post(
 
       // Push and send the new topic
       topic.forumPosts.push(originalPost._id);
+      topic.lastPost = originalPost._id;
       await topic.save({ session });
 
       // Update the parent forum's forumTopics array

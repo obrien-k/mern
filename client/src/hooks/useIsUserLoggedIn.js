@@ -4,17 +4,21 @@ import api from "../utils/api";
 
 const useIsUserLoggedIn = () => {
   const [userProfile, setUserProfile] = useState(null);
-  const { user } = useSelector((state) => state.auth);
+  const [userRank, setUserRank] = useState(null);
+  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const response = await api.get("/auth/status");
-        if (response.data.isAuthenticated) {
-          const profileResponse = await api.get(
-            `/api/profile/users/${response.data.user.id}`
-          );
+        if (user) {
+          const profileResponse = await api.get(`profile/users/${user.id}`);
           setUserProfile(profileResponse.data);
+          if (user.userRank) {
+            const rankResponse = await api.get(
+              `tools/permissions/${user.userRank}`
+            );
+            setUserRank(rankResponse.data);
+          }
         }
       } catch (error) {
         setUserProfile(null);
@@ -24,9 +28,9 @@ const useIsUserLoggedIn = () => {
     if (!userProfile) {
       checkAuthStatus();
     }
-  }, [userProfile]);
+  }, [user, userProfile]);
 
-  return { isUserLoggedIn: Boolean(userProfile), userProfile, user };
+  return { isUserLoggedIn: Boolean(userProfile), user, userProfile, userRank };
 };
 
 export default useIsUserLoggedIn;
