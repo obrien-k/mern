@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import api from "../utils/api";
 
 const useIsUserLoggedIn = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [userRank, setUserRank] = useState(null);
-  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        if (user) {
-          const profileResponse = await api.get(`profile/users/${user.id}`);
+        const response = await api.get("/auth/status");
+        if (response.data.isAuthenticated) {
+          const profileResponse = await api.get(
+            `/profile/users/${response.data.user.id}`
+          );
           setUserProfile(profileResponse.data);
-          if (user.userRank) {
+          if (userProfile?.userRank) {
             const rankResponse = await api.get(
-              `tools/permissions/${user.userRank}`
+              `/tools/permissions/${userProfile.userRank}`
             );
             setUserRank(rankResponse.data);
           }
@@ -24,13 +25,10 @@ const useIsUserLoggedIn = () => {
         setUserProfile(null);
       }
     };
+    checkAuthStatus();
+  }, []);
 
-    if (!userProfile) {
-      checkAuthStatus();
-    }
-  }, [user, userProfile]);
-
-  return { isUserLoggedIn: Boolean(userProfile), user, userProfile, userRank };
+  return { isUserLoggedIn: Boolean(userProfile), userProfile, userRank };
 };
 
 export default useIsUserLoggedIn;
