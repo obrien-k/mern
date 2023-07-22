@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import api from "../utils/api";
 
 const useIsUserLoggedIn = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [userRank, setUserRank] = useState(null);
+  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const checkAuthStatus = async () => {
@@ -28,7 +30,7 @@ const useIsUserLoggedIn = () => {
     checkAuthStatus();
   }, []);
 
-  return { isUserLoggedIn: Boolean(userProfile), userProfile, userRank };
+  return { isUserLoggedIn: Boolean(userProfile), userProfile, userRank, user };
 };
 
 export default useIsUserLoggedIn;
