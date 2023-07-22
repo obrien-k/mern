@@ -62,7 +62,7 @@ router.get("/", auth(), async (req, res) => {
 // @access  Private
 router.get("/:id", auth(), async (req, res) => {
   try {
-    const userRank = await UserRank.findById(req.params.id);
+    const userRank = await UserRank.findById(req.params.id).populate("field3");
 
     if (!userRank) {
       return res.status(404).json({ msg: "UserRank not found" });

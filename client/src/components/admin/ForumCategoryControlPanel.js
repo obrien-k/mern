@@ -50,16 +50,37 @@ const ForumCategoryControlPanel = () => {
 
 const ForumCategory = ({ categoryId }) => {
   const dispatch = useDispatch();
-  const { forums } = useForumCategoryById(categoryId);
+  const {
+    data: forumCategory,
+    isLoading,
+    errorMessage,
+  } = useForumCategoryById(categoryId);
 
   useEffect(() => {
     dispatch(getForumCategoryById(categoryId));
   }, [categoryId, dispatch]);
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (errorMessage) {
+    return <div>Error: {errorMessage}</div>;
+  }
+
+  if (!forumCategory) {
+    return <div>No forum category found with id {categoryId}</div>;
+  }
+
   return (
     <div>
       <h4>Category ID: {categoryId}</h4>
-      {/* Render the forums */}
+      <h5>Category Name: {forumCategory.name}</h5>
+      {forumCategory.forums.map((forum) => (
+        <div key={forum.id}>
+          <h6>{forum.title}</h6>
+        </div>
+      ))}
     </div>
   );
 };

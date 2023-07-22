@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import ForumCell from "./ForumCell";
-import ForumLatest from "./ForumLatest";
+import ForumCell from "./layout/ForumCell";
+import ForumLatest from "./layout/ForumLatest";
 
 const ForumCategoryForumInfo = ({ forum }) => {
   return (

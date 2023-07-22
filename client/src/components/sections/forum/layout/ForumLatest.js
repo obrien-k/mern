@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Time from "../../layout/Time";
+import Time from "../../../layout/Time";
 import AuthorLink from "./AuthorLink";
 // todo get lastPost from useForumPostById and implement that hook
 

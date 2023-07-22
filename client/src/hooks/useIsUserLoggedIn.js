@@ -12,13 +12,11 @@ const useIsUserLoggedIn = () => {
       try {
         const response = await api.get("/auth/status");
         if (response.data.isAuthenticated) {
-          const profileResponse = await api.get(
-            `/profile/users/${response.data.user.id}`
-          );
+          const profileResponse = await api.get(`/profile/users/${user._id}`);
           setUserProfile(profileResponse.data);
-          if (userProfile?.userRank) {
+          if (user?.userRank) {
             const rankResponse = await api.get(
-              `/tools/permissions/${userProfile.userRank}`
+              `/tools/permissions/${user.userRank}`
             );
             setUserRank(rankResponse.data);
           }

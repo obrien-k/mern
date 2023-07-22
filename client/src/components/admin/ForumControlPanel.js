@@ -56,7 +56,7 @@ const ForumControlPanel = () => {
   return (
     <div>
       <div>
-        <h3>Forum Category Control Panel</h3>
+        <h3>Forum Control Panel</h3>
       </div>
       {forumIds.map((forumId) => (
         <Forum key={forumId} forumId={forumId} />

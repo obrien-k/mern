@@ -16,6 +16,7 @@ const PrivateHeader = (props) => {
     bytesDownloaded,
     requiredRatio,
     flTokens,
+    userRank,
   } = props;
   return (
     <>
@@ -44,6 +45,7 @@ const PrivateHeader = (props) => {
             <Alert alerts={alerts} />
           </div>
           <div id="alerts">
+            <div>{userRank}</div>
             <ModBar modBarItems={modBar} userId={userId} />
           </div>
         </div>

@@ -20,7 +20,7 @@ In `./config`, create a `default.json` file like below:
 
 After verifying your shell's running version of node with `node -v`, run `npm i -D` in the root directory, which installs the backend server with development dependencies. Once complete, do the same in the client directory to install the frontend. The command `npm run dev` will start the test environment.
 
-Access the API via `http://localhost:3000/api/auth` (or the hostname:port set, if customized), and the frontend will automatically load to your web browser once react-scripts loads.
+To access the API use endpoints like `http://localhost:3000/api/auth`. The frontend will automatically load to your web browser once react-scripts loads.
 
 ## Database population
 
@@ -34,7 +34,7 @@ In the code, one might notice the filename structure using "referral" and that t
 
 ## Subscriptions
 
-Subscriptions are pseudo-coded and not really working, this component should handle notifications for subscribed communities, threads, etc. It has been deactivated via line 2 in `./client/src/components/pages/private/layout/PrivateFooter.js`.
+Subscriptions are pseudo-coded and not working, this component should handle notifications for subscribed communities, threads, etc. It has been deactivated via line 2 in `./client/src/components/pages/private/layout/PrivateFooter.js`.
 
 ## Codebase structure
 
@@ -45,7 +45,7 @@ Stellar's front end is based on react, which is in the `./client` directory.
 ```
 - /client
   - /src
-    - App.js* -- Authentication check for delivering PrivateLayout or PublicLayout
+    - App.js
     - /actions -- api request event controllers
     - /components
       - /admin
@@ -138,7 +138,7 @@ Express powers Stellar's back-end, the routes for which can be found in the `./r
     - Invite
     - InviteTree
     - Stylesheet
-  - /utils -- likely being removed
+  - /utils
 - Applicant
 - Blog
 - ContestLeaderboard

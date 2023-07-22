@@ -1,4 +1,4 @@
-import useUserById from "../../../hooks/useUserById";
+import useUserById from "../../../../hooks/useUserById";
 import { Link } from "react-router-dom";
 
 const AuthorLink = ({ userId }) => {
